@@ -1,3 +1,10 @@
 #!flask/bin/python
 from app import app
-app.run(debug=True)
+import sys
+
+if __name__ == '__main__':
+    if 'debug' in sys.argv:
+        print('Running app in DEBUG mode.')
+        app.run(debug=True)
+    else:
+        app.run()
