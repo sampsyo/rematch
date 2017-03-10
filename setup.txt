@@ -1,10 +1,12 @@
-1.) Download virtual env.py to create a virtual environment
+1.) pip install -r requirements.txt
+
+2.) Download virtual env.py to create a virtual environment
 	sudo easy_install virtualenv
 
-2.) create virtual env
+3.) create virtual env
 	virtualenv flask
 
-3.) install the flask extensions
+4.) install the flask extensions
 	$ flask/bin/pip install flask
 	$ flask/bin/pip install flask-login
 	$ flask/bin/pip install flask-openid
@@ -20,10 +22,10 @@
 	$ flask/bin/pip install argparse
 	$ flask/bin/pip install rauth
 
-4.) Create the db locally - not connected to a server!
+5.) Create the db locally - not connected to a server!
 	-If you must give the permission to the file-
 		chmod a+x db_create.py
 	then excecute it
 		./db_create.py
 
-5.) ./run.py
+6.) ./run.py
