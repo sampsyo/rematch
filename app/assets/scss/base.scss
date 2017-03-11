@@ -1,3 +1,20 @@
+$border-color: #e7e7e7;
+
+body {
+	margin-top: 80px;
+}
+
 .navbar {
-	background-color: red;
+	.navbar-brand {
+		padding: 5px 15px;
+		
+		img {
+			height: 40px;
+		}
+	}
+}
+
+
+.card {
+	border: 1px solid $border-color;
 }
