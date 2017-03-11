@@ -1,20 +1,100 @@
+$primary-color: #FE1736;
+$primary-color-dark: #1a2b53;
+
 $border-color: #e7e7e7;
+$background-color: #f9f8fb;
+
+$title-color: #092c4f;
+$text-color: #aab1bd;
+
+$border-radius: 3px;
 
 body {
 	margin-top: 80px;
+	background-color: $background-color;
 }
 
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+	color: $title-color
+}
+p, a {
+	font-family: 'Open Sans', sans-serif;
+	color: $text-color;
+}
+
+
 .navbar {
+	background-color: $primary-color-dark;
+	border: 0;
+
 	.navbar-brand {
-		padding: 5px 15px;
-		
+		padding: 10px 15px 0;
 		img {
 			height: 40px;
 		}
 	}
+
+	.nav > li > a {
+		color: #fff;
+		line-height: 30px;
+
+		&:focus,
+		&:hover {
+			background-color: rgba(255,255,255,.3);	
+		}
+	}	
+
 }
 
 
 .card {
-	border: 1px solid $border-color;
+	border-radius: $border-radius;
+	background-color: #fff;
+	max-width: 100%;
+	margin-bottom: 20px;
+	cursor: pointer;
+
+	.title {
+		margin-bottom: 20px;
+		text-transform: capitalize;
+	}
+	.professor {
+		font-weight: 500;
+		font-size: 15px;
+	}
+	.description {
+		font-size: 15px;
+		font-weight: 300;
+		line-height: 1.5;
+		a.learnmore {
+			color: $primary-color;
+		}
+	}
+
 }
+
+.shadowed {
+	box-shadow: 0px 5px 10px -3px rgba(0,0,0,.1);
+}
+
+
+.tags {
+	padding: 0;
+	
+	li {
+		font-size: 12px;
+		display: inline-block;
+		text-decoration: none;
+		color: orange;
+		border: 1px solid;
+		padding: 3px 10px;
+		border-radius: $border-radius;
+		text-transform: lowercase;
+	}
+}
+
+
+.grow { transition: all .1s ease-in; }
+.grow:hover { transform: translateY(-1px); }
