@@ -4,7 +4,7 @@
 	sudo easy_install virtualenv
 
 3.) create virtual env
-	virtualenv flask
+	virtualenv venv
 
 4.) install the flask extensions
 	$ flask/bin/pip install flask
@@ -29,3 +29,5 @@
 		./db_create.py
 
 6.) ./run.py ("./run.pu debug" is needed for templates to update without restarting the server)
+
+7.) sass --watch app/assets/scss:app/static/css (if updating SASS, must also have SASS installed)
