@@ -28,4 +28,4 @@
 	then excecute it
 		./db_create.py
 
-6.) ./run.py
+6.) ./run.py ("./run.pu debug" is needed for templates to update without restarting the server)

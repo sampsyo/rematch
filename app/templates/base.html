@@ -5,10 +5,12 @@
     {% else %}
     <title>Cornell Research Portal</title>
     {% endif %}
+
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
   </head>
   <body>
-    <div>Cornell Research Portal: <a href="/index">Home</a></div>
-    <hr>
+    {% include "partials/header.html" %}
+
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         <ul>
