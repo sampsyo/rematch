@@ -2,17 +2,21 @@ body {
   margin-top: 80px;
   background-color: #f9f8fb; }
 
+h1 {
+  font-size: 28px; }
+
 h1, h2, h3, h4, h5, h6 {
+  -webkit-font-smoothing: antialiased;
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
-  color: #092c4f; }
+  color: #000000; }
 
 p, a {
   font-family: 'Open Sans', sans-serif;
-  color: #aab1bd; }
+  color: #444444; }
 
 .navbar {
-  background-color: #1a2b53;
+  background-color: #ad1b1b;
   border: 0; }
   .navbar .navbar-brand {
     padding: 10px 15px 0; }
@@ -28,7 +32,8 @@ p, a {
   border-radius: 3px;
   background-color: #fff;
   max-width: 100%;
-  margin-bottom: 20px;
+  padding: 10px 30px 0 30px;
+  margin-bottom: 30px;
   cursor: pointer; }
   .card .title {
     margin-bottom: 20px;
@@ -37,31 +42,35 @@ p, a {
     font-weight: 500;
     font-size: 15px; }
   .card .description {
+    -webkit-font-smoothing: antialiased;
     font-size: 15px;
     font-weight: 300;
-    line-height: 1.5; }
+    line-height: 1.5;
+    padding-bottom: 10px; }
     .card .description a.learnmore {
       color: #FE1736; }
 
+.search {
+  padding: 20px;
+  border: 1px solid #e7e7e7; }
+
 .shadowed {
-  box-shadow: 0px 5px 10px -3px rgba(0, 0, 0, 0.1); }
+  box-shadow: 0.1px 0.1px 0.1px 0.1px rgba(33, 33, 33, 0.2); }
 
 .tags {
-  padding: 0; }
+  padding-bottom: 10px; }
   .tags li {
+    -webkit-font-smoothing: antialiased;
     font-size: 12px;
     display: inline-block;
     text-decoration: none;
-    color: orange;
+    color: #333333;
     border: 1px solid;
-    padding: 3px 10px;
+    padding: 3px 14px;
+    margin-right: 5px;
     border-radius: 3px;
     text-transform: lowercase; }
-
-.grow {
-  transition: all .1s ease-in; }
-
-.grow:hover {
-  transform: translateY(-1px); }
+    .tags li:last-child {
+      margin-right: 0; }
 
 /*# sourceMappingURL=base.css.map */

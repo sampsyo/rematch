@@ -1,11 +1,16 @@
 $primary-color: #FE1736;
-$primary-color-dark: #1a2b53;
+// $primary-color-dark: #1a2b53;
+
+// Red
+$primary-color-dark: #ad1b1b;
 
 $border-color: #e7e7e7;
 $background-color: #f9f8fb;
 
-$title-color: #092c4f;
-$text-color: #aab1bd;
+$title-color: #000000;
+$text-color: #444444;
+
+$tags-color: #333333;
 
 $border-radius: 3px;
 
@@ -13,11 +18,14 @@ body {
 	margin-top: 80px;
 	background-color: $background-color;
 }
-
+h1 {
+	font-size: 28px;
+}
 h1, h2, h3, h4, h5, h6 {
+	-webkit-font-smoothing: antialiased;
 	font-family: 'Open Sans', sans-serif;
 	font-weight: 300;
-	color: $title-color
+	color: $title-color;
 }
 p, a {
 	font-family: 'Open Sans', sans-serif;
@@ -53,7 +61,8 @@ p, a {
 	border-radius: $border-radius;
 	background-color: #fff;
 	max-width: 100%;
-	margin-bottom: 20px;
+	padding: 10px 30px 0 30px;
+	margin-bottom: 30px;
 	cursor: pointer;
 
 	.title {
@@ -65,9 +74,12 @@ p, a {
 		font-size: 15px;
 	}
 	.description {
+		// Would like to move this out of here to apply to all text.
+		-webkit-font-smoothing: antialiased;
 		font-size: 15px;
 		font-weight: 300;
 		line-height: 1.5;
+		padding-bottom: 10px;
 		a.learnmore {
 			color: $primary-color;
 		}
@@ -75,26 +87,38 @@ p, a {
 
 }
 
+.search {
+	padding: 20px;
+	border: 1px solid $border-color;
+}
+
 .shadowed {
-	box-shadow: 0px 5px 10px -3px rgba(0,0,0,.1);
+	box-shadow: .1px .1px .1px .1px rgba(33,33,33,.2);
 }
 
 
 .tags {
-	padding: 0;
+	padding-bottom: 10px;
 	
 	li {
+		// Would like to move this out of here to apply to all text.
+		-webkit-font-smoothing: antialiased;
 		font-size: 12px;
 		display: inline-block;
 		text-decoration: none;
-		color: orange;
+		color: $tags-color;
 		border: 1px solid;
-		padding: 3px 10px;
+		padding: 3px 14px;
+		margin-right: 5px;
 		border-radius: $border-radius;
 		text-transform: lowercase;
+
+		&:last-child {
+			margin-right: 0;
+		}
 	}
 }
 
 
-.grow { transition: all .1s ease-in; }
-.grow:hover { transform: translateY(-1px); }
+// .grow { transition: all .1s ease-in; }
+// .grow:hover { transform: translateY(-1px); }
