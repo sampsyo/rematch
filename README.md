@@ -6,21 +6,24 @@
     * download [get-pip.py](https://bootstrap.pypa.io/get-pip.py)
     * Then run ```python get-pip.py```
 
-2. Install packages from the requirements.txt file
-
-    ```pip install -r requirements.txt```
-
-3. Download virtual env.py to create a virtual environment
+2. Download virtual env.py to create a virtual environment
 
     ```sudo easy_install virtualenv```
 
-4. create virtual env
+3. create virtual env
 
-	```virtualenv venv```
+    ```virtualenv venv```
 
-    *Note* If using python 2.7, make sure its <= 2.7.10. There seems to be a known issue with venv on higher versions.
+4. Start up the venv enviornment
 
-5. install flask and extensions
+    ```source venv/bin/activate```
+
+5. Install packages from the requirements.txt file
+
+    ```pip install -r requirements.txt```
+
+
+6. install flask and extensions
 
     ```
     pip install flask
@@ -39,20 +42,16 @@
     pip install rauth
     ```
 
-6. Create the db locally - not connected to a server!
+7. Create the db locally - not connected to a server!
 	* If you must give the permission to the file-
     
-    ```chmod a+x db_create.py``` then excecute it ```./db_create.py```
+    ```chmod a+x db_create.py``` then excecute it ```python ./db_create.py```
 
-7. ```./run.py``` ("./run.py debug" is needed for templates to update without restarting the server)
+8. ```python ./run.py``` ("./run.py debug" is needed for templates to update without restarting the server)
 
-8. ```sass --watch app/assets/scss:app/static/css``` (if updating SASS, must also have SASS installed)
+9. ```sass --watch app/assets/scss:app/static/css``` (if updating SASS, must also have SASS installed)
 
-Start up the venv enviornment
+10. Stoping the enviornment
 
-```source venv/bin/activate```
-
-Stoping
-
-```deactivate```
+    ```deactivate```
 
