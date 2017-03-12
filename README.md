@@ -40,11 +40,7 @@
 6. Create the db locally - not connected to a server!
 	* If you must give the permission to the file-
     
-    ```chmod a+x db_create.py``` 
-
-    then excecute it 
-
-    ```./db_create.py```
+    ```chmod a+x db_create.py``` then excecute it ```./db_create.py```
 
 7. ```./run.py``` ("./run.pu debug" is needed for templates to update without restarting the server)
 
