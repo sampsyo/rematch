@@ -18,7 +18,7 @@
 
 	```virtualenv venv```
 
-    * *Note* If using python 2.7, make sure its <= 2.7.10. There seems to be a known issue with venv on higher 2.7.X versions.
+    *Note* If using python 2.7, make sure its <= 2.7.10. There seems to be a known issue with venv on higher versions.
 
 5. install flask and extensions
 
@@ -44,6 +44,15 @@
     
     ```chmod a+x db_create.py``` then excecute it ```./db_create.py```
 
-7. ```./run.py``` ("./run.pu debug" is needed for templates to update without restarting the server)
+7. ```./run.py``` ("./run.py debug" is needed for templates to update without restarting the server)
 
 8. ```sass --watch app/assets/scss:app/static/css``` (if updating SASS, must also have SASS installed)
+
+Start up the venv enviornment
+
+```source venv/bin/activate```
+
+Stoping
+
+```deactivate```
+
