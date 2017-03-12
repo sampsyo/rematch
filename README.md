@@ -18,6 +18,8 @@
 
 	```virtualenv venv```
 
+    * *Note* If using python 2.7, make sure its <= 2.7.10. There seems to be a known issue with venv on higher 2.7.X versions.
+
 5. install flask and extensions
 
     ```
