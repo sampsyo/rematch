@@ -5,12 +5,14 @@
 1. ```pip install -r requirements.txt```
 
 2. Download virtual env.py to create a virtual environment
-```sudo easy_install virtualenv```
+
+    ```sudo easy_install virtualenv```
 
 3. create virtual env
+
 	```virtualenv venv```
 
-4. ```install the flask extensions```
+4. install the flask extensions
 
     ```
     flask/bin/pip install flask
