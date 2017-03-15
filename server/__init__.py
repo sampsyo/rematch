@@ -9,5 +9,6 @@ app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 
+
 from server.views import *
 from routes import *
