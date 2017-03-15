@@ -1,10 +1,10 @@
-from app import db
+from server import db
 
 
 class Post(db.Model):
     __tablename__ = 'post'
     id = db.Column(db.Integer, primary_key=True)
-    post = db.Column(db.String(500))
+    post = db.Column(db.String(10000))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     @property

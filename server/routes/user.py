@@ -1,6 +1,5 @@
 from flask import jsonify, request
-from app import db, app
-from models import User
+from server import db, app
 
 
 # ROUTES FOR USER

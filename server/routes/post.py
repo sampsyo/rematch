@@ -1,13 +1,14 @@
 from flask import jsonify, request
-from app import db, app
-from models import User, Post
+from server import db, app
+from server.models.user import *
+from server.models.post import *
 
 
 # ROUTES FOR POSTS
 # Get a json of all posts in the db
 @app.route('/api/posts', methods=['GET'])
 def get_all_posts():
-    return jsonify(posts=[i.serialize for i in Post.query.all()])
+    return jsonify(posts=[p.serialize for p in Post.query.all()])
 
 
 # Create a new post from the user
