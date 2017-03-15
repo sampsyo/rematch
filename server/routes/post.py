@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from server import db, app
-from server.models.user import *
-from server.models.post import *
+from server.models.user import User
+from server.models.post import Post
 
 
 # ROUTES FOR POSTS
