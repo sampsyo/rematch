@@ -1,6 +1,6 @@
 from flask import jsonify, request
 from app import db, app
-from .models import *
+from models import User, Post
 
 
 # ROUTES FOR USER
