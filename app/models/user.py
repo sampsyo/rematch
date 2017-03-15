@@ -1,14 +1,5 @@
 from app import db
 
-# TODO: Search not currently enabled , can lookup but not search.
-# Searching with whoosh is dif with version Python 3 > so only enable if less!
-# import sys
-# if sys.version_info >= (3, 0):
-#   enable_search = False
-# else:
-#   enable_search = True
-#   import flask_whooshalchemy as whooshalchemy
-
 
 class User(db.Model):
     __tablename__ = 'user'
@@ -52,17 +43,3 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % (self.name)
 
-
-class Post(db.Model):
-    __tablename__ = 'post'
-    id = db.Column(db.Integer, primary_key=True)
-    post = db.Column(db.String(500))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-    @property
-    def serialize(self):
-        return {
-            'id': self.id,
-            'post': self.post,
-            'user_id': self.user_id
-        }
