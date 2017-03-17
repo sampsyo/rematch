@@ -157,6 +157,11 @@ p, a {
     	display: inherit;
     	background: transparent; 
     	color: $primary-color-dark;
+    	transition: .2s;
+    	&:hover {
+			background: $primary-color-dark;
+			color: white;
+		}
 	}
 	.title {
 		color: #999;
@@ -169,10 +174,11 @@ p, a {
 		padding: 10px 0;
 		.listed {
 			display: inline;
-			color: #555;
-			border: 1px solid #444;
+			color: #333;
+			border: 1px solid #666;
 			border-radius: 3px;
-			padding: 3px 6px;
+			padding: 3px 9px;
+			font-size: 14px;
 			margin-left: 3px;
 			margin-right: 6px;
 		}

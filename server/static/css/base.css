@@ -103,7 +103,11 @@ p, a {
   margin: auto;
   display: inherit;
   background: transparent;
-  color: #ad1b1b; }
+  color: #ad1b1b;
+  transition: .2s; }
+  .profile .resume:hover {
+    background: #ad1b1b;
+    color: white; }
 .profile .title {
   color: #999;
   padding-top: 20px;
@@ -114,10 +118,11 @@ p, a {
   padding: 10px 0; }
   .profile .item .listed {
     display: inline;
-    color: #555;
-    border: 1px solid #444;
+    color: #333;
+    border: 1px solid #666;
     border-radius: 3px;
-    padding: 3px 6px;
+    padding: 3px 9px;
+    font-size: 14px;
     margin-left: 3px;
     margin-right: 6px; }
 
