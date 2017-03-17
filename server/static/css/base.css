@@ -104,5 +104,21 @@ p, a {
   display: inherit;
   background: transparent;
   color: #ad1b1b; }
+.profile .title {
+  color: #999;
+  padding-top: 20px;
+  font-size: 16px; }
+.profile .item {
+  font-size: 16px;
+  color: #444;
+  padding: 10px 0; }
+  .profile .item .listed {
+    display: inline;
+    color: #555;
+    border: 1px solid #444;
+    border-radius: 3px;
+    padding: 3px 6px;
+    margin-left: 3px;
+    margin-right: 6px; }
 
 /*# sourceMappingURL=base.css.map */

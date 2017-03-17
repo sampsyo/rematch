@@ -3,24 +3,40 @@
 {% block content %}
 
 <div class="profile">
-    <div class="header card">
+    <div class="header shadowed card">
         <img class="img-responsive center-block img-circle" src="http://hubrif.com/pub/images/profiles/avatar-mini.jpg">
         <div class="name">{{profile.name}}</div>
         <div class="description">{{profile.description}}</div>
         <button class="resume">Resume</button>
     </div>
-    <div class="card general">
+    <div class="card shadowed general">
         <div class="title">General Information</div>
-        <div class="major">{{profile.major}}</div>
-        <div class="year">{{profile.year}}</div>
-        <div class="email">{{profile.email}}</div>
-        <div class="availability">{{profile.availability}}</div>
+        <div class="item">Major: {{profile.major}}</div>
+        <div class="item">Year: {{profile.year}}</div>
+        <div class="item">Email: {{profile.email}}</div>
+        <div class="item">Availability: 
+        {% for day in profile.availability %}
+            <div class="listed">{{day}}</div>
+        {% endfor %}
+        </div>
     </div>
-    <div class="card experience">
+    <div class="card shadowed experience">
         <div class="title">Experience, Skills, Interests</div>
-        <div class="major">{{profile.skills}}</div>
-        <div class="year">{{profile.interests}}</div>
-        <div class="email">{{profile.favorited_projects}}</div>
+        <div class="item">Skills:
+        {% for skill in profile.skills %}
+            <div class="listed">{{skill}}</div>
+        {% endfor %}
+        </div>
+        <div class="item">Interests:
+        {% for interest in profile.interests %}
+            <div class="listed">{{interest}}</div>
+        {% endfor %}
+        </div>
+        <div class="item">Favorite Projects:
+        {% for project in profile.favorited_projects %}
+            <div class="listed">{{project}}</div>
+        {% endfor %}
+        </div>
     </div>
 </div>
 
