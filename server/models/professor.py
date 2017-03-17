@@ -28,6 +28,33 @@ class Professor(db.Model):
 #    def has_post(self, post):
 #        return self.posts.filter(Post.id == post.id).count() > 0
 
+    @classmethod
+    def create_professor(cls, net_id=net_id, name=name):
+        if Professor.get_professor_by_netid(net_id):
+            print("Professor already exists with net_id %s" % net_id)
+            return None
+
+        professor = Professor(
+            net_id=net_id,
+            name=name, 
+            email=net_id+"@cornell.edu"
+        )
+        db.session.add(professor)
+        db.session.commit()
+        return professor
+
+    @classmethod
+    def get_professor_by_netid(cls, net_id):
+        professor = Professor.query.filter(Professor.net_id == net_id).first()
+        if professor:
+            return professor
+        else:
+            return None
+
+    @classmethod
+    def get_all_professors(cls):
+        return [s.serialize for s in Professor.query.all()]
+
     # This is to convert calls for User into json friendly format!
     @property
     def serialize(self):

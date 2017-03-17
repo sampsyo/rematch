@@ -3,8 +3,8 @@ import os
 import unittest
 
 from config import basedir
-from app import app, db
-from app.models import User, Post
+from server import *
+from server.models.professor import Professor
 
 class TestCase(unittest.TestCase):
     def setUp(self):
@@ -18,30 +18,44 @@ class TestCase(unittest.TestCase):
         db.session.remove()
         db.drop_all()
 
+    def test_create_student(self): 
+        Student.create_student(net_id = "abc",  name = "hello") 
+        assert Student.get_student_by_netid("abc") is not None 
+        assert len(Student.get_all_students()) == 1
+        s1 = Student.create_student(net_id = "abc",  name = "h") 
+        assert s1 is None 
+        assert len(Student.get_all_students()) == 1 
+        s2 = Student.get_student_by_netid("def")
+        assert s2 is None
+        s3 = Student.get_student_by_netid("abc") 
+        assert s3.net_id == "abc"
+        assert s3.email == "abc@cornell.edu"
+        assert s3.name == "hello"
+        assert s3.major is None 
+        assert s3.year is None 
+        assert s3.skills is None 
+        assert s3.resume is None 
+        assert s3.description is None 
+        assert s3.interests is None 
+        assert s3.favorited_projects is None 
+        assert s3.availability is None 
 
-    def test_posts(self):
-        u1 = User(email ='blah', name='john')
-        u2 = User(email ='zed', name='badGuy')
-        db.session.add(u1)
-        db.session.add(u2)
-        db.session.commit()
-        assert u1.posts.count() is 0
-        assert u2.posts.count() is 0 
-        p1 = Post( post='Hi! This is my first post')
-        assert p1.user_id is None
-        u1.create_post(p1)
-        db.session.add(p1)
-        db.session.commit()
-        assert p1.user_id is not None
-        assert u2.create_post(p1) is None
-        assert u1.posts.count() is not 0
-        print(u1.posts.first().post)
-        assert u1.posts.first().user_id == u1.id
-        u1.delete_post(p1)
-        assert u1.posts.count() is 0
-
-
-
+    def test_create_professor(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello") 
+        assert Professor.get_professor_by_netid("abc") is not None 
+        assert len(Professor.get_all_professors()) == 1
+        s1 = Professor.create_professor(net_id = "abc",  name = "h") 
+        assert s1 is None 
+        assert len(Professor.get_all_professors()) == 1 
+        s2 = Professor.get_professor_by_netid("def")
+        assert s2 is None
+        s3 = Professor.get_professor_by_netid("abc") 
+        assert s3.net_id == "abc"
+        assert s3.name == "hello"
+        assert s3.email == "abc@cornell.edu"
+        assert s3.desc is None
+        assert s3.interests is None 
+ 
 
 if __name__ == '__main__':
     unittest.main()
