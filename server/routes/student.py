@@ -43,18 +43,3 @@ def delete_student(net_id):
         return jsonify({
             "error": "Could not delete student"
         })
-
-
-# Edit a users profile
-#@app.route('/api/users/<string:email>', methods=['PUT'])
-#def edit_user(email):
-#    user = User.query.filter(User.email == email).first()
-#
-#    # Gets the new user attempts
-#    r = request.get_json(force=True)
-#    user.email = r.get('email', user.email)
-#    user.name = r.get('name', user.name)
-#
-#    db.session.add(user)
-#    db.session.commit()
-#    return jsonify(updated_user=user.serialize)
