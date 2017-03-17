@@ -77,10 +77,32 @@ p, a {
   .tags a:last-child {
     margin-right: 0; }
 
+.profile .card {
+  padding-bottom: 30px; }
 .profile img {
   margin-top: 30px;
   margin-bottom: 30px;
-  max-height: 150px;
+  max-height: 200px;
   border: 1px solid black; }
+.profile .name {
+  font-size: 32px;
+  text-align: center; }
+.profile .description {
+  padding-top: 20px;
+  text-align: center;
+  color: #111;
+  width: 60%;
+  text-align: center;
+  margin: auto;
+  font-family: 'Open Sans', sans-serif;
+  padding-bottom: 20px; }
+.profile .resume {
+  border: 1px solid #ad1b1b;
+  border-radius: 50px;
+  padding: 10px 40px;
+  margin: auto;
+  display: inherit;
+  background: transparent;
+  color: #ad1b1b; }
 
 /*# sourceMappingURL=base.css.map */

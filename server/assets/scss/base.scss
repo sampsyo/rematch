@@ -126,11 +126,37 @@ p, a {
 }
 
 .profile {
+	.card {
+		padding-bottom: 30px;
+	}
 	img {
 		margin-top: 30px;
 		margin-bottom: 30px;
-		max-height: 250px;
+		max-height: 200px;
 		border: 1px solid black;
+	}
+	.name {
+		font-size: 32px;
+		text-align: center;
+	}
+	.description {
+		padding-top: 20px;
+		text-align: center;
+		color: #111;
+		width: 60%;
+		text-align: center;
+		margin: auto;
+		font-family: 'Open Sans', sans-serif;
+		padding-bottom: 20px;
+	}
+	.resume {
+		border: 1px solid $primary-color-dark;
+		border-radius: 50px;
+		padding: 10px 40px;
+		margin: auto;
+    	display: inherit;
+    	background: transparent; 
+    	color: $primary-color-dark;
 	}
 }
 
