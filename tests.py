@@ -43,11 +43,11 @@ class TestCase(unittest.TestCase):
         assert s1 is None 
         assert len(Student.get_all_students()) == 1 
 
-    def test_get_student_with_invalid_netid(): 
+    def test_get_student_with_invalid_netid(self): 
         s2 = Student.get_student_by_netid("def")
         assert s2 is None
 
-    def test_get_all_students_with_empty_database(): 
+    def test_get_all_students_with_empty_database(self): 
         assert len(Student.get_all_students()) == 0
         
     def test_delete_student_with_existing_student(self): 
@@ -99,7 +99,7 @@ class TestCase(unittest.TestCase):
         s2 = Professor.get_professor_by_netid("def")
         assert s2 is None
 
-    def test_get_all_professors_with_empty_database(): 
+    def test_get_all_professors_with_empty_database(self): 
         assert len(Professor.get_all_professors()) == 0
 
     def test_create_post_with_authorized_professor_and_all_args(self): 
@@ -116,19 +116,19 @@ class TestCase(unittest.TestCase):
         assert len(Post.get_all_posts()) == 1
         assert len(Post.get_posts_by_professor_id("aish")) == 1   
 
-    def test_create_post_with_authorized_professor_and_missing_args(self): 
-        Professor.create_professor(net_id = "aish",  name = "aish") 
-        p2 = Post.create_post("hello", "world", "bye", "aish")
-        assert p2.title == "hello" 
-        assert p2.description == "world"
-        assert p2.qualifications == "bye"
-        assert p2.professor_id == "aish"
-        assert p2.current_students == "" 
-        assert p2.desired_skills == "" 
-        assert p2.capacity == 1 
-        assert p2.current_number == 0 
-        assert len(Post.get_all_posts()) == 1
-        assert len(Post.get_posts_by_professor_id("aish")) == 1   
+    # def test_create_post_with_authorized_professor_and_missing_args(self): 
+    #     Professor.create_professor(net_id = "aish",  name = "aish") 
+    #     p2 = Post.create_post("hello", "world", "bye", "aish")
+    #     assert p2.title == "hello" 
+    #     assert p2.description == "world"
+    #     assert p2.qualifications == "bye"
+    #     assert p2.professor_id == "aish"
+    #     assert p2.current_students == "" 
+    #     assert p2.desired_skills == "" 
+    #     assert p2.capacity == 1 
+    #     assert p2.current_number == 0 
+    #     assert len(Post.get_all_posts()) == 1
+    #     assert len(Post.get_posts_by_professor_id("aish")) == 1   
 
     def test_create_post_with_unanthorized_professor(self): 
         Professor.create_professor(net_id = "aish",  name = "aish") 
