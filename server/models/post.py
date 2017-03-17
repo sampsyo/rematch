@@ -16,8 +16,6 @@ class Post(db.Model):
     @classmethod
     def create_post(cls, title="",
                     description="", qualifications="", professor_id=""):
-        # Gets the new user attempts
-        # Converts json into a User instance
         post = Post.create_post(
             title=title,
             description=description,
