@@ -45,11 +45,11 @@ def delete_post(post_id):
         })
 
 
-@app.route('/api/posts', methods=['POST'])
-def update_post():
+@app.route('/api/posts/<int:post_id>', methods=['POST'])
+def update_post(post_id):
     r = request.get_json(force=True)
     post = Post.update_post(
-        r.get('id', None),
+        post_id,
         r.get('title', None),
         r.get('description', None),
         r.get('qualifications', None),
