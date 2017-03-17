@@ -35,6 +35,16 @@ def get_student_by_netid(net_id):
         })
 
 
+@app.route('/api/students/<string:net_id>', methods=['DELETE'])
+def delete_student(net_id):
+    if Student.delete_student(net_id):
+        return "Student deleted"
+    else:
+        return jsonify({
+            "error": "Could not delete student"
+        })
+
+
 # Edit a users profile
 #@app.route('/api/users/<string:email>', methods=['PUT'])
 #def edit_user(email):
@@ -48,15 +58,3 @@ def get_student_by_netid(net_id):
 #    db.session.add(user)
 #    db.session.commit()
 #    return jsonify(updated_user=user.serialize)
-#
-#
-## Remove a user from the database
-#@app.route('/api/users/<string:email>', methods=['DELETE'])
-#def remove_user(email):
-#    user = User.query.filter(User.email == email).first()
-#    if user:
-#        db.session.delete(user)
-#        db.session.commit()
-#    return jsonify(updated_users=[i.serialize for i in User.query.all()])
-#
-#

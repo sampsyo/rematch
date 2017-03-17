@@ -40,7 +40,16 @@ class Student(db.Model):
     def get_all_students(cls):
         return [s.serialize for s in Student.query.all()]
 
-    # This is to convert calls for User into json friendly format!
+    @classmethod
+    def delete_user(cls, net_id):
+        student = Student.get_student_by_netid(net_id)
+        if student:
+            student.delete()
+            db.session.commit()
+            return True
+        else:
+            return False
+
     @property
     def serialize(self):
         return {
