@@ -56,10 +56,8 @@ class TestCase(unittest.TestCase):
         assert s3.desc is None
         assert s3.interests is None 
 
-    def test_create_post(self): 
+    def test_create_post_with_authorized_professor(self): 
         Professor.create_professor(net_id = "aish",  name = "aish") 
-        p1 = Post.create_post("hello", "world", "bye", "world", "none", "none", "none", "none")
-        assert p1 is None 
         p2 = Post.create_post("hello", "world", "bye", "aish", "none", "none", "none", "none")
         assert p2.title == "hello" 
         assert p2.description == "world"
@@ -72,7 +70,12 @@ class TestCase(unittest.TestCase):
         assert len(Post.get_all_posts()) == 1
         assert len(Post.get_posts_by_professor_id("aish")) == 1   
 
-    def test_update_post(self): 
+    def test_create_post_with_unanthorized_professor(self): 
+        Professor.create_professor(net_id = "aish",  name = "aish") 
+        p1 = Post.create_post("hello", "world", "bye", "world", "none", "none", "none", "none")
+        assert p1 is None 
+
+    def test_update_post_with_existing_post(self): 
         Professor.create_professor(net_id = "aish",  name = "aish") 
         p1 = Post.create_post("hello", "world", "bye", "aish", "none", "none", "none", "none")
         Post.update_post(post_id = p1.id, desired_skills = "CS")
@@ -86,15 +89,29 @@ class TestCase(unittest.TestCase):
         assert p1.capacity == 5 
         assert p1.current_number == 0 
         assert len(Post.get_all_posts()) == 1
-        assert len(Post.get_posts_by_professor_id("aish")) == 1    
+        assert len(Post.get_posts_by_professor_id("aish")) == 1   
 
-    def test_delete_post(self): 
+    def test_update_post_with_non_existing_post(self): 
+        Professor.create_professor(net_id = "aish",  name = "aish") 
+        p1 = Post.create_post("hello", "world", "bye", "aish", "none", "none", "none", "none")
+        p2 = Post.update_post(post_id = (p1.id + 1), desired_skills = "CS")
+        assert p2 is None  
+
+    def test_delete_existing_post(self): 
         Professor.create_professor(net_id = "aish",  name = "aish") 
         p1 = Post.create_post("hello", "world", "bye", "aish", "none", "none", "none", "none") 
         deleted = Post.delete_post(p1.id) 
         assert deleted 
         assert len(Post.get_all_posts()) == 0
         assert len(Post.get_posts_by_professor_id("aish")) == 0  
+
+    def test_delete_with_non_existing_post(self): 
+        Professor.create_professor(net_id = "aish",  name = "aish") 
+        p1 = Post.create_post("hello", "world", "bye", "aish", "none", "none", "none", "none") 
+        deleted = Post.delete_post(p1.id + 1) 
+        assert not deleted 
+        assert len(Post.get_all_posts()) == 1
+        assert len(Post.get_posts_by_professor_id("aish")) == 1 
 
 if __name__ == '__main__':
     unittest.main()
