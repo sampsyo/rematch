@@ -55,7 +55,52 @@ class TestCase(unittest.TestCase):
         assert s3.email == "abc@cornell.edu"
         assert s3.desc is None
         assert s3.interests is None 
- 
+
+    def test_create_post(self): 
+        Professor.create_professor(net_id = "aish",  name = "aish") 
+        p1 = Post.create_post(title="hello", description="world", 
+            qualifications="bye", professor_id="world")
+        assert p1 is None 
+        p2 = Post.create_post(title="hello", description="world", 
+            qualifications="bye", professor_id="aish")
+        assert p2.title == "hello" 
+        assert p2.description == "world"
+        assert p2.qualifications == "bye"
+        assert p2.professor_id == "aish"
+        assert p2.desc is None 
+        assert p2.current_students is None 
+        assert p2.desired_skills is None 
+        assert p2.capacity is None 
+        assert p2.current_number is None 
+        assert len(Post.get_all_posts) == 1
+        assert len(Post.get_posts_by_professor_id("aish")) == 1   
+
+    def test_update_post(self): 
+        Professor.create_professor(net_id = "aish",  name = "aish") 
+        p2 = Post.create_post(title="hello", description="world", 
+            qualifications="bye", professor_id="aish")
+        Post.update_post(post_id = p2.id, desired_skills = "CS")
+        Post.update_post(post_id = p2.id, capacity = 5)
+        assert p2.title == "hello" 
+        assert p2.description == "world"
+        assert p2.qualifications == "bye"
+        assert p2.professor_id == "aish"
+        assert p2.desc is None 
+        assert p2.current_students is None 
+        assert p2.desired_skills == "CS"
+        assert p2.capacity == 5 
+        assert p2.current_number is None 
+        assert len(Post.get_all_posts) == 1
+        assert len(Post.get_posts_by_professor_id("aish")) == 1    
+
+    def test_delete_post(self): 
+        Professor.create_professor(net_id = "aish",  name = "aish") 
+        p2 = Post.create_post(title="hello", description="world", 
+            qualifications="bye", professor_id="aish")   
+        deleted = Post.delete_post(p2.id) 
+        assert deleted 
+        assert len(Post.get_all_posts) == 0
+        assert len(Post.get_posts_by_professor_id("aish")) == 0  
 
 if __name__ == '__main__':
     unittest.main()

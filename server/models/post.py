@@ -1,5 +1,5 @@
 from server import db
-
+from server.models.professor import Professor
 
 class Post(db.Model):
     __tablename__ = 'posts'
@@ -20,6 +20,8 @@ class Post(db.Model):
     @classmethod
     def create_post(cls, title="",
                     description="", qualifications="", professor_id=""):
+        if not (Professor.get_professor_by_netid(professor_id)): 
+            return None 
         post = Post.create_post(
             title=title,
             description=description,
