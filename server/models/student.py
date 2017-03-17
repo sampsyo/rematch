@@ -4,7 +4,7 @@ from server import db
 class Student(db.Model):
     __tablename__ = 'students'
     net_id = db.Column(db.String(64), primary_key=True)
-    email = db.Column(db.String(64), unique = True)
+    email = db.Column(db.String(64), unique=True)
     name = db.Column(db.String(64), index=True, unique=True)
     major = db.Column(db.String(64))
     year = db.Column(db.Integer)
@@ -23,7 +23,7 @@ class Student(db.Model):
 
         student = Student(
             net_id=net_id,
-            name=name, 
+            name=name,
             email=net_id + "@cornell.edu"
         )
         db.session.add(student)

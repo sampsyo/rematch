@@ -36,6 +36,16 @@ class Professor(db.Model):
     def get_all_professors(cls):
         return [s.serialize for s in Professor.query.all()]
 
+    @classmethod
+    def delete_professor(cls, net_id):
+        professor = Professor.get_professor_by_netid(net_id)
+        if professor:
+            db.session.delete(professor)
+            db.session.commit()
+            return True
+        else:
+            return False
+
     # This is to convert calls for User into json friendly format!
     @property
     def serialize(self):
