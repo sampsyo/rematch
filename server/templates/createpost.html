@@ -1,0 +1,20 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+{% block content %}
+
+
+    <!-- TODO: replace this with a partial and a function to generate cards -->
+    <div class="card container shadowed grow">
+    <form method="POST">
+        <h1>Title:</h1>
+    	<input type="text" name="title">
+
+        <h1>Content:</h1>
+        <textarea name="description"></textarea>
+
+        <button type="submit">Submit</button>
+    </form>
+    </div>
+
+
+{% endblock %}
