@@ -17,8 +17,8 @@ class Professor(db.Model):
 
         professor = Professor(
             net_id=net_id,
-            name=name, 
-            email=net_id+"@cornell.edu"
+            name=name,
+            email=net_id + "@cornell.edu"
         )
         db.session.add(professor)
         db.session.commit()
@@ -43,7 +43,7 @@ class Professor(db.Model):
             'net_id': self.net_id,
             'name': self.name,
             'email': self.email,
-            'posts': self.posts,
+            # 'posts': self.posts,
             'desc': self.desc,
             'interests': self.interests
         }
