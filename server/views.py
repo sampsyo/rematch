@@ -9,6 +9,7 @@ from models import *
 @app.route('/')
 @app.route('/index')
 @app.route('/posts')
+@app.route('/posts/')
 def index():
   user = {'nickname': 'Michael'}
   posts = Post.get_all_posts()
@@ -31,7 +32,6 @@ def login():
       title='Sign In',
       form=form
   )
-
 
 @app.route('/profile/<net_id>', methods=['GET'])
 def profile(net_id):
@@ -60,11 +60,10 @@ def profile(net_id):
 def createpost():
   if request.method == 'POST':
     result = request.form
-    v = Post.create_post("title", "description", "qualifications",
+    v = Post.create_post(result["title"], result["description"], "qualifications",
                     "professor_id", "current_students", "desired_skills",
                     "capacity", "current_number")
-    print v.serialize
-    return render_template_string("{{ result.title }} result {{ result.description }}",result=result)
+    return redirect("/posts", code=302)
   else:
     return render_template(
       'createpost.html',
