@@ -1,0 +1,27 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+{% block content %}
+
+<div class="profile">
+    <div class="header card">
+        <img src="">
+        <div class="name">{{profile.name}}</div>
+        <div class="description">{{profile.description}}</div>
+        <div class="resume">{{profile.resume}}</div>
+    </div>
+    <div class="card general">
+        <div class="title">General Information</div>
+        <div class="major">{{profile.major}}</div>
+        <div class="year">{{profile.year}}</div>
+        <div class="email">{{profile.email}}</div>
+        <div class="availability">{{profile.availability}}</div>
+    </div>
+    <div class="card experience">
+        <div class="title">Experience, Skills, Interests</div>
+        <div class="major">{{profile.skills}}</div>
+        <div class="year">{{profile.interests}}</div>
+        <div class="email">{{profile.favorited_projects}}</div>
+    </div>
+</div>
+
+{% endblock %}
