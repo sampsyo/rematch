@@ -17,6 +17,7 @@ def index():
                          title='Home',
                          user=user,
                          posts=posts,
+                         search=True
                          )
 
 
@@ -46,13 +47,11 @@ def profile(net_id):
   user.interests = ["Algorithms", "Data Science", "Research"]
   user.favorited_projects = ["Copy Cats", "Algorithmic Game Theory", "Smash AI"]
   user.availability = ["Mon", "Wed", "Fri"]
-  search = False
 
   return render_template(
       'profile.html',
       title = user.name + "'s Profile",
       profile = user,
-      search = search
   )
 
 
@@ -70,6 +69,18 @@ def createpost():
       title='Sign In'
     )
   #user = Student.get_student_by_netid(net_id)
+
+
+@app.route('/posts/<post_id>', methods=['GET'])
+def showpost(post_id):
+  post = Post.get_post_by_id(post_id)
+  print post
+  return render_template(
+    'post.html',
+    post=post
+  )
+
+
 
 @app.route('/posts/<post_id>/edit', methods=['GET', 'POST'])
 def editpost(post_id):
