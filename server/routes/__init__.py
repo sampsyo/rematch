@@ -1,2 +1,2 @@
-from user import *
+from student import *
 from post import *
