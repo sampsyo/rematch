@@ -1,5 +1,5 @@
-#!flask/bin/python
-from app import app
+#!venv/bin/python
+from server import app
 import sys
 
 if __name__ == '__main__':
