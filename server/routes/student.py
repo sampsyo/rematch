@@ -60,13 +60,3 @@ def get_student_by_netid(net_id):
 #    return jsonify(updated_users=[i.serialize for i in User.query.all()])
 #
 #
-## Get a set of all users posts
-#@app.route('/api/users/<string:email>/posts', methods=['GET'])
-#def get_all_users_posts(email):
-#    user = User.query.filter(User.email == email).first()
-#    if user:
-#        return jsonify(posts=user.serialize_posts)
-#    else:
-#        return jsonify({
-#            "Error": "User Not Found"
-#        })

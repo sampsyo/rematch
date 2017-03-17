@@ -39,6 +39,13 @@ class Post(db.Model):
             return None
 
     @classmethod
+    def get_posts_by_professor_id(cls, professor_id):
+        return [
+            p.serialize for p in
+            Post.query.filter(Post.professor_id == professor_id).all()
+        ]
+
+    @classmethod
     def delete_post(cls, post_id):
         post = Post.get_post_by_id(post_id)
         if post:
