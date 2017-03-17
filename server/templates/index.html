@@ -4,21 +4,20 @@
 
 
     <!-- TODO: replace this with a partial and a function to generate cards -->
-    <div class="card container shadowed grow">
-    	<h1 class="title">Analyzing social capital via cats</h1>
-    	<h2 class="professor">Dr. Me Yow</h2>
-    	<p class="description">If it fits, i sits. Scratch the box meow to be let out so you call this cat food? but human is washing you why halp oh the horror flee scratch hiss bite. Chew on cable lick butt and make a weird face yet cat snacks mrow. Licks your face intently stare at the same spot, yet scratch the postman wake up lick paw wake up owner meow meow, and behind the couch poop in litter box, scratch the walls so pooping rainbow while flying in a toasted bread costume in space. </p>
-        <a class="more" href="#">Read more...</a>
-    	<ul class="tags pull-right">
-    		<a href=""><li>summer</li></a>
-    		<a href=""><li>compilers</li></a>
-    		<a href=""><li>C++</li></a>
-    		<a href=""><li>unpaid</li></a>
-    	</ul>
-    </div>
 
     {% for post in posts %}
-        <li><p>{{ post["title"] }}</p></li>
+    <div class="card container shadowed grow">
+        <h1 class="title">{{ post["title"] }}</h1>
+        <h2 class="professor">{{ post["name"] }}</h2>
+        <p class="description">{{ post["description"] }}</p>
+        <a class="more" href="#">Read more...</a>
+        <ul class="tags pull-right">
+            <a href=""><li>summer</li></a>
+            <a href=""><li>compilers</li></a>
+            <a href=""><li>C++</li></a>
+            <a href=""><li>unpaid</li></a>
+        </ul>
+    </div>
     {% endfor %}
 
 
