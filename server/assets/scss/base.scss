@@ -125,6 +125,15 @@ p, a {
 	}
 }
 
+.profile {
+	img {
+		margin-top: 30px;
+		margin-bottom: 30px;
+		max-height: 250px;
+		border: 1px solid black;
+	}
+}
+
 
 // .grow { transition: all .1s ease-in; }
 // .grow:hover { transform: translateY(-1px); }

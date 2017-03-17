@@ -77,4 +77,10 @@ p, a {
   .tags a:last-child {
     margin-right: 0; }
 
+.profile img {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  max-height: 250px;
+  border: 1px solid black; }
+
 /*# sourceMappingURL=base.css.map */
