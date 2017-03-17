@@ -14,6 +14,10 @@ class Post(db.Model):
     current_number = db.Column(db.Integer)
 
     @classmethod
+    def get_all_posts(cls):
+        return [p.serialize for p in Post.query.all()]
+
+    @classmethod
     def create_post(cls, title="",
                     description="", qualifications="", professor_id=""):
         post = Post.create_post(
