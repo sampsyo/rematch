@@ -43,7 +43,7 @@ class Student(db.Model):
         return [s.serialize for s in Student.query.all()]
 
     @classmethod
-    def delete_user(cls, net_id):
+    def delete_student(cls, net_id):
         student = Student.get_student_by_netid(net_id)
         if student:
             db.session.delete(student)
