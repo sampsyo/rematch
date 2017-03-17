@@ -14,10 +14,12 @@ class Post(db.Model):
     current_number = db.Column(db.Integer)
 
     @classmethod
-    def create_post(cls, description="", qualifications="", professor_id=""):
+    def create_post(cls, title="",
+                    description="", qualifications="", professor_id=""):
         # Gets the new user attempts
         # Converts json into a User instance
         post = Post.create_post(
+            title=title,
             description=description,
             qualifications=qualifications,
             professor_id=professor_id,
@@ -28,6 +30,32 @@ class Post(db.Model):
         )
         db.session.add(post)
         db.commit()
+        return post
+
+    @classmethod
+    def update_post(cls, post_id, title="", description="", qualifications="",
+                    professor_id="", current_students="", desired_skills="",
+                    capacity=None, current_number=None):
+        post = Post.get_post_by_id(post_id)
+        if not post:
+            return None
+        if title:
+            post.title = title
+        if description:
+            post.description = description
+        if qualifications:
+            post.qualifications = qualifications
+        if professor_id:
+            post.professor_id = professor_id
+        if current_students:
+            post.current_students = current_students
+        if desired_skills:
+            post.desired_skills = desired_skills
+        if capacity:
+            post.capacity = int(capacity)
+        if current_number:
+            post.current_number = int(current_number)
+        db.session.commit()
         return post
 
     @classmethod
