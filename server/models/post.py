@@ -30,6 +30,24 @@ class Post(db.Model):
         db.commit()
         return post
 
+    @classmethod
+    def get_post_by_id(cls, post_id):
+        post = Post.query.filter(Post.id == post_id).first()
+        if post:
+            return post
+        else:
+            return None
+
+    @classmethod
+    def delete_post(cls, post_id):
+        post = Post.get_post_by_id(post_id)
+        if post:
+            post.delete()
+            db.session.commit()
+            return True
+        else:
+            return False
+
     @property
     def serialize(self):
         return {

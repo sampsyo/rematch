@@ -40,24 +40,6 @@ class Student(db.Model):
     def get_all_students(cls):
         return [s.serialize for s in Student.query.all()]
 
-#    # Post Helper Funcs
-#    # Posts had unique creator and cannot be added twice to a user
-#    def create_post(self, post):
-#        if post.user_id is None:
-#            if not self.has_post(post):
-#                self.posts.append(post)
-#                return self
-#        else:
-#            print("This post is already affiliated with a user")
-#
-#    def delete_post(self, post):
-#        if self.has_post(post):
-#            self.posts.remove(post)
-#            return self
-#
-#    def has_post(self, post):
-#        return self.posts.filter(Post.id == post.id).count() > 0
-
     # This is to convert calls for User into json friendly format!
     @property
     def serialize(self):
@@ -73,8 +55,3 @@ class Student(db.Model):
             'favorited_projects': self.favorited_projects,
             'availability': self.availability
         }
-
-#    @property
-#    def serialize_posts(self):
-#        return [item.serialize for item in self.posts]
-#
