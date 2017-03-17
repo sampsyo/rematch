@@ -1,5 +1,5 @@
 from server import db
-
+from server.models.professor import Professor
 
 class Post(db.Model):
     __tablename__ = 'posts'
@@ -18,9 +18,12 @@ class Post(db.Model):
         return [p.serialize for p in Post.query.all()]
 
     @classmethod
+
     def create_post(cls, title, description, qualifications,
                     professor_id, current_students, desired_skills,
                     capacity, current_number):
+        if not (Professor.get_professor_by_netid(professor_id)): 
+            return None 
         post = Post(
             title=title,
             description=description,
