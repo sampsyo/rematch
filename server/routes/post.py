@@ -23,10 +23,11 @@ def get_post_by_id(post_id):
 def create_post():
     r = request.get_json(force=True)
     post = Post.create_post(
+        title=r.get('title'),
         professor_id=r.get('professor_id'),
         description=r.get('description'),
         qualifications=r.get('qualifications'),
-        current_posts="",
+        current_students="",
         desired_skills="",
         capacity=1,
         current_number=0
@@ -34,13 +35,13 @@ def create_post():
     return jsonify(post=post.serialize)
 
 
-@app.route('/api/posts/<string:post_id>', methods=['DELETE'])
+@app.route('/api/posts/<int:post_id>', methods=['DELETE'])
 def delete_post(post_id):
     if Post.delete_post(post_id):
         return "Post deleted"
     else:
         return jsonify({
-         "error": "Post not deleted"
+            "error": "Post not deleted"
         })
 
 
@@ -60,6 +61,6 @@ def update_post():
     )
     if not post:
         return jsonify({
-         "error": "Post not found"
+            "error": "Post not found"
         })
     return jsonify(post=post.serialize)

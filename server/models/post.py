@@ -5,7 +5,7 @@ class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(120))
-    desc = db.Column(db.String(10000))
+    description = db.Column(db.String(10000))
     qualifications = db.Column(db.String(10000))
     professor_id = db.Column(db.String(64), db.ForeignKey('professors.net_id'))
     current_students = db.Column(db.String(10000))
@@ -18,9 +18,10 @@ class Post(db.Model):
         return [p.serialize for p in Post.query.all()]
 
     @classmethod
-    def create_post(cls, title="",
-                    description="", qualifications="", professor_id=""):
-        post = Post.create_post(
+    def create_post(cls, title, description, qualifications,
+                    professor_id, current_students, desired_skills,
+                    capacity, current_number):
+        post = Post(
             title=title,
             description=description,
             qualifications=qualifications,
@@ -31,7 +32,7 @@ class Post(db.Model):
             current_number=0
         )
         db.session.add(post)
-        db.commit()
+        db.session.commit()
         return post
 
     @classmethod
@@ -79,7 +80,7 @@ class Post(db.Model):
     def delete_post(cls, post_id):
         post = Post.get_post_by_id(post_id)
         if post:
-            post.delete()
+            db.session.delete(post)
             db.session.commit()
             return True
         else:
@@ -90,7 +91,7 @@ class Post(db.Model):
         return {
             'id': self.id,
             'title': self.title,
-            'desc': self.desc,
+            'description': self.description,
             'qualifications': self.qualifications,
             'professor_id': self.professor_id,
             'current_students': self.current_students,

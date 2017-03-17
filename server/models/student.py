@@ -46,7 +46,7 @@ class Student(db.Model):
     def delete_user(cls, net_id):
         student = Student.get_student_by_netid(net_id)
         if student:
-            student.delete()
+            db.session.delete(student)
             db.session.commit()
             return True
         else:
