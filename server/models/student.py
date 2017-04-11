@@ -30,6 +30,36 @@ class Student(db.Model):
         db.session.commit()
         return student
 
+    @classmethod 
+    def update_student(cls, net_id, email=None, name=None, major=None, 
+        year=None, skills=None, resume=None, description=None, interests=None, 
+        favorited_projects=None, availability=None): 
+        student = Student.get_student_by_netid(net_id)
+        if not student:
+            return None
+        if email:
+            student.email = email
+        if name:
+            student.name = name
+        if major:
+            student.major = major
+        if year:
+            student.year = year
+        if skills: 
+            student.skills = skills
+        if resume: 
+            studnet.resume = resume
+        if description: 
+            student.description = description
+        if interests: 
+            student.interests = interests
+        if favorited_projects: 
+            student.favorited_projects = favorited_projects 
+        if availability: 
+            student.availability = availability
+        db.session.commit()
+        return student
+
     @classmethod
     def get_student_by_netid(cls, net_id):
         student = Student.query.filter(Student.net_id == net_id).first()

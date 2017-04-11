@@ -25,6 +25,23 @@ class Professor(db.Model):
         return professor
 
     @classmethod
+    def update_professor(cls, net_id, name=None, email=None, desc=None, interests=None): 
+        professor = Professor.get_professor_by_netid(net_id) 
+        if not professor: 
+            return None 
+        if name: 
+            professor.name = name 
+        if email: 
+            professor.email = email 
+        if desc: 
+            professor.desc = desc 
+        if interests: 
+            professor.interests = interests
+        db.session.commit()
+        return professor
+
+
+    @classmethod
     def get_professor_by_netid(cls, net_id):
         professor = Professor.query.filter(Professor.net_id == net_id).first()
         if professor:

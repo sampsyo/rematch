@@ -122,6 +122,24 @@ class Post(db.Model):
         else:
             return False
 
+    @classmethod 
+    def mark_post_complete(cls, post_id): 
+        post = Post.get_post_by_id(post_id)
+        if post: 
+            update_post(cls, post_id, is_active = False) 
+            db.session.commit()
+            return True 
+        else: 
+            return False 
+
+    @classmethod 
+    def get_all_active_posts(cls): 
+        return [s.serialize for s in Post.query.filter_by(is_active = TRUE).all()]
+
+    @classmethod 
+    def get_all_stale_posts(cls): 
+        return [s.serialize for s in Post.query.filter_by(is_active = FALSE).all()]
+
     @property
     def serialize(self):
         return {
