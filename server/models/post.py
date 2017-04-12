@@ -30,7 +30,7 @@ class Post(db.Model):
         if not tags:
             return [p.serialize for p in Post.query.all()]
 
-        # TODO ineffiency: currently must pull all posts, then filter,
+        # TODO inefficiency: currently must pull all posts, then filter,
         # because tags cannot be searched through SQLLite
         if exclusive:
             return [
@@ -122,23 +122,25 @@ class Post(db.Model):
         else:
             return False
 
-    @classmethod 
-    def mark_post_complete(cls, post_id): 
+    @classmethod
+    def mark_post_complete(cls, post_id):
         post = Post.get_post_by_id(post_id)
-        if post: 
-            update_post(cls, post_id, is_active = False) 
-            db.session.commit()
-            return True 
-        else: 
-            return False 
+        if not post:
+            return False
 
-    @classmethod 
-    def get_all_active_posts(cls): 
-        return [s.serialize for s in Post.query.filter_by(is_active = TRUE).all()]
+        cls.update_post(cls, post_id, is_active=False)
+        db.session.commit()
+        return True
 
-    @classmethod 
-    def get_all_stale_posts(cls): 
-        return [s.serialize for s in Post.query.filter_by(is_active = FALSE).all()]
+    @classmethod
+    def get_all_active_posts(cls):
+        return [s.serialize for s in Post.query.filter_by(is_active=True).all()]
+
+    @classmethod
+    def get_all_stale_posts(cls):
+        return [
+            s.serialize for s in Post.query.filter_by(is_active=False).all()
+        ]
 
     @property
     def serialize(self):
