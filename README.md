@@ -47,7 +47,7 @@
     
     ```chmod a+x db_create.py``` then excecute it ```python ./db_create.py```
 
-8. ```python ./run.py``` (```./run.py debug``` is needed for templates to update without restarting the server)
+8. ```python ./run.py``` (```python ./run.py debug``` is needed for templates to update without restarting the server)
 
 9. ```sass --watch server/static/scss:server/static/css``` (if updating SASS, must also have SASS installed)
 

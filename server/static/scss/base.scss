@@ -1,16 +1,4 @@
-$primary-color: #FE1736;
-// $primary-color-dark: #1a2b53;
-
-// Red
-$primary-color-dark: #ad1b1b;
-
-$border-color: #e7e7e7;
-$background-color: blue;
-
-$title-color: #000000;
-$text-color: #444444;
-
-$tags-color: #333333;
+@import 'partials/colors';
 
 $border-radius: 3px;
 
@@ -184,7 +172,3 @@ p, a {
 		}
 	}
 }
-
-
-// .grow { transition: all .1s ease-in; }
-// .grow:hover { transform: translateY(-1px); }
