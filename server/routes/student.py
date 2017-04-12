@@ -43,3 +43,4 @@ def delete_student(net_id):
         return jsonify({
             "error": "Could not delete student"
         })
+

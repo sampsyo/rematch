@@ -101,3 +101,9 @@ def editpost(post_id):
             'createpost.html',
             id='Sign In'
         )
+
+@app.route('/styleguide', methods=['GET'])
+def get_styleguide():
+    return render_template(
+        'styleguide.html'
+        )
