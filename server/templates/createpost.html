@@ -8,14 +8,62 @@
     <form method="POST">
 
         <div class="form-group">
-            <h1>Title:</h1>
-        	<input type="text" name="title" class="form-control">
+            <h1>Name*:</h1>
+        	<input type="text" name="name" class="form-control">
         </div>
 
         <div class="form-group">
-            <h1>Content:</h1>
+            <h1>Email*:</h1>
+            <input type="text" name="email" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <h1>Project Title*:</h1>
+            <input type="text" name="project-title" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <h1>Department:</h1>
+            <input type="text" name="project-department" class="form-control">
+        </div>
+
+        <div class>
+            <h1>Research Area*:</h1>
+            <select name="research area" style="font-size:20px; width: 600px;" >
+                <option>Select an area(s)</option>
+                <option>Data Science</option>
+                <option>Machine Learning</option>
+                <option>Etc</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <h1>Project Description*:</h1>
             <textarea name="description" class="form-control" rows="10"></textarea>
         </div>
+
+        <div class="form-group">
+            <h1>Project Link:</h1>
+            <input type="text" name="project-link" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <h1>Required Skills:</h1>
+            <textarea name="required-skills" class="form-control" rows="10"></textarea>
+        </div>
+
+        <div class="">
+        <h1>Available Semesters:</h1>
+            <input type="checkbox"> Spring   
+            <input type="checkbox"> Summer   
+            <input type="checkbox"> Fall   
+            <input type="checkbox"> Winter   
+        </div>
+
+        <div class="">
+      
+        </div>
+
 
         <button type="submit">Submit</button>
     </form>
