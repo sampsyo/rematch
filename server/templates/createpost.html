@@ -4,68 +4,86 @@
 
 
     <!-- TODO: replace this with a partial and a function to generate cards -->
-    <div class="card container shadowed grow">
+
+    <div class="spacer"></div>
+    <div class="card">
     <form method="POST">
 
         <div class="form-group">
-            <h1>Name*:</h1>
+            <label>Name*:</label>
         	<input type="text" name="name" class="form-control">
         </div>
 
         <div class="form-group">
-            <h1>Email*:</h1>
+            <label>Email*:</label>
             <input type="text" name="email" class="form-control">
         </div>
 
         <div class="form-group">
-            <h1>Project Title*:</h1>
+            <label>Project Title*:</label>
             <input type="text" name="project-title" class="form-control">
         </div>
 
         <div class="form-group">
-            <h1>Department:</h1>
+            <label>Department:</label>
             <input type="text" name="project-department" class="form-control">
         </div>
 
-        <div class>
-            <h1>Research Area*:</h1>
-            <select name="research area" style="font-size:20px; width: 600px;" >
-                <option>Select an area(s)</option>
-                <option>Data Science</option>
-                <option>Machine Learning</option>
-                <option>Etc</option>
+        <div class="form-group">
+            <label>Research Area*:</label><br>
+            <select name="research_area" class="form-control">
+                <option>Select an area of research:</option>
+                <option>Artificial Intelligence</option>
+                <option>Computer Architecture & Engineering</option>
+                <option>Biosystems & Computational Biology</option>
+                <option>Bioinformatics Programming</option>
+                <option>Database Management Systems</option>
+                <option>Education</option>
+                <option>Graphics</option>
+                <option>Human-Computer Interaction</option>
+                <option>Operating Systems & Networkin</option>
+                <option>Programming Systems</option>
+                <option>Scientific Computing</option>
+                <option>Security</option>
+                <option>Theory</option>
+                <option>Natural Language Processing</option>
+                <option>Distributed Computing</option>
+                <option>Algorithms</option>
+                <option>Robotics</option>
+                <option>Information Processin</option>
+                <option>Computer Vision</option>
+                <option>Ethic</option>
+                <option>Design</option>
+                <option>Other</option>
             </select>
         </div>
 
         <div class="form-group">
-            <h1>Project Description*:</h1>
-            <textarea name="description" class="form-control" rows="10"></textarea>
+            <label>Project Description*:</label>
+            <textarea name="description" class="form-control" rows="5"></textarea>
         </div>
 
         <div class="form-group">
-            <h1>Project Link:</h1>
+            <label>Project Link:</label>
             <input type="text" name="project-link" class="form-control">
         </div>
 
         <div class="form-group">
-            <h1>Required Skills:</h1>
-            <textarea name="required-skills" class="form-control" rows="10"></textarea>
+            <label>Required Skills:</label>
+            <textarea name="required-skills" class="form-control" rows="5"></textarea>
         </div>
 
-        <div class="">
-        <h1>Available Semesters:</h1>
-            <input type="checkbox"> Spring   
-            <input type="checkbox"> Summer   
-            <input type="checkbox"> Fall   
-            <input type="checkbox"> Winter   
+        <div class="form-group">
+        <label>Available Semesters:</label><br>
+            <input type="checkbox"> Spring &nbsp;
+            <input type="checkbox"> Summer &nbsp;
+            <input type="checkbox"> Fall &nbsp;
+            <input type="checkbox"> Winter &nbsp;
         </div>
 
-        <div class="">
-      
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary">
         </div>
-
-
-        <button type="submit">Submit</button>
     </form>
     </div>
 
