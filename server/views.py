@@ -41,26 +41,38 @@ def login():
     )
 
 
-@app.route('/profile/<net_id>', methods=['GET'])
+@app.route('/profile/<net_id>', methods=['GET', 'POST'])
 def profile(net_id):
-    #user = Student.create_student(net_id, "Leon Zaruvinsky")
     user = Student.get_student_by_netid(net_id)
-    # return render_template_string('hello {{ id }}', id=user.name)
-    user.email = user.net_id + "@cornell.edu"
-    user.major = "Computer Science"
-    user.year = "Junior"
-    user.skills = ["Java", "C++", "Python"]
-    user.resume = "resume.pdf"
-    user.description = "I'm a Junior in Computer Science who is interested in algorithms research. I worked at Mircosoft Research this past summer."
-    user.interests = ["Algorithms", "Data Science", "Research"]
-    user.favorited_projects = ["Copy Cats", "Algorithmic Game Theory", "Smash AI"]
-    user.availability = ["Mon", "Wed", "Fri"]
+    if request.method == 'POST': 
+        result = request.form
+        new_email = result["user_email"] or (net_id + "@cornell.edu")
+        new_year = result["user_year"] or "AAAA"
 
-    return render_template(
-      'profile.html',
-      title=user.name + "'s Profile",
-      profile=user,
-    )
+
+        user = Student.update_student(net_id, email=new_email, name=None, major=None, 
+        year=new_year, skills=None, resume=None, description=None, interests=None, 
+        favorited_projects=None, availability=None)
+        print "------------------------"
+        print user
+        print "------------------------"
+        return redirect("/profile/"+net_id, code=302)
+    else:
+        #user = Student.create_student(net_id, "Leon Zaruvinsky")
+        user.major = "Computer Science"
+        #user.year = "Junior"
+        user.skills = ["Java", "C++", "Python"]
+        user.resume = "resume.pdf"
+        user.description = "I'm a Junior in Computer Science who is interested in algorithms research. I worked at Mircosoft Research this past summer."
+        user.interests = ["Algorithms", "Data Science", "Research"]
+        user.favorited_projects = ["Copy Cats", "Algorithmic Game Theory", "Smash AI"]
+        user.availability = ["Mon", "Wed", "Fri"]
+        return render_template(
+          'profile.html',
+          title=user.name + "'s Profile",
+          profile=user,
+        )
+
 
 
 @app.route('/posts/create', methods=['GET', 'POST'])
