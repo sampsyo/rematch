@@ -6,16 +6,16 @@
     <!-- TODO: replace this with a partial and a function to generate cards -->
 
     {% for post in posts %}
-    <div class="card container shadowed grow">
+    <div class="card container grow">
         <h1 class="title">{{ post["title"] }}</h1>
-        <h2 class="professor">{{ post["name"] }}</h2>
+        <h2 class="professor">{{ post["professor_id"] }}</h2>
         <p class="description">{{ post["description"] }}</p>
         <a class="more" href="/posts/{{ post['id'] }}">Read more...</a>
-        <ul class="tags pull-right">
-            <a href=""><li>summer</li></a>
-            <a href=""><li>compilers</li></a>
-            <a href=""><li>C++</li></a>
-            <a href=""><li>unpaid</li></a>
+        <ul class="tags">
+            <a class="tag" href="">summer</a>
+            <a class="tag" href="">compilers</a>
+            <a class="tag" href="">C++</a>
+            <a class="tag" href="">unpaid</a>
         </ul>
     </div>
     {% endfor %}

@@ -75,6 +75,9 @@ p, a {
   border-radius: 3px;
   text-transform: lowercase; }
 
+.tags {
+  padding-left: 0; }
+
 .profile .card {
   padding-bottom: 30px; }
 .profile img {

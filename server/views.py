@@ -4,7 +4,7 @@ from .forms import LoginForm
 
 from flask import request
 from flask import render_template_string
-from models import Post, Student
+from models import Post, Student, Professor
 
 
 @app.route('/')
@@ -23,7 +23,7 @@ def index(tags=None, all=None):
         title='Home',
         user=user,
         posts=posts,
-        search=True
+        search=True,
     )
 
 
