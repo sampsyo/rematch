@@ -6,25 +6,22 @@
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">My Profile</a></li>
-    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">My Posts</a></li>
-    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Starred Posts</a></li>
-    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+    <li role="presentation" class="active"><a href="#myprofile" aria-controls="myprofile" role="tab" data-toggle="tab">My Profile</a></li>
+    <li role="presentation"><a href="#starred" aria-controls="starred" role="tab" data-toggle="tab">Starred Posts</a></li>
   </ul>
 
   <!-- Tab panes -->
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="home">
+    <div role="tabpanel" class="tab-pane active" id="myprofile">
 
     <form method="POST">    
         <div class="profile">
             <div class="header card">
                 <div class="name">{{profile.name}}</div>
-                <div class="description">{{profile.description}}</div>
-                <button class="resume">Resume</button>
-            </div>
-            <div class="card general">
-                <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary hidden">
+                <br>
+                <div class="text-center">
+                <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary invisible">                    
+                </div>
 
                 <div class="title">General Information</div>
 
@@ -48,6 +45,11 @@
                       <option value="Graduate">Graduate</option>
                       <option value="Post-graduate">Post-graduate</option>
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Bio</label><br>
+                    <textarea name="user_description" rows="5" class="form-control">{{profile.description}}</textarea>
                 </div>
 
                 <div class="item">Availability: 
@@ -75,6 +77,8 @@
                 {% endfor %}
                 </div>
             </div>
+                <button class="resume">Resume</button>
+
         </div>
 
 
@@ -82,39 +86,16 @@
 
     </div>
     <div role="tabpanel" class="tab-pane" id="profile">
-
-   <div class="card">
+            <div class="card">
                 <div class="name">{{profile.name}}</div>
                 <div class="description">{{profile.description}}</div>
                 <button class="resume">Resume</button>
             </div>
-
-
-
-
     </div>
-    <div role="tabpanel" class="tab-pane" id="messages">
-
-
-
-   <div class="card">
-                <div class="name">{{profile.name}}</div>
-                <div class="description">{{profile.description}}</div>
-                <button class="resume">Resume</button>
+    <div role="tabpanel" class="tab-pane" id="starred">
+            <div class="card">
+                <h2>You have no starred posts</h2>
             </div>
-
-
-    </div>
-    <div role="tabpanel" class="tab-pane" id="settings">
-
-
-
-   <div class="card">
-                <div class="name">{{profile.name}}</div>
-                <div class="description">{{profile.description}}</div>
-                <button class="resume">Resume</button>
-            </div>
-
     </div>
   </div>
 
@@ -125,8 +106,8 @@
             $(this).prop('selected','selected');
           }
         });
-        $(document).on("change", "input, select, textarea", function () {
-            $('#save-profile-updates').removeClass("hidden");
+        $(document).on("change keyup", "input, select, textarea", function () {
+            $('#save-profile-updates').removeClass("invisible");
         });
     </script>
 

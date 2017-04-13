@@ -47,11 +47,12 @@ def profile(net_id):
     if request.method == 'POST': 
         result = request.form
         new_email = result["user_email"] or (net_id + "@cornell.edu")
-        new_year = result["user_year"] or "AAAA"
+        new_year = result["user_year"] or "Freshman"
+        new_description = result["user_description"] or " "
 
 
         user = Student.update_student(net_id, email=new_email, name=None, major=None, 
-        year=new_year, skills=None, resume=None, description=None, interests=None, 
+        year=new_year, skills=None, resume=None, description=new_description, interests=None, 
         favorited_projects=None, availability=None)
         print "------------------------"
         print user
@@ -63,7 +64,7 @@ def profile(net_id):
         #user.year = "Junior"
         user.skills = ["Java", "C++", "Python"]
         user.resume = "resume.pdf"
-        user.description = "I'm a Junior in Computer Science who is interested in algorithms research. I worked at Mircosoft Research this past summer."
+        #user.description = "I'm a Junior in Computer Science who is interested in algorithms research. I worked at Mircosoft Research this past summer."
         user.interests = ["Algorithms", "Data Science", "Research"]
         user.favorited_projects = ["Copy Cats", "Algorithmic Game Theory", "Smash AI"]
         user.availability = ["Mon", "Wed", "Fri"]
