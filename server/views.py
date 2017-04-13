@@ -43,6 +43,7 @@ def login():
 
 @app.route('/profile/<net_id>', methods=['GET'])
 def profile(net_id):
+    #user = Student.create_student(net_id, "Leon Zaruvinsky")
     user = Student.get_student_by_netid(net_id)
     # return render_template_string('hello {{ id }}', id=user.name)
     user.email = user.net_id + "@cornell.edu"
