@@ -17,8 +17,6 @@
     <div role="tabpanel" class="tab-pane active" id="home">
 
     <form method="POST">    
-        <input type="submit" name="">
-
         <div class="profile">
             <div class="header card">
                 <div class="name">{{profile.name}}</div>
@@ -26,6 +24,8 @@
                 <button class="resume">Resume</button>
             </div>
             <div class="card general">
+                <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary hidden">
+
                 <div class="title">General Information</div>
 
                 <div class="form-group">
@@ -40,8 +40,7 @@
 
                 <div class="form-group">
                     <label>Year</label><br>
-                    <p>{{profile.year}}</p>
-                    <select id="user_year_select" name="user_year">
+                    <select id="user_year_select" name="user_year" class="form-control">
                       <option value="Freshman">Freshman</option>
                       <option value="Sophomore">Sophomore</option>
                       <option value="Junior">Junior</option>
@@ -125,6 +124,9 @@
           if ($(this).val() == "{{ profile.year }}") {
             $(this).prop('selected','selected');
           }
+        });
+        $(document).on("change", "input, select, textarea", function () {
+            $('#save-profile-updates').removeClass("hidden");
         });
     </script>
 
