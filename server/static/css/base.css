@@ -2,10 +2,9 @@
   background-color: #FFFFFF;
   padding: 30px;
   margin-bottom: 30px; }
-  .search .drop-downs {
-    padding-left: 0px; }
   .search .form-control {
-    height: 40px; }
+    height: 40px;
+    color: #666; }
 
 .center {
   margin: auto;
