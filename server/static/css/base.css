@@ -1,5 +1,18 @@
+.search {
+  background-color: #FFFFFF;
+  padding: 30px;
+  margin-bottom: 30px; }
+  .search .drop-downs {
+    padding-left: 0px; }
+  .search .form-control {
+    height: 40px; }
+
+.center {
+  margin: auto;
+  float: none; }
+
 body {
-  margin-top: 80px;
+  margin-top: 60px;
   background-color: #f9f8fb; }
 
 h1 {
@@ -17,7 +30,8 @@ p, a {
 
 .navbar {
   background-color: #ad1b1b;
-  border: 0; }
+  border: 0;
+  margin-bottom: 0px; }
   .navbar .navbar-brand {
     padding: 10px 15px 0; }
     .navbar .navbar-brand img {
@@ -53,10 +67,6 @@ p, a {
     display: block; }
     .card .more:hover {
       text-decoration: none; }
-
-.search {
-  padding: 20px;
-  border: 1px solid #e7e7e7; }
 
 .shadowed {
   box-shadow: 0.1px 0.1px 0.1px 0.1px rgba(33, 33, 33, 0.2); }

@@ -1,9 +1,15 @@
 @import 'partials/colors';
+@import 'partials/search';
 
 $border-radius: 3px;
 
+.center {
+	margin: auto;
+	float: none;
+}
+
 body {
-	margin-top: 80px;
+	margin-top: 60px;
 	background-color: $background-color;
 }
 h1 {
@@ -24,7 +30,7 @@ p, a {
 .navbar {
 	background-color: $primary-color-dark;
 	border: 0;
-
+	margin-bottom: 0px;
 	.navbar-brand {
 		padding: 10px 15px 0;
 		img {
@@ -79,11 +85,6 @@ p, a {
 		}
 	}
 
-}
-
-.search {
-	padding: 20px;
-	border: 1px solid $border-color;
 }
 
 .shadowed {

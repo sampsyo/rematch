@@ -5,7 +5,6 @@
     {% else %}
     <title>Cornell Research Portal</title>
     {% endif %}
-
     <!-- TODO: switch out this Bootstrap CSS CDN for a local version -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/base.css') }}">
@@ -15,34 +14,30 @@
   </head>
   <body>
     {% include "partials/header.html" %}
-
-    <div class="container">
+    
     {% with messages = get_flashed_messages() %}
       {% if messages %}
-        <ul>
-        {% for message in messages %}
-            <li>{{ message }} </li>
-        {% endfor %}
-        </ul>
+        <div class="container">
+          <ul>
+          {% for message in messages %}
+              <li>{{ message }} </li>
+          {% endfor %}
+          </ul>
+        </div>
       {% endif %}
     {% endwith %}
 
-    <div class="row">
-      {% if search: %}
-        <div class="col-md-3">
-          {% include "partials/sidebar.html" %}
+    {% if search: %}
+      {% include "partials/search.html" %}
+    {% endif %}
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 center">
+          {% block content %}{% endblock %}
         </div>
-      {% endif %}
-      <div class="col-md-{{ 9 if search else 12 }}">
-        {% block content %}{% endblock %}
       </div>
     </div>
-
-
-
-
-    </div>
-
     <!-- TODO: switch out this Bootstrap JS CDN for a local version -->
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
