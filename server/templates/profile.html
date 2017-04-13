@@ -41,7 +41,7 @@
                 <div class="form-group">
                     <label>Year</label><br>
                     <p>{{profile.year}}</p>
-                    <select name="user_year">
+                    <select id="user_year_select" name="user_year">
                       <option value="Freshman">Freshman</option>
                       <option value="Sophomore">Sophomore</option>
                       <option value="Junior">Junior</option>
@@ -116,14 +116,16 @@
                 <button class="resume">Resume</button>
             </div>
 
-
     </div>
   </div>
 
 
+    <script type="text/javascript">
+        $('#user_year_select option').each(function() {
+          if ($(this).val() == "{{ profile.year }}") {
+            $(this).prop('selected','selected');
+          }
+        });
+    </script>
 
-
-<script type="text/javascript">
-
-</script>
 {% endblock %}
