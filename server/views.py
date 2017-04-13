@@ -4,7 +4,7 @@ from .forms import LoginForm
 
 from flask import request
 from flask import render_template_string
-from models import Post, Student
+from models import Post, Student, Professor
 
 
 @app.route('/')
@@ -23,7 +23,7 @@ def index(tags=None, all=None):
         title='Home',
         user=user,
         posts=posts,
-        search=True
+        search=True,
     )
 
 
@@ -67,8 +67,8 @@ def createpost():
     if request.method == 'POST':
         result = request.form
         Post.create_post(
-            result["title"], result["description"], "qualifications",
-            "professor_id", "current_students", "desired_skills",
+            result["title"], result["description"], "professor_id", "tags", "qualifications",
+            "current_students", "desired_skills",
             "capacity", "current_number"
         )
         return redirect("/posts", code=302)

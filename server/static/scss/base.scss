@@ -28,7 +28,7 @@ p, a {
 
 
 .navbar {
-	background-color: $primary-color-dark;
+	background-color: $primary-color;
 	border: 0;
 	margin-bottom: 0px;
 	.navbar-brand {
@@ -55,9 +55,9 @@ p, a {
 	border-radius: $border-radius;
 	background-color: #fff;
 	max-width: 100%;
-	padding: 10px 30px 0 30px;
+	padding: 10px 30px;
 	margin-bottom: 30px;
-
+	box-shadow: 0px 2px 2px rgba(0,0,0,.1);
 	.title {
 		margin-bottom: 20px;
 		text-transform: capitalize;
@@ -92,26 +92,22 @@ p, a {
 }
 
 
+.tag {
+	text-decoration: none !important;
+	-webkit-font-smoothing: antialiased;
+	font-size: 12px;
+	display: inline-block;
+	text-decoration: none;
+	color: $tag-color;
+	border: 1px solid;
+	padding: 3px 14px;
+	margin-right: 8px;
+	border-radius: $border-radius;
+	text-transform: lowercase;
+
+}
 .tags {
-	padding-bottom: 10px;
-	a {
-		li {
-			// Would like to move this out of here to apply to all text.
-			-webkit-font-smoothing: antialiased;
-			font-size: 12px;
-			display: inline-block;
-			text-decoration: none;
-			color: $tags-color;
-			border: 1px solid;
-			padding: 3px 14px;
-			margin-right: 8px;
-			border-radius: $border-radius;
-			text-transform: lowercase;
-		}
-		&:last-child {
-			margin-right: 0;
-		}
-	}
+	padding-left: 0;
 }
 
 .profile {
@@ -139,16 +135,16 @@ p, a {
 		padding-bottom: 20px;
 	}
 	.resume {
-		border: 1px solid $primary-color-dark;
+		border: 1px solid $primary-color;
 		border-radius: 50px;
 		padding: 10px 40px;
 		margin: auto;
     	display: inherit;
     	background: transparent; 
-    	color: $primary-color-dark;
+    	color: $primary-color;
     	transition: .2s;
     	&:hover {
-			background: $primary-color-dark;
+			background: $primary-color;
 			color: white;
 		}
 	}
@@ -172,4 +168,40 @@ p, a {
 			margin-right: 6px;
 		}
 	}
+}
+
+
+
+
+code {
+	display: block;
+	margin-top: 30px;
+	padding: 30px 0;
+}
+
+
+.btn {
+	transition: 300ms;
+}
+.btn-primary {
+	background-color: $primary-color;
+	border-color: $primary-color;
+	&:hover {
+		background-color: lighten($primary-color, 20%);
+		border-color: $primary-color;
+	}
+}
+
+
+.form-control {
+	border-color: $border-color;
+	&.tall {
+		height: 45px;
+	}
+}
+label {
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: 400;
+	font-size: 11px;
 }
