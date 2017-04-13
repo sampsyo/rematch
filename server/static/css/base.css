@@ -160,7 +160,8 @@ label {
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: 400;
-  font-size: 11px; }
+  font-size: 11px;
+  color: #ad1b1b; }
 
 .spacer {
   height: 50px; }
