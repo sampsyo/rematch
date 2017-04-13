@@ -24,6 +24,7 @@ def index(tags=None, all=None):
         user=user,
         posts=posts,
         search=True,
+        isInIndex=True
     )
 
 
