@@ -2,14 +2,22 @@
 {% extends "base.html" %}
 {% block content %}
 
+<div class="spacer"></div>
+
+<ul class="nav nav-tabs">
+  <li role="presentation" class="active"><a href="#">My Profile</a></li>
+  <li role="presentation"><a href="#">All My Posts</a></li>
+  <li role="presentation"><a href="#">Starred Posts</a></li>
+</ul>
+
+
 <div class="profile">
-    <div class="header shadowed card">
-        <img class="img-responsive center-block img-circle" src="http://hubrif.com/pub/images/profiles/avatar-mini.jpg">
+    <div class="header card">
         <div class="name">{{profile.name}}</div>
         <div class="description">{{profile.description}}</div>
         <button class="resume">Resume</button>
     </div>
-    <div class="card shadowed general">
+    <div class="card general">
         <div class="title">General Information</div>
         <div class="item">Major: {{profile.major}}</div>
         <div class="item">Year: {{profile.year}}</div>
@@ -20,7 +28,7 @@
         {% endfor %}
         </div>
     </div>
-    <div class="card shadowed experience">
+    <div class="card experience">
         <div class="title">Experience, Skills, Interests</div>
         <div class="item">Skills:
         {% for skill in profile.skills %}

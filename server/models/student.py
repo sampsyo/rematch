@@ -26,7 +26,7 @@ class Student(db.Model):
             name=name,
             email=net_id + "@cornell.edu"
         )
-        db.session.add(student)
+        db.steession.add(student)
         db.session.commit()
         return student
 
