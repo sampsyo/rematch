@@ -55,7 +55,7 @@ p, a {
 	border-radius: $border-radius;
 	background-color: #fff;
 	max-width: 100%;
-	padding: 10px 30px;
+	padding: 30px 30px;
 	margin-bottom: 30px;
 	box-shadow: 0px 2px 2px rgba(0,0,0,.1);
 	.title {
@@ -204,4 +204,7 @@ label {
 	letter-spacing: 1px;
 	font-weight: 400;
 	font-size: 11px;
+}
+.spacer {
+	height: 50px;
 }
