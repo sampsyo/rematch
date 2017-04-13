@@ -81,7 +81,7 @@ def createpost():
     if request.method == 'POST':
         result = request.form
         Post.create_post(
-            result["title"], result["description"], "professor_id", "tags", "qualifications",
+            result["post_title"], result["post_description"], "professor_id", "tags", "qualifications",
             "current_students", "desired_skills",
             "capacity", "current_number"
         )
