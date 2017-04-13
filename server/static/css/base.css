@@ -32,8 +32,9 @@ p, a {
   border-radius: 3px;
   background-color: #fff;
   max-width: 100%;
-  padding: 10px 30px 0 30px;
-  margin-bottom: 30px; }
+  padding: 10px 30px;
+  margin-bottom: 30px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1); }
   .card .title {
     margin-bottom: 20px;
     text-transform: capitalize; }
@@ -47,7 +48,7 @@ p, a {
     line-height: 1.5;
     padding-bottom: 10px; }
     .card .description a.learnmore {
-      color: #FE1736; }
+      color: #ad1b1b; }
   .card .more {
     color: #337ab7;
     display: block; }
@@ -61,21 +62,18 @@ p, a {
 .shadowed {
   box-shadow: 0.1px 0.1px 0.1px 0.1px rgba(33, 33, 33, 0.2); }
 
-.tags {
-  padding-bottom: 10px; }
-  .tags a li {
-    -webkit-font-smoothing: antialiased;
-    font-size: 12px;
-    display: inline-block;
-    text-decoration: none;
-    color: #333333;
-    border: 1px solid;
-    padding: 3px 14px;
-    margin-right: 8px;
-    border-radius: 3px;
-    text-transform: lowercase; }
-  .tags a:last-child {
-    margin-right: 0; }
+.tag {
+  text-decoration: none !important;
+  -webkit-font-smoothing: antialiased;
+  font-size: 12px;
+  display: inline-block;
+  text-decoration: none;
+  color: #333333;
+  border: 1px solid;
+  padding: 3px 14px;
+  margin-right: 8px;
+  border-radius: 3px;
+  text-transform: lowercase; }
 
 .profile .card {
   padding-bottom: 30px; }
@@ -125,5 +123,31 @@ p, a {
     font-size: 14px;
     margin-left: 3px;
     margin-right: 6px; }
+
+code {
+  display: block;
+  margin-top: 30px;
+  padding: 30px 0; }
+
+.btn {
+  transition: 300ms; }
+
+.btn-primary {
+  background-color: #ad1b1b;
+  border-color: #ad1b1b; }
+  .btn-primary:hover {
+    background-color: #e34b4b;
+    border-color: #ad1b1b; }
+
+.form-control {
+  border-color: #e7e7e7; }
+  .form-control.tall {
+    height: 45px; }
+
+label {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 400;
+  font-size: 11px; }
 
 /*# sourceMappingURL=base.css.map */
