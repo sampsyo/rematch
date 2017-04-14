@@ -1,7 +1,8 @@
 .search {
   background-color: #FFFFFF;
   padding: 30px;
-  margin-bottom: 30px; }
+  margin-bottom: 30px;
+  border-bottom: 1px solid #eaeaea; }
   .search .form-control {
     height: 40px;
     color: #666; }
@@ -95,12 +96,12 @@ p, a {
   -webkit-font-smoothing: antialiased;
   font-size: 12px;
   display: inline-block;
+  color: #888888;
   text-decoration: none;
-  color: #333333;
-  border: 1px solid;
-  padding: 3px 14px;
+  background: #ececec;
+  padding: 6px 16px;
   margin-right: 8px;
-  border-radius: 3px;
+  border-radius: 2px;
   text-transform: lowercase; }
 
 .tags {
