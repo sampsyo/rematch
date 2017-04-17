@@ -19,7 +19,7 @@ def index(tags=None, all=None):
     user = {'nickname': 'Michael'}
     if tags:
         tags = tags.lower().strip().split(',')
-    posts = Post.get_posts(tags=tags, exclusive=True if all == 'all' else False)
+    posts = Post.get_compressed_posts(tags=tags, exclusive=True if all == 'all' else False)
     return render_template(
         "index.html",
         title='Home',
