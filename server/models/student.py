@@ -1,5 +1,5 @@
 from server import db
-from models import Post
+from post import Post
 
 
 class Student(db.Model):
