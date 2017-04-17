@@ -14,7 +14,9 @@ def create_professor():
     r = request.get_json(force=True)
     professor = Professor.create_professor(
         net_id=r.get('net_id'),
-        name=r.get('name')
+        name=r.get('name'),
+        email=r.get('email'),
+        password=r.get('password')
     )
     if professor:
         return jsonify(professor=professor.serialize)

@@ -1,10 +1,12 @@
 from server import db
+from models import Post
 
 
 class Student(db.Model):
     __tablename__ = 'students'
     net_id = db.Column(db.String(64), primary_key=True)
     email = db.Column(db.String(64), unique=True)
+    password = db.Column(db.String(128))
     name = db.Column(db.String(64), index=True, unique=True)
     major = db.Column(db.String(64))
     year = db.Column(db.Integer)
@@ -14,9 +16,21 @@ class Student(db.Model):
     interests = db.Column(db.String(10000))
     favorited_projects = db.Column(db.String(10000))
     availability = db.Column(db.String(10000))
+    # This is for Login Stuff
+    is_authenticated = True
+    is_active = True
+    is_anonymous = True
+
+    def get_id(self):
+        return self.net_id
+
+    def is_correct_password(self, password):
+        return self.password == password
 
     @classmethod
-    def create_student(cls, net_id=net_id, name=name):
+    def create_student(
+        cls, net_id=net_id, name=name, email=email, password=password
+    ):
         if Student.get_student_by_netid(net_id):
             print("Student already exists with net_id %s" % net_id)
             return None
@@ -24,9 +38,10 @@ class Student(db.Model):
         student = Student(
             net_id=net_id,
             name=name,
-            email=net_id + "@cornell.edu"
+            email=email,
+            password=password  # Just for NOW!!
         )
-        db.steession.add(student)  # steession?
+        db.session.add(student)
         db.session.commit()
         return student
 
@@ -85,20 +100,27 @@ class Student(db.Model):
 
     # can this just return the posts objects?
     # or is it better to do that in the routes?
-    
+
     @classmethod  # returns a list of the favorited projects
-    def get_student_favorited_projects_ids(cls, net_id):
+    def get_student_favorited_projects(cls, net_id):
         student = Student.get_student_by_netid(net_id)
+        posts = []
         if student:
             if student.favorited_projects is not None:
-                return student.favorited_projects.split(',')
+                for p in student.favorited_projects.split(','):
+                    post_obj = Post.get_post_by_id(p)
+                    if post_obj:
+                        posts.append(post_obj)
+                return posts
+
         else:
             return None
 
     @classmethod
     def add_favorited_project(cls, net_id, post_id):
         student = Student.get_student_by_netid(net_id)
-        if student:
+        post = Post.get_post_by_id(post_id)
+        if student and post:
             updated_projects = student.favorited_projects
             if student.favorited_projects is None:
                 updated_projects = str(post_id) + ","

@@ -14,7 +14,9 @@ def create_student():
     r = request.get_json(force=True)
     student = Student.create_student(
         net_id=r.get('net_id'),
-        name=r.get('name')
+        name=r.get('name'),
+        email=r.get('email'),
+        password=r.get('password')
     )
     if student:
         return jsonify(student=student.serialize)
@@ -44,6 +46,7 @@ def delete_student(net_id):
             "error": "Could not delete student"
         })
 
+
 # maybe a put request?
 @app.route('/api/students/<string:net_id>/<int:post_id>', methods=['POST'])
 def add_favorited_project(net_id, post_id):
@@ -53,6 +56,7 @@ def add_favorited_project(net_id, post_id):
         return jsonify({
             "error": "Could not delete student"
         })
+
 
 @app.route('/api/students/<string:net_id>/<int:post_id>', methods=['DELETE'])
 def delete_favorited_project(net_id, post_id):
