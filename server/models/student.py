@@ -86,7 +86,8 @@ class Student(db.Model):
     def get_student_favorited_projects_ids(cls, net_id):
         student = Student.get_student_by_netid(net_id)
         if student:
-            return student.favorited_projects.split(',')
+            if student.favorited_projects != None:
+                return student.favorited_projects.split(',')
         else:
             return None
 
