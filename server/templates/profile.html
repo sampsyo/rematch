@@ -19,12 +19,6 @@
             <div class="header card">
                 <div class="name">{{profile.name}}</div>
                 <br>
-                <div class="text-center">
-                <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary invisible">                    
-                </div>
-
-                <div class="title">General Information</div>
-
                 <div class="form-group">
                     <label>Major</label>
                     <p>{{profile.major}}</p>
@@ -57,28 +51,15 @@
                     <div class="listed">{{day}}</div>
                 {% endfor %}
                 </div>
-            </div>
-
-            <div class="card experience">
-                <div class="title">Experience, Skills, Interests</div>
-                <div class="item">Skills:
-                {% for skill in profile.skills %}
-                    <div class="listed">{{skill}}</div>
-                {% endfor %}
+                <div class="form-group">
+                    <label>Experience, Skills, Interests</label><br>
+                    <textarea name="user_description" rows="5" class="form-control">{{profile.description}}</textarea>
                 </div>
-                <div class="item">Interests:
-                {% for interest in profile.interests %}
-                    <div class="listed">{{interest}}</div>
-                {% endfor %}
-                </div>
-                <div class="item">Favorite Projects:
-                {% for project in profile.favorited_projects %}
-                    <div class="listed">{{project}}</div>
-                {% endfor %}
-                </div>
-            </div>
                 <button class="resume">Resume</button>
-
+                <div class="text-center">
+                    <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary invisible">                    
+                </div>
+            </div>
         </div>
 
 

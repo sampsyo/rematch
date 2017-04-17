@@ -13,20 +13,22 @@
 
 body {
   margin-top: 60px;
-  background-color: #f9f8fb; }
+  background-color: #f9f8fb;
+  font-family: 'Open Sans', sans-serif; }
 
 h1 {
   font-size: 28px; }
 
 h1, h2, h3, h4, h5, h6 {
   -webkit-font-smoothing: antialiased;
-  font-family: 'Open Sans', sans-serif;
   font-weight: 300;
   color: #000000; }
 
 p, a {
-  font-family: 'Open Sans', sans-serif;
   color: #444444; }
+
+.nav-tabs {
+  font-weight: 300; }
 
 .navbar {
   background-color: #ad1b1b;
@@ -48,7 +50,8 @@ p, a {
   max-width: 100%;
   padding: 30px 30px;
   margin-bottom: 30px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1); }
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+  font-weight: 300 !important; }
   .card .title {
     margin-bottom: 20px;
     text-transform: capitalize; }
@@ -106,10 +109,19 @@ p, a {
   text-transform: lowercase; }
 
 .tags {
+  margin-top: 20px;
   padding-left: 0; }
 
 .profile .card {
-  padding-bottom: 30px; }
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 30px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  box-shadow: none; }
 .profile img {
   margin-top: 30px;
   margin-bottom: 30px;
@@ -117,7 +129,7 @@ p, a {
   border: 1px solid black; }
 .profile .name {
   font-size: 32px;
-  text-align: center; }
+  text-align: left; }
 .profile .description {
   padding-top: 20px;
   text-align: center;
