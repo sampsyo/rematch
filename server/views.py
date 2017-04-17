@@ -58,10 +58,6 @@ def profile(net_id):
         user = Student.update_student(net_id, email=new_email, name=None, major=None, 
         year=new_year, skills=None, resume=None, description=new_description, interests=None, 
         favorited_projects=None, availability=None)
-        print "------------------------"
-        print user
-        print "------------------------"
-        print favorited_projects
         return redirect("/profile/"+net_id, code=302)
     else:
         return render_template(
