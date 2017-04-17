@@ -13,11 +13,13 @@ from models import Post, Student, Professor
 @app.route('/posts/')
 @app.route('/posts/tags=<tags>')
 @app.route('/posts/tags=<tags>/<all>')
+# I need to know the netid of the student here so I can get back the 
+# favorited_projects for them on the search / home page.
 def index(tags=None, all=None):
     user = {'nickname': 'Michael'}
     if tags:
         tags = tags.lower().strip().split(',')
-    posts = Post.get_posts(tags=tags, exclusive=True if all == 'all' else False)
+    posts = Post.get_compressed_posts(tags=tags, exclusive=True if all == 'all' else False)
     return render_template(
         "index.html",
         title='Home',
@@ -45,34 +47,28 @@ def login():
 @app.route('/profile/<net_id>', methods=['GET', 'POST'])
 def profile(net_id):
     user = Student.get_student_by_netid(net_id)
+    favorited_projects = Student.get_student_favorited_projects_ids(net_id)
+    # get favorited posts, not sure if we should move this to models
+    favorited_posts = [Post.get_post_by_id(id) for id in favorited_projects]
     if request.method == 'POST': 
         result = request.form
         new_email = result["user_email"] or (net_id + "@cornell.edu")
         new_year = result["user_year"] or "Freshman"
         new_description = result["user_description"] or " "
-
-
         user = Student.update_student(net_id, email=new_email, name=None, major=None, 
         year=new_year, skills=None, resume=None, description=new_description, interests=None, 
         favorited_projects=None, availability=None)
-        print "------------------------"
-        print user
-        print "------------------------"
         return redirect("/profile/"+net_id, code=302)
     else:
-        #user = Student.create_student(net_id, "Leon Zaruvinsky")
-        user.major = "Computer Science"
-        #user.year = "Junior"
-        user.skills = ["Java", "C++", "Python"]
-        user.resume = "resume.pdf"
-        #user.description = "I'm a Junior in Computer Science who is interested in algorithms research. I worked at Mircosoft Research this past summer."
-        user.interests = ["Algorithms", "Data Science", "Research"]
-        user.favorited_projects = ["Copy Cats", "Algorithmic Game Theory", "Smash AI"]
-        user.availability = ["Mon", "Wed", "Fri"]
         return render_template(
           'profile.html',
           title=user.name + "'s Profile",
           profile=user,
+          favorited_posts=favorited_posts,
+          # Theres a problem when a starred posts id is '',
+          # not sure how this happened.
+          # favorited_projects=map(int,favorited_projects[:-1])
+          favorited_projects=favorited_projects
         )
 
 

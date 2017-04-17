@@ -19,15 +19,10 @@
             <div class="header card">
                 <div class="name">{{profile.name}}</div>
                 <br>
-                <div class="text-center">
-                <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary invisible">                    
-                </div>
-
-                <div class="title">General Information</div>
-
                 <div class="form-group">
                     <label>Major</label>
                     <p>{{profile.major}}</p>
+                    <!-- <p>aa: {{starred}}</p> -->
                 </div>
 
                 <div class="form-group">
@@ -48,66 +43,104 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Bio</label><br>
+                    <label>Bio &amp; Experience</label><br>
                     <textarea name="user_description" rows="5" class="form-control">{{profile.description}}</textarea>
                 </div>
-
-                <div class="item">Availability: 
-                {% for day in profile.availability %}
-                    <div class="listed">{{day}}</div>
-                {% endfor %}
+                <div class="form-group availability">
+                    <label>Availability</label><br>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox"> Monday
+                        </label>
+                    </div>
+                    <div class="times-form"></div>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox"> Tuesday
+                        </label>
+                    </div>
+                    <div class="times-form"></div>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox"> Wednessday
+                        </label>
+                    </div>
+                    <div class="times-form"></div>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox"> Thursday
+                        </label>
+                    </div>
+                    <div class="times-form"></div>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox"> Friday
+                        </label>
+                    </div>
+                    <div class="times-form"></div>
                 </div>
+                <div class="form-group typeahead">
+                    <label>Skills</label><br>
+                    <input class="tags-input" type="text" value="" data-role="tagsinput"/>
+                </div>
+                <div class="form-group typeahead">
+                    <label>Research Interests</label><br>
+                    <input class="tags-input" type="text" value="" data-role="tagsinput"/>
+                </div>
+                <label class="resume">
+                    <input id="resume-upload" type="file"/>
+                    <i class="fa fa-cloud-upload"></i> Upload Reusme
+                </label>
+                <span class="file-selected"></span>
+                <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary">
             </div>
-
-            <div class="card experience">
-                <div class="title">Experience, Skills, Interests</div>
-                <div class="item">Skills:
-                {% for skill in profile.skills %}
-                    <div class="listed">{{skill}}</div>
-                {% endfor %}
-                </div>
-                <div class="item">Interests:
-                {% for interest in profile.interests %}
-                    <div class="listed">{{interest}}</div>
-                {% endfor %}
-                </div>
-                <div class="item">Favorite Projects:
-                {% for project in profile.favorited_projects %}
-                    <div class="listed">{{project}}</div>
-                {% endfor %}
-                </div>
-            </div>
-                <button class="resume">Resume</button>
-
         </div>
 
 
         </form>
 
     </div>
-    <div role="tabpanel" class="tab-pane" id="profile">
-            <div class="card">
-                <div class="name">{{profile.name}}</div>
-                <div class="description">{{profile.description}}</div>
-                <button class="resume">Resume</button>
-            </div>
-    </div>
     <div role="tabpanel" class="tab-pane" id="starred">
-            <div class="card">
-                <h2>You have no starred posts</h2>
+        
+        {% if favorited_posts %}
+            {% for post in favorited_posts %}        
+                {% include "partials/post.html" %}
+            {% endfor %}
+        {% else %}
+            <div class="profile">
+                <div class="card">
+                    <h2>You have no starred posts</h2>
+                </div>
             </div>
+        {% endif %}
     </div>
   </div>
 
 
     <script type="text/javascript">
+        profile = '{{profile}}';
+        console.log(profile);
         $('#user_year_select option').each(function() {
           if ($(this).val() == "{{ profile.year }}") {
             $(this).prop('selected','selected');
           }
         });
         $(document).on("change keyup", "input, select, textarea", function () {
-            $('#save-profile-updates').removeClass("invisible");
+            $('#save-profile-updates').css('display', 'block');
+        });
+        $('#resume-upload').bind('change', function() {
+            fileName = $(this).val().substring($(this).val().lastIndexOf("\\")+1);
+            $('.file-selected').html(fileName); 
+        });
+        $('.checkbox').on("click", function() {
+            // need an endpoint to load files from templates
+            $(this).load("templates/partials/optional-times-form.html .times-form");
+        });
+        $('.typeahead input').tagsinput({
+          typeahead: {
+            source: ['C++', 'Java', 'Test', 'Something', 'OK']
+          },
+          freeInput: false
         });
     </script>
 
