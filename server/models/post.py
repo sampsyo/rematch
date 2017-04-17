@@ -1,3 +1,4 @@
+import datetime
 from server import db
 # from server.models.professor import Professor
 
@@ -15,12 +16,23 @@ class Post(db.Model):
     date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(),
                               onupdate=db.func.current_timestamp())
 
+    stale_date = db.Column(db.DateTime)
+
     # unimplemented
     qualifications = db.Column(db.String(10000))
     current_students = db.Column(db.String(10000))
     desired_skills = db.Column(db.String(10000))
     capacity = db.Column(db.Integer)
     current_number = db.Column(db.Integer)
+
+    def is_stale(self):
+        return self.stale_date is not None and self.stale_date < datetime.now()
+
+    @classmethod
+    def refresh(cls, post_id, days_added):
+        post = Post.get_post_by_id(post_id)
+        if post.stale_date:
+            post.stale_date += datetime.timedelta(days=days_added)
 
     @classmethod
     def get_posts(cls, tags=None, exclusive=False):
@@ -61,25 +73,28 @@ class Post(db.Model):
         else:
             return [
                 p.serialize_compressed_post for p in Post.query.all() if
-                len(set(tags).intersection(set(p.serialize_compressed_post['tags']))) > 0
+                len(set(tags).intersection(
+                    set(p.serialize_compressed_post['tags'])
+                )) > 0
             ]
 
     @classmethod
     def create_post(cls, title, description, professor_id, tags,
-                    qualifications, current_students, desired_skills,
-                    capacity, current_number):
+                    qualifications, desired_skills, stale_days):
         # if not (Professor.get_professor_by_netid(professor_id)):
         #    return None
+        stale_date = None
+        if stale_days:
+            stale_date = datetime.now() + datetime.timedelta(days=stale_days)
+
         post = Post(
             title=title,
             description=description,
             tags=",".join(tags),
             professor_id=professor_id,
             qualifications=qualifications,
-            current_students="",
             desired_skills="",
-            capacity=1,
-            current_number=0
+            stale_date=stale_date
         )
         db.session.add(post)
         db.session.commit()
@@ -88,7 +103,6 @@ class Post(db.Model):
     # Keep arguments in alphabetical order!
     @classmethod
     def update_post(cls, post_id,
-                    capacity=None, current_number=None, current_students=None,
                     description=None, desired_skills=None, is_active=None,
                     professor_id=None, qualifications=None, tags=None,
                     title=None):
@@ -105,14 +119,8 @@ class Post(db.Model):
             post.qualifications = qualifications
         if professor_id:
             post.professor_id = professor_id
-        if current_students:
-            post.current_students = current_students
         if desired_skills:
             post.desired_skills = desired_skills
-        if capacity:
-            post.capacity = int(capacity)
-        if current_number:
-            post.current_number = int(current_number)
         if is_active is not None:
             post.is_active = is_active
         db.session.commit()
@@ -172,13 +180,11 @@ class Post(db.Model):
             'tags': self.tags.split(','),
             'qualifications': self.qualifications,
             'professor_id': self.professor_id,
-            'current_students': self.current_students,
             'desired_skills': self.desired_skills,
-            'capacity': self.capacity,
-            'current_number': self.current_number,
             'is_active': self.is_active,
             'date_created': self.date_created,
-            'date_modified': self.date_modified
+            'date_modified': self.date_modified,
+            'stale_date': self.stale_date
         }
 
     @property
@@ -187,7 +193,9 @@ class Post(db.Model):
             'id': self.id,
             'title': self.title,
             # only 150 words
-            'description': (" ".join(self.description.split(" ")[:75]) + '...') if len(self.description.split(" ")) > 75 else self.description,
+            'description': (
+                " ".join(self.description.split(" ")[:75]) + '...'
+                if len(self.description.split(" ")) > 75 else self.description),
             # only 5 tags
             'tags': self.tags.split(',')[:5],
             'professor_id': self.professor_id,

@@ -40,10 +40,7 @@ def create_post():
         description=r.get('description'),
         tags=r.get('tags'),
         qualifications='',
-        current_students="",
-        desired_skills="",
-        capacity=1,
-        current_number=0
+        desired_skills=""
     )
     return jsonify(post=post.serialize)
 
@@ -63,9 +60,6 @@ def update_post(post_id):
     r = request.get_json(force=True)
     post = Post.update_post(
         post_id,
-        capacity=r.get('capacity', None),
-        current_number=r.get('current_number', None),
-        current_students=r.get('current_students', None),
         description=r.get('description', None),
         desired_skills=r.get('desired_skills', None),
         is_active=r.get('is_active', None),
