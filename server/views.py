@@ -59,15 +59,8 @@ def logout():
 @login_required
 def profile(net_id):
     user = Student.get_student_by_netid(net_id)
-<<<<<<< HEAD
     favorited_projects = Student.get_student_favorited_projects(net_id)
-    if request.method == 'POST': 
-=======
-    favorited_projects = Student.get_student_favorited_projects_ids(net_id)
-    # get favorited posts, not sure if we should move this to models
-    favorited_posts = [Post.get_post_by_id(id) for id in favorited_projects]
     if request.method == 'POST':
->>>>>>> c2b636cff7c6624be0fb886a703cd180a1895a89
         result = request.form
         new_email = result["user_email"] or (net_id + "@cornell.edu")
         new_year = result["user_year"] or "Freshman"
@@ -80,21 +73,10 @@ def profile(net_id):
         return redirect("/profile/" + net_id, code=302)
     else:
         return render_template(
-<<<<<<< HEAD
           'profile.html',
           title=user.name + "'s Profile",
           profile=user,
           favorited_projects=favorited_projects
-=======
-            'profile.html',
-            title=user.name + "'s Profile",
-            profile=user,
-            favorited_posts=favorited_posts,
-            # Theres a problem when a starred posts id is '',
-            # not sure how this happened.
-            # favorited_projects=map(int,favorited_projects[:-1])
-            favorited_projects=favorited_projects
->>>>>>> c2b636cff7c6624be0fb886a703cd180a1895a89
         )
 
 
