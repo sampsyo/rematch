@@ -64,6 +64,7 @@ p, a {
 	}
 	.professor {
 		font-weight: 500;
+		color: #333;
 		font-size: 15px;
 	}
 	.description {
@@ -71,7 +72,7 @@ p, a {
 		-webkit-font-smoothing: antialiased;
 		font-size: 15px;
 		font-weight: 300;
-		line-height: 1.5;
+		line-height: 1.65;
 		padding-bottom: 10px;
 		a.learnmore {
 			color: $primary-color;
