@@ -6,11 +6,24 @@ class Professor(db.Model):
     net_id = db.Column(db.String(64), primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
+    password = db.Column(db.String(128))
     desc = db.Column(db.String(10000))
     interests = db.Column(db.String(10000))
+    # This is for Login Stuff
+    is_authenticated = True
+    is_active = True
+    is_anonymous = True
+
+    def get_id(self):
+        return self.net_id
+
+    def is_correct_password(self, password):
+        return self.password == password
 
     @classmethod
-    def create_professor(cls, net_id=net_id, name=name):
+    def create_professor(
+        cls, net_id=net_id, name=name, email=email, password=password
+    ):
         if Professor.get_professor_by_netid(net_id):
             print("Professor already exists with net_id %s" % net_id)
             return None
@@ -18,28 +31,29 @@ class Professor(db.Model):
         professor = Professor(
             net_id=net_id,
             name=name,
-            email=net_id + "@cornell.edu"
+            email=email,
+            password=password  # Just for demonstration!!!
         )
         db.session.add(professor)
         db.session.commit()
         return professor
 
     @classmethod
-    def update_professor(cls, net_id, name=None, email=None, desc=None, interests=None): 
-        professor = Professor.get_professor_by_netid(net_id) 
-        if not professor: 
-            return None 
-        if name: 
-            professor.name = name 
-        if email: 
-            professor.email = email 
-        if desc: 
-            professor.desc = desc 
-        if interests: 
+    def update_professor(cls, net_id, name=None, email=None, desc=None,
+                         interests=None):
+        professor = Professor.get_professor_by_netid(net_id)
+        if not professor:
+            return None
+        if name:
+            professor.name = name
+        if email:
+            professor.email = email
+        if desc:
+            professor.desc = desc
+        if interests:
             professor.interests = interests
         db.session.commit()
         return professor
-
 
     @classmethod
     def get_professor_by_netid(cls, net_id):
