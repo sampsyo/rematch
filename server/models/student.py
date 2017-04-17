@@ -101,7 +101,7 @@ class Student(db.Model):
                 updated_projects = str(post_id) + ","
             else:
                 updated_projects = updated_projects + str(post_id) + ","
-            Student.update_student(cls, net_id,
+            Student.update_student(net_id,
                                    favorited_projects=updated_projects)
 
     @classmethod
@@ -115,7 +115,7 @@ class Student(db.Model):
                     favorited_string = ""
                     for i in favorited:
                         favorited_string = favorited_string + i + ","
-                    Student.update_student(cls, net_id,
+                    Student.update_student(net_id,
                                            favorited_projects=favorited_string)
 
     @property
