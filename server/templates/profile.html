@@ -53,36 +53,37 @@
                           <input type="checkbox"> Monday
                         </label>
                     </div>
-                    <div class="form-group">
-                        <label class="weekday">List times on this day (Optional)</label>
-                        <input class="form-control col-xs-12 col-sm-12" type="text" name="user_email" value="">
-                    </div>
+                    <div class="times-form"></div>
                     <div class="checkbox">
                         <label>
                           <input type="checkbox"> Tuesday
                         </label>
                     </div>
+                    <div class="times-form"></div>
                     <div class="checkbox">
                         <label>
                           <input type="checkbox"> Wednessday
                         </label>
                     </div>
+                    <div class="times-form"></div>
                     <div class="checkbox">
                         <label>
                           <input type="checkbox"> Thursday
                         </label>
                     </div>
+                    <div class="times-form"></div>
                     <div class="checkbox">
                         <label>
                           <input type="checkbox"> Friday
                         </label>
                     </div>
+                    <div class="times-form"></div>
                 </div>
-                <div class="form-group">
+                <div class="form-group typeahead">
                     <label>Skills</label><br>
                     <input class="tags-input" type="text" value="" data-role="tagsinput"/>
                 </div>
-                <div class="form-group">
+                <div class="form-group typeahead">
                     <label>Research Interests</label><br>
                     <input class="tags-input" type="text" value="" data-role="tagsinput"/>
                 </div>
@@ -130,6 +131,16 @@
         $('#resume-upload').bind('change', function() {
             fileName = $(this).val().substring($(this).val().lastIndexOf("\\")+1);
             $('.file-selected').html(fileName); 
+        });
+        $('.checkbox').on("click", function() {
+            // need an endpoint to load files from templates
+            $(this).load("templates/partials/optional-times-form.html .times-form");
+        });
+        $('.typeahead input').tagsinput({
+          typeahead: {
+            source: ['C++', 'Java', 'Test', 'Something', 'OK']
+          },
+          freeInput: false
         });
     </script>
 
