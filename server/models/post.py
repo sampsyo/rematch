@@ -186,8 +186,8 @@ class Post(db.Model):
         return {
             'id': self.id,
             'title': self.title,
-            # only 250 chars
-            'description': (self.description[:250] + '...') if len(self.description) > 250 else self.description,
+            # only 150 words
+            'description': (" ".join(self.description.split(" ")[:75]) + '...') if len(self.description.split(" ")) > 75 else self.description,
             # only 5 tags
             'tags': self.tags.split(',')[:5],
             'professor_id': self.professor_id,
