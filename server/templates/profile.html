@@ -46,20 +46,22 @@
                     <label>Bio</label><br>
                     <textarea name="user_description" rows="5" class="form-control">{{profile.description}}</textarea>
                 </div>
-
-                <div class="item">Availability: 
-                {% for day in profile.availability %}
-                    <div class="listed">{{day}}</div>
-                {% endfor %}
+                <div class="form-group">
+                    <label>Availability</label><br>
+                    
                 </div>
                 <div class="form-group">
                     <label>Experience, Skills, Interests</label><br>
                     <textarea name="user_description" rows="5" class="form-control">{{profile.description}}</textarea>
                 </div>
-                <button class="resume">Resume</button>
-                <div class="text-center">
-                    <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary invisible">                    
-                </div>
+
+                
+                <label class="resume">
+                    <input id="resume-upload" type="file"/>
+                    <i class="fa fa-cloud-upload"></i> Upload Reusme
+                </label>
+                <span class="file-selected"></span>
+                <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary">
             </div>
         </div>
 
@@ -67,17 +69,12 @@
         </form>
 
     </div>
-    <div role="tabpanel" class="tab-pane" id="profile">
-            <div class="card">
-                <div class="name">{{profile.name}}</div>
-                <div class="description">{{profile.description}}</div>
-                <button class="resume">Resume</button>
-            </div>
-    </div>
     <div role="tabpanel" class="tab-pane" id="starred">
+        <div class="profile">
             <div class="card">
                 <h2>You have no starred posts</h2>
             </div>
+        </div>
     </div>
   </div>
 
@@ -89,7 +86,11 @@
           }
         });
         $(document).on("change keyup", "input, select, textarea", function () {
-            $('#save-profile-updates').removeClass("invisible");
+            $('#save-profile-updates').css('display', 'block');
+        });
+        $('#resume-upload').bind('change', function() {
+            fileName = $(this).val().substring($(this).val().lastIndexOf("\\")+1);
+            $('.file-selected').html(fileName); 
         });
     </script>
 
