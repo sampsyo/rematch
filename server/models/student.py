@@ -26,14 +26,15 @@ class Student(db.Model):
             name=name,
             email=net_id + "@cornell.edu"
         )
-        db.steession.add(student) #steession?
+        db.steession.add(student)  # steession?
         db.session.commit()
         return student
 
-    @classmethod 
-    def update_student(cls, net_id, email=None, name=None, major=None, 
-        year=None, skills=None, resume=None, description=None, interests=None, 
-        favorited_projects=None, availability=None): 
+    @classmethod
+    def update_student(cls, net_id, email=None, name=None, major=None,
+                       year=None, skills=None, resume=None, description=None,
+                       interests=None, favorited_projects=None,
+                       availability=None):
         student = Student.get_student_by_netid(net_id)
         if not student:
             return None
@@ -45,17 +46,17 @@ class Student(db.Model):
             student.major = major
         if year:
             student.year = year
-        if skills: 
+        if skills:
             student.skills = skills
-        if resume: 
-            studnet.resume = resume
-        if description: 
+        if resume:
+            student.resume = resume
+        if description:
             student.description = description
-        if interests: 
+        if interests:
             student.interests = interests
-        if favorited_projects: 
-            student.favorited_projects = favorited_projects 
-        if availability: 
+        if favorited_projects:
+            student.favorited_projects = favorited_projects
+        if availability:
             student.availability = availability
         db.session.commit()
         return student
@@ -82,11 +83,11 @@ class Student(db.Model):
         else:
             return False
 
-    @classmethod #returns a list of the favorited projects
+    @classmethod  # returns a list of the favorited projects
     def get_student_favorited_projects_ids(cls, net_id):
         student = Student.get_student_by_netid(net_id)
         if student:
-            if student.favorited_projects != None:
+            if student.favorited_projects is not None:
                 return student.favorited_projects.split(',')
         else:
             return None
@@ -96,25 +97,26 @@ class Student(db.Model):
         student = Student.get_student_by_netid(net_id)
         if student:
             updated_projects = student.favorited_projects
-            if student.favorited_projects == None:
+            if student.favorited_projects is None:
                 updated_projects = post_id + ","
             else:
                 updated_projects = updated_projects + post_id + ","
-            Student.update_student(cls, net_id, favorited_projects = updated_projects)
-    
+            Student.update_student(cls, net_id,
+                                   favorited_projects=updated_projects)
+
     @classmethod
     def delete_favorited_project(cls, net_id, post_id):
         student = Student.get_student_by_netid(net_id)
         if student:
-            if student.favorited_projects != None:
+            if student.favorited_projects is not None:
                 favorited = student.favorited_projects.split(',')
                 if post_id in favorited:
                     favorited.remove(post_id)
                     favorited_string = ""
                     for i in favorited:
                         favorited_string = favorited_string + i + ","
-                    Student.update_student(cls, net_id, favorited_projects = favorited_string)
-
+                    Student.update_student(cls, net_id,
+                                           favorited_projects=favorited_string)
 
     @property
     def serialize(self):
