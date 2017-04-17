@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Bio</label><br>
+                    <label>Bio and Experience</label><br>
                     <textarea name="user_description" rows="5" class="form-control">{{profile.description}}</textarea>
                 </div>
                 <div class="form-group">
@@ -51,11 +51,13 @@
                     
                 </div>
                 <div class="form-group">
-                    <label>Experience, Skills, Interests</label><br>
-                    <textarea name="user_description" rows="5" class="form-control">{{profile.description}}</textarea>
+                    <label>Skills</label><br>
+                    <input class="tags-input" type="text" value="" data-role="tagsinput"/>
                 </div>
-
-                
+                <div class="form-group">
+                    <label>Research Interests</label><br>
+                    <input class="tags-input" type="text" value="" data-role="tagsinput"/>
+                </div>
                 <label class="resume">
                     <input id="resume-upload" type="file"/>
                     <i class="fa fa-cloud-upload"></i> Upload Reusme
@@ -70,11 +72,16 @@
 
     </div>
     <div role="tabpanel" class="tab-pane" id="starred">
+        <!-- If no stared posts -->
         <div class="profile">
             <div class="card">
                 <h2>You have no starred posts</h2>
             </div>
         </div>
+        <!-- endif -->
+        <!-- else show posts -->
+
+        <!-- endelse -->
     </div>
   </div>
 

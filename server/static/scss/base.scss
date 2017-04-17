@@ -27,6 +27,28 @@ p, a {
 
 .nav-tabs {
 	font-weight: 300;
+    margin-bottom: 40px;
+    background: white;
+    border: 1px solid #eaeaea;
+    border-radius: 3px;
+    &>li.active>a, 
+    &>li.active>a:focus, 
+    &>li.active>a:hover {
+		color: #333;
+    	font-weight: 400;
+    	border: none;
+    	border-bottom: 2px solid $primary-color;
+    }
+    &>li>a {
+    	border: none;
+    	padding: 12px 17px;
+    }
+    &>li>a:hover {
+    	color: #444;
+    	text-decoration: none;
+    	border: none;
+    	background-color: #FFFFFF;
+    }
 }
 
 .navbar {
@@ -142,17 +164,6 @@ p, a {
 }
 
 .profile {
-	.card {
-		border-left: 1px solid #ddd;
-		border-right: 1px solid #ddd;
-		border-bottom: 1px solid #ddd;
-		padding-bottom: 30px;
-		border-top-left-radius: 0px;
-		border-top-right-radius: 0px;
-		border-bottom-left-radius: 3px;
-		border-bottom-right-radius: 3px;
-		box-shadow: none;
-	}
 	img {
 		margin-top: 30px;
 		margin-bottom: 30px;
@@ -257,4 +268,13 @@ label {
 
 a.no-decoration {
 	text-decoration: none !important;
+}
+.bootstrap-tagsinput {
+	min-width: 100%;
+	.tag {
+		background: $primary-color;
+	    font-family: 'Open Sans';
+	    margin-top: 5px;
+	    margin-bottom: 5px;
+	}
 }
