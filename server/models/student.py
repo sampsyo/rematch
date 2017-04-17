@@ -1,4 +1,5 @@
 from server import db
+from models import Post
 
 
 class Student(db.Model):
@@ -87,18 +88,25 @@ class Student(db.Model):
     # or is it better to do that in the routes?
     
     @classmethod  # returns a list of the favorited projects
-    def get_student_favorited_projects_ids(cls, net_id):
+    def get_student_favorited_projects(cls, net_id):
         student = Student.get_student_by_netid(net_id)
+        posts = []
         if student:
             if student.favorited_projects is not None:
-                return student.favorited_projects.split(',')
+                for p in student.favorited_projects.split(','):
+                    post_obj = Post.get_post_by_id(p)
+                    if post_obj:
+                        posts.append(post_obj)
+                return posts
+
         else:
             return None
 
     @classmethod
     def add_favorited_project(cls, net_id, post_id):
         student = Student.get_student_by_netid(net_id)
-        if student:
+        post = Post.get_post_by_id(post_id)
+        if student and post:
             updated_projects = student.favorited_projects
             if student.favorited_projects is None:
                 updated_projects = str(post_id) + ","
