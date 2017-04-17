@@ -96,11 +96,24 @@ class Student(db.Model):
         if student:
             updated_projects = student.favorited_projects
             if student.favorited_projects == None:
-                updated_projects = post_id
+                updated_projects = post_id + ","
             else:
-                updated_projects = updated_projects + "," + post_id
+                updated_projects = updated_projects + post_id + ","
             Student.update_student(cls, net_id, favorited_projects = updated_projects)
-        
+    
+    @classmethod
+    def delete_favorited_project(cls, net_id, post_id):
+        student = Student.get_student_by_netid(net_id)
+        if student:
+            if student.favorited_projects != None:
+                favorited = student.favorited_projects.split(',')
+                if post_id in favorited:
+                    favorited.remove(post_id)
+                    favorited_string = ""
+                    for i in favorited:
+                        favorited_string = favorited_string + i + ","
+                    Student.update_student(cls, net_id, favorited_projects = favorited_string)
+
 
     @property
     def serialize(self):
