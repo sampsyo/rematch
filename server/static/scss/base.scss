@@ -27,7 +27,7 @@ p, a {
 
 .nav-tabs {
 	font-weight: 300;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     background: white;
     border: 1px solid #eaeaea;
     border-radius: 3px;
@@ -84,6 +84,7 @@ p, a {
 	font-weight: 300 !important;
 	.title {
 		margin-bottom: 20px;
+		margin-top: 5px;
 		text-transform: capitalize;
 	}
 	.professor {
@@ -135,7 +136,16 @@ p, a {
 			opacity: 1;
 		}
 	}
-
+	.star {
+		float: right;
+	    font-size: 25px;
+	    color: gold;
+	}
+	.star-outline {
+		float: right;
+	    font-size: 25px;
+	    color: #666;
+	}
 }
 
 .shadowed {
@@ -189,6 +199,14 @@ p, a {
 	}
 	.file-selected {
 		padding-left: 5px;
+	}
+	.checkbox {
+		label {
+			color: #444;
+		    text-transform: none;
+		    letter-spacing: 0px;
+		    font-size: 12px;
+		}
 	}
 	.resume {
 	    border: 1px solid #ad1b1b;
@@ -274,7 +292,8 @@ a.no-decoration {
 	.tag {
 		background: $primary-color;
 	    font-family: 'Open Sans';
-	    margin-top: 5px;
-	    margin-bottom: 5px;
+	    margin-top: 2px;
+	    margin-bottom: 2px;
+	    text-transform: none !important;
 	}
 }

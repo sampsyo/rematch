@@ -44,3 +44,21 @@ def delete_student(net_id):
             "error": "Could not delete student"
         })
 
+# maybe a put request?
+@app.route('/api/students/<string:net_id>/<int:post_id>', methods=['POST'])
+def add_favorited_project(net_id, post_id):
+    if Student.add_favorited_project(net_id, post_id):
+        return "Added post to favorited posts"
+    else:
+        return jsonify({
+            "error": "Could not delete student"
+        })
+
+@app.route('/api/students/<string:net_id>/<int:post_id>', methods=['DELETE'])
+def delete_favorited_project(net_id, post_id):
+    if Student.delete_favorited_project(net_id, post_id):
+        return "Deleted post from favorited posts"
+    else:
+        return jsonify({
+            "error": "Could not delete student"
+        })

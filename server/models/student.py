@@ -83,6 +83,9 @@ class Student(db.Model):
         else:
             return False
 
+    # can this just return the posts objects?
+    # or is it better to do that in the routes?
+    
     @classmethod  # returns a list of the favorited projects
     def get_student_favorited_projects_ids(cls, net_id):
         student = Student.get_student_by_netid(net_id)

@@ -1,9 +1,15 @@
 <div class="card">
+    <!-- if is starred by user -->
+    {% if post['id'] in favorited_projects %}
+        <div class="ion-ios-star star" data-id="{{post['id']}}"></div>
+    {% else %}
+        <div class="ion-ios-star-outline star-outline" data-id="{{post['id']}}"></div>
+    {% endif %}
     <h1 class="title">{{ post["title"] }}</h1>
     <h2 class="professor">{{ post["professor_id"] }}</h2>
     <p class="description">{{ post["description"] }}</p>
     {% if isInIndex: %}
-    <a class="more" href="/posts/{{ post['id'] }}">Read more...</a>
+    <a class="more" href="/posts/{{post['id']}}">Read more...</a>
     {% endif %}
     <ul class="tags">
         <a class="tag" href="#">summer</a>

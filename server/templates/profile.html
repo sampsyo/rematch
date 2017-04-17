@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label>Major</label>
                     <p>{{profile.major}}</p>
-                    <p>aa: {{starred}}</p>
+                    <!-- <p>aa: {{starred}}</p> -->
                 </div>
 
                 <div class="form-group">
@@ -43,12 +43,36 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Bio and Experience</label><br>
+                    <label>Bio &amp; Experience</label><br>
                     <textarea name="user_description" rows="5" class="form-control">{{profile.description}}</textarea>
                 </div>
                 <div class="form-group">
                     <label>Availability</label><br>
-                    
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox"> Monday
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox"> Tuesday
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox"> Wednessday
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox"> Thursday
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox"> Friday
+                        </label>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Skills</label><br>
@@ -72,21 +96,25 @@
 
     </div>
     <div role="tabpanel" class="tab-pane" id="starred">
-        <!-- If no stared posts -->
-        <div class="profile">
-            <div class="card">
-                <h2>You have no starred posts</h2>
+        
+        {% if favorited_posts %}
+            {% for post in favorited_posts %}        
+                {% include "partials/post.html" %}
+            {% endfor %}
+        {% else %}
+            <div class="profile">
+                <div class="card">
+                    <h2>You have no starred posts</h2>
+                </div>
             </div>
-        </div>
-        <!-- endif -->
-        <!-- else show posts -->
-
-        <!-- endelse -->
+        {% endif %}
     </div>
   </div>
 
 
     <script type="text/javascript">
+        profile = '{{profile}}';
+        console.log(profile);
         $('#user_year_select option').each(function() {
           if ($(this).val() == "{{ profile.year }}") {
             $(this).prop('selected','selected');
