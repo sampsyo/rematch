@@ -26,7 +26,7 @@ class Student(db.Model):
             name=name,
             email=net_id + "@cornell.edu"
         )
-        db.steession.add(student)
+        db.steession.add(student) #steession?
         db.session.commit()
         return student
 
@@ -81,6 +81,26 @@ class Student(db.Model):
             return True
         else:
             return False
+
+    @classmethod #returns a list of the favorited projects
+    def get_student_favorited_projects_ids(cls, net_id):
+        student = Student.get_student_by_netid(net_id)
+        if student:
+            return student.favorited_projects.split(',')
+        else:
+            return None
+
+    @classmethod
+    def add_favorited_project(cls, net_id, post_id):
+        student = Student.get_student_by_netid(net_id)
+        if student:
+            updated_projects = student.favorited_projects
+            if student.favorited_projects == None:
+                updated_projects = post_id
+            else:
+                updated_projects = updated_projects + "," + post_id
+            Student.update_student(cls, net_id, favorited_projects = updated_projects)
+        
 
     @property
     def serialize(self):
