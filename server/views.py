@@ -13,7 +13,7 @@ from models import Post, Student, Professor
 @app.route('/posts/')
 @app.route('/posts/tags=<tags>')
 @app.route('/posts/tags=<tags>/<all>')
-# I need to know the netid of the student here so I can get back the 
+# I need to know the netid of the student here so I can get back the
 # favorited_projects for them on the search / home page.
 def index(tags=None, all=None):
     user = {'nickname': 'Michael'}
@@ -35,7 +35,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         flash('Login requested for User="%s", remember_me=%s' %
-              (form.username.data, str(form.remember_me.data)))
+              (form.username.data, str(form.password.data)))
         return redirect('/index')
     return render_template(
         'login.html',
@@ -74,7 +74,6 @@ def profile(net_id):
           # favorited_projects=map(int,favorited_projects[:-1])
           favorited_projects=favorited_projects
         )
-
 
 
 @app.route('/posts/create', methods=['GET', 'POST'])
@@ -117,8 +116,9 @@ def editpost(post_id):
             id='Sign In'
         )
 
+
 @app.route('/styleguide', methods=['GET'])
 def get_styleguide():
     return render_template(
         'styleguide.html'
-        )
+    )
