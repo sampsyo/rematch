@@ -112,6 +112,7 @@ class Post(db.Model):
             Post.query.filter(Post.professor_id == professor_id).all()
         ]
 
+
     @classmethod
     def delete_post(cls, post_id):
         post = Post.get_post_by_id(post_id)
