@@ -273,6 +273,19 @@ code {
 		height: 45px;
 	}
 }
+.availability {
+	.form-group {
+		display: inline-block;
+	}
+}
+.weekday {
+	text-transform: none;
+    letter-spacing: 0;
+    color: #888;
+    font-size: 12px;
+}
+	
+
 label {
 	text-transform: uppercase;
 	letter-spacing: 1px;

@@ -44,6 +44,27 @@ class Post(db.Model):
             ]
 
     @classmethod
+    def get_compressed_posts(cls, tags=None, exclusive=False):
+        """ Gets posts in the database.  If a list of tags is supplied, filters
+        based on those tags.  If exclusive is set True, then post must have
+        all tags applied, else post must have at least one tag applied. """
+        if not tags:
+            return [p.serialize_compressed_post for p in Post.query.all()]
+
+        # TODO inefficiency: currently must pull all posts, then filter,
+        # because tags cannot be searched through SQLLite
+        if exclusive:
+            return [
+                p.serialize_compressed_post for p in Post.query.all() if
+                set(tags).issubset(set(p.serialize_compressed_post['tags']))
+            ]
+        else:
+            return [
+                p.serialize_compressed_post for p in Post.query.all() if
+                len(set(tags).intersection(set(p.serialize_compressed_post['tags']))) > 0
+            ]
+
+    @classmethod
     def create_post(cls, title, description, professor_id, tags,
                     qualifications, current_students, desired_skills,
                     capacity, current_number):
@@ -155,6 +176,21 @@ class Post(db.Model):
             'desired_skills': self.desired_skills,
             'capacity': self.capacity,
             'current_number': self.current_number,
+            'is_active': self.is_active,
+            'date_created': self.date_created,
+            'date_modified': self.date_modified
+        }
+
+    @property
+    def serialize_compressed_post(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            # only 150 words
+            'description': (" ".join(self.description.split(" ")[:75]) + '...') if len(self.description.split(" ")) > 75 else self.description,
+            # only 5 tags
+            'tags': self.tags.split(',')[:5],
+            'professor_id': self.professor_id,
             'is_active': self.is_active,
             'date_created': self.date_created,
             'date_modified': self.date_modified
