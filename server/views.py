@@ -45,6 +45,8 @@ def login():
 @app.route('/profile/<net_id>', methods=['GET', 'POST'])
 def profile(net_id):
     user = Student.get_student_by_netid(net_id)
+    #Student.add_favorited_project(net_id, 3)
+    starredPosts = Student.get_student_favorited_projects_ids(net_id)
     if request.method == 'POST': 
         result = request.form
         new_email = result["user_email"] or (net_id + "@cornell.edu")
@@ -73,6 +75,7 @@ def profile(net_id):
           'profile.html',
           title=user.name + "'s Profile",
           profile=user,
+          starred=starredPosts,
         )
 
 
