@@ -24,10 +24,6 @@
                 fileName = $(this).val().substring($(this).val().lastIndexOf("\\")+1);
                 $('.file-selected').html(fileName); 
             });
-            // $('.checkbox').on("click", function() {
-            //     // need an endpoint to load files from templates
-            //     $(this).load("templates/partials/optional-times-form.html .times-form");
-            // });
             $('.typeahead input').tagsinput({
                 typeahead: {
                     source: ['C++', 'Java', 'Test', 'Something', 'OK']

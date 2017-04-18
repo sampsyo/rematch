@@ -47,8 +47,7 @@
 
         <div class="form-group">
             <label>Contact Email*:</label>
-            <input type="text" name="post_professor_email" class="form-control"
-                                                           value='{{current_user.email}}'>
+            <input type="text" name="post_professor_email" class="form-control" value='{{current_user.email}}'>
         </div>
 
         <div class="form-group">
@@ -60,7 +59,7 @@
     <script type="text/javascript">
         $('.tags-input').tagsinput({
             typeahead: {
-                source: {{ tags | safe}}
+                source: {{ tags | safe }}
             },
             freeInput: false,
             // Typeahead fix
