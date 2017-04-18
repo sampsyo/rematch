@@ -62,7 +62,7 @@ def profile(net_id):
     favorited_projects = Student.get_student_favorited_projects(net_id)
     if request.method == 'POST':
         result = request.form
-        if current_user.is_student: # user is a PROFESSOR
+        if current_user.is_student:
             user = Student.get_student_by_netid(net_id)
             new_email = result["user_email"] or (net_id + "@cornell.edu")
             new_year = result["user_year"] or "Freshman"
@@ -78,9 +78,9 @@ def profile(net_id):
                 interests=interests, favorited_projects=None,
                 availability=availability
             )
-        else: # user is a PROFESSOR
+        else:
             new_email = result["user_email"] or (net_id + "@cornell.edu")
-            new_description = result["user_description"] or "no bio"
+            new_description = result["user_description"] or " "
             Professor.update_professor(net_id, name=None, email=new_email, desc=new_description, interests=None)
         return redirect("/profile/" + net_id, code=302)
     else:
