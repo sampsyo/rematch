@@ -1,13 +1,7 @@
 <!-- extend base layout -->
 {% extends "base.html" %}
 {% block content %}
-
-
     {% for post in posts %}        
-
         {% include "partials/post.html" %}
-
     {% endfor %}
-
-
 {% endblock %}
