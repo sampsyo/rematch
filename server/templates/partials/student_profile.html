@@ -124,6 +124,7 @@
         </form>
     </div>
     <div role="tabpanel" class="tab-pane" id="starred">
+        <h1>Student has favorited: {{ favorited_projects }}</h1>
         {% if favorited_projects %}
             {% for post in favorited_projects %}        
                 {% include "partials/post.html" %}
