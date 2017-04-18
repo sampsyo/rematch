@@ -101,11 +101,11 @@
                 </div>
                 <div class="form-group typeahead">
                     <label>Skills</label><br>
-                    <input autocomplete="off" class="tags-input" type="text" value="" data-role="tagsinput" name="skills"/>
+                    <input autocomplete="off" class="tags-input" type="text" value="{{ profile.skills }}" data-role="tagsinput" name="profile_skills"/>
                 </div>
                 <div class="form-group">
                     <label>Research Interests</label><br>
-                    <input autocomplete="off" class="tags-input" type="text" value="" data-role="tagsinput" name="interests"/>
+                    <input autocomplete="off" class="tags-input" type="text" value="{{ profile.interests }}" data-role="tagsinput" name="profile_interests"/>
                 </div>
                 <label class="resume">
                     <input id="resume-upload" type="file" name="resume"/>
@@ -115,10 +115,7 @@
                 <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary">
             </div>
         </div>
-
-
         </form>
-
     </div>
     <div role="tabpanel" class="tab-pane" id="starred">
         {% if favorited_projects %}
@@ -137,49 +134,49 @@
 
 
     <script type="text/javascript">
-        profile = '{{profile}}';
-        console.log(profile);
-        $('#user_year_select option').each(function() {
-          if ($(this).val() == "{{ profile.year }}") {
-            $(this).prop('selected','selected');
-          }
-        });
-        $(document).on("change keyup", "input, select, textarea", function () {
-            $('#save-profile-updates').css('display', 'block');
-        });
-        $('#resume-upload').bind('change', function() {
-            fileName = $(this).val().substring($(this).val().lastIndexOf("\\")+1);
-            $('.file-selected').html(fileName); 
-        });
-        $('.checkbox').on("click", function() {
-            // need an endpoint to load files from templates
-            $(this).load("templates/partials/optional-times-form.html .times-form");
-        });
-        $('.typeahead input').tagsinput({
-            typeahead: {
-                source: ['C++', 'Java', 'Test', 'Something', 'OK']
-            },
-            freeInput: false,
+        
+            $('#user_year_select option').each(function() {
+              if ($(this).val() == "{{ profile.year }}") {
+                $(this).prop('selected','selected');
+              }
+            });
+            $(document).on("change keyup", "input, select, textarea", function () {
+                $('#save-profile-updates').css('display', 'block');
+            });
+            $('#resume-upload').bind('change', function() {
+                fileName = $(this).val().substring($(this).val().lastIndexOf("\\")+1);
+                $('.file-selected').html(fileName); 
+            });
+            // $('.checkbox').on("click", function() {
+            //     // need an endpoint to load files from templates
+            //     $(this).load("templates/partials/optional-times-form.html .times-form");
+            // });
+            $('.typeahead input').tagsinput({
+                typeahead: {
+                    source: ['C++', 'Java', 'Test', 'Something', 'OK']
+                },
+                freeInput: false,
+                // Typeahead fix
+                onTagExists: function() {
+                    setTimeout(function() {
+                        $(">input[type=text]",".bootstrap-tagsinput").val("");
+                    }, 1);
+                }
+            });
             // Typeahead fix
-            onTagExists: function() {
-                setTimeout(function() {
+            $('.typeahead input').on('itemAdded', function(event) {
+                setTimeout(function(){
                     $(">input[type=text]",".bootstrap-tagsinput").val("");
                 }, 1);
-            }
-        });
-        // Typeahead fix
-        $('.typeahead input').on('itemAdded', function(event) {
-            setTimeout(function(){
-                $(">input[type=text]",".bootstrap-tagsinput").val("");
-            }, 1);
-        });
-        // No Enter button
-        $(window).keydown(function(event){
-            if(event.keyCode == 13) {
-                event.preventDefault();
-                return false;
-            }
-        });
+            });
+            // No Enter button
+            $(window).keydown(function(event){
+                if(event.keyCode == 13) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
+        
     </script>
 
 {% endblock %}

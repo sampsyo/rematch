@@ -62,11 +62,12 @@ def profile(net_id):
     favorited_projects = Student.get_student_favorited_projects(net_id)
     if request.method == 'POST':
         result = request.form
+        print(result)
         new_email = result["user_email"] or (net_id + "@cornell.edu")
         new_year = result["user_year"] or "Freshman"
         new_description = result["user_description"] or " "
-        interests = result["interests"]
-        skills = result["skills"]
+        interests = result["profile_interests"]
+        skills = result["profile_skills"]
         availability = ','.join(result.getlist("weekday"))
         # Flask fileupload ?
         resume = result["resume"]
