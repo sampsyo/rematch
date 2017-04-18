@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import jsonify, request, redirect, url_for
 from server import app
 from server.models.post import Post
 
@@ -92,5 +92,6 @@ def get_post_tags_raw():
 @app.route('/api/search/keywords=<keywords>', methods=['GET'])
 def search(keywords):
     keywords = keywords.lower().split(',')
-    return jsonify(posts=Post.get_posts_by_keywords(keywords=keywords))
+    return redirect(url_for("index",tags=None, all=None, posts=Post.get_posts_by_keywords(keywords=keywords)))
+    # return jsonify(posts=Post.get_posts_by_keywords(keywords=keywords))
 
