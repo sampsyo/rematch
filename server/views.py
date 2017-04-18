@@ -20,6 +20,11 @@ def index(tags=None, all=None):
         tags = tags.lower().strip().split(',')
     posts = Post.get_compressed_posts(tags=tags, exclusive=True if
                                       all == 'all' else False)
+    for post in posts:
+        post['professor_name'] = Professor.get_professor_by_netid(
+            post['professor_id']).name
+
+    print posts
     return render_template(
         "index.html",
         title='Home',
@@ -131,9 +136,15 @@ def createpost():
 @login_required
 def showpost(post_id):
     post = Post.get_post_by_id(post_id)
+    if not post:
+        return redirect('/index')
+
+    post = post.serialize
+    post['professor_name'] = Professor.get_professor_by_netid(
+        post['professor_id']).name
     return render_template(
         'post.html',
-        post=post.serialize
+        post=post
     )
 
 
