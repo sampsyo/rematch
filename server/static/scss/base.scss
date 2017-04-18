@@ -321,3 +321,10 @@ a.no-decoration {
 		vertical-align: 0 !important;
 	}
 }
+
+.alert {
+	background-color: $border-color;
+	* {
+		margin-bottom: 0;
+	}
+}
