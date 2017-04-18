@@ -14,7 +14,7 @@
       <ul class="nav navbar-nav navbar-right">
         {% if current_user.is_authenticated and not current_user.is_student: %}
         <li><a href="../posts/create"><i class="fa fa-pencil-square-o"
-                    aria-hidden="true"></i> Submit Listing></li>
+                                         aria-hidden="true"></i> Submit Listing</a></li>
         {% endif %}
         <li><a href="../posts"><i class="fa fa-globe" aria-hidden="true"></i> All Posts</a></li>
         {% if current_user.is_authenticated: %}
