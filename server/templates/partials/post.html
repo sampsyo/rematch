@@ -7,10 +7,14 @@
     {% endif %}
     {% endif %}
 
+
+    {% if current_user.net_id == post['professor_id']: %}
+    <p><a href="/posts/{{post['id']}}/edit" class="more">Edit this post.</a><p>
+    {% endif %}
+    
+
     <h1 class="title">{{ post["title"] }}</h1>
-    <h2 class="professor">{{ post['professor_name'] }}
-        {% if post['contact_email']: %}
-        , Email: <a href='mailto:{{ post["contact_email"] }}'>{{ post["contact_email"] }}</a>
+    <h2 class="professor">{{ post['professor_name'] }}{% if post['contact_email']: %}, Email: <a href='mailto:{{ post["contact_email"] }}'>{{ post["contact_email"] }}</a>
         {% endif %}</h2>
     <p class="description">{{ post["description"] }}</p>
     {% if isInIndex: %}

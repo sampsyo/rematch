@@ -233,6 +233,24 @@ class Post(db.Model):
             'date_modified': self.date_modified
         }
 
+    @classmethod
+    def empty(cls):
+        return {
+            'id': '',
+            'title': '',
+            'description': '',
+            'tags': '',
+            'qualifications': '',
+            'professor_id': '',
+            'desired_skills': '',
+            'is_active': '',
+            'date_created': '',
+            'date_modified': '',
+            'stale_date': '',
+            'project_link': '',
+            'contact_email': ''
+        }
+
     TAGS = [
         'artificial intelligence',
         'computer architecture',
