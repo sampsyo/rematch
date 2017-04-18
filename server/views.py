@@ -82,7 +82,8 @@ def profile(net_id):
           'profile.html',
           title=user.name + "'s Profile",
           profile=user,
-          favorited_projects=favorited_projects
+          favorited_projects=favorited_projects,
+          current_user=user
         )
 
 
