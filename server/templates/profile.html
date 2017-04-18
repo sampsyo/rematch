@@ -136,21 +136,24 @@
             $(this).load("templates/partials/optional-times-form.html .times-form");
         });
         $('.typeahead input').tagsinput({
-          typeahead: {
-            source: ['C++', 'Java', 'Test', 'Something', 'OK']
-          },
-          freeInput: false,
-          onTagExists: function(){
-            setTimeout(function(){
-                $(">input[type=text]",".bootstrap-tagsinput").val("");
-            }, 1);
-          }
+            typeahead: {
+                source: ['C++', 'Java', 'Test', 'Something', 'OK']
+            },
+            freeInput: false,
+            // Typeahead fix
+            onTagExists: function() {
+                setTimeout(function() {
+                    $(">input[type=text]",".bootstrap-tagsinput").val("");
+                }, 1);
+            }
         });
+        // Typeahead fix
         $('.typeahead input').on('itemAdded', function(event) {
             setTimeout(function(){
                 $(">input[type=text]",".bootstrap-tagsinput").val("");
             }, 1);
         });
+        // No Enter button
         $(window).keydown(function(event){
             if(event.keyCode == 13) {
                 event.preventDefault();

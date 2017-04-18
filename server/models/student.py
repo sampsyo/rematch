@@ -145,6 +145,7 @@ class Student(db.Model):
                         favorited_string = favorited_string + i + ","
                     Student.update_student(net_id,
                                            favorited_projects=favorited_string)
+                    return True
 
     @property
     def serialize(self):

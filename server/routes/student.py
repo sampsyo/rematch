@@ -64,5 +64,5 @@ def delete_favorited_project(net_id, post_id):
         return "Deleted post from favorited posts"
     else:
         return jsonify({
-            "error": "Could not delete student"
+            "error": "Could not delete from favorited posts"
         })
