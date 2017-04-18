@@ -15,7 +15,8 @@ from models import Post, Student, Professor
 def index(tags=None, all=None, posts=None):
     if tags:
         tags = tags.lower().strip().split(',')
-
+    else:
+        tags = Post.TAGS
     if not posts:
         posts = Post.get_compressed_posts(
             tags=tags, exclusive=True if all == 'all' else False)
