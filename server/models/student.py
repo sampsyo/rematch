@@ -122,15 +122,10 @@ class Student(db.Model):
         student = Student.get_student_by_netid(net_id)
         post = Post.get_post_by_id(post_id)
         if student and post:
-            updated_projects = student.favorited_projects
-            if student.favorited_projects is None:
-                updated_projects = str(post_id) + ","
-                Student.update_student(net_id,
-                                   favorited_projects=updated_projects)
-            elif str(post_id) not in updated_projects.split(','):
-                updated_projects = updated_projects + str(post_id) + ","
-                Student.update_student(net_id,
-                                   favorited_projects=updated_projects)
+            favorites = set(student.favorited_projects.split(','))
+            favorites.add(str(post_id))
+            new_favorites = ",".join(favorites)
+            Student.update_student(net_id, favorited_projects=new_favorites)
             return True
 
     @classmethod
@@ -138,15 +133,12 @@ class Student(db.Model):
         student = Student.get_student_by_netid(net_id)
         if student:
             if student.favorited_projects is not None:
-                favorited = student.favorited_projects.split(',')
-                if str(post_id) in favorited:
-                    favorited.remove(str(post_id))
-                    favorited_string = ""
-                    for i in favorited:
-                        favorited_string = favorited_string + i + ","
-                    Student.update_student(net_id,
-                                           favorited_projects=favorited_string)
-                    return True
+                new_favorites = ",".join(
+                    pid for pid in student.favorited_projects.split(',')
+                    if not pid == str(post_id)
+                )
+                Student.update_student(net_id, favorited_projects=new_favorites)
+                return True
 
     @property
     def serialize(self):
