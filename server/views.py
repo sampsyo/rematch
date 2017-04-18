@@ -60,6 +60,8 @@ def logout():
 def profile(net_id):
     user = Student.get_student_by_netid(net_id)
     favorited_projects = Student.get_student_favorited_projects(net_id)
+    if user.availability is None:
+        user.availability = ','
     if request.method == 'POST':
         result = request.form
         print(result)
