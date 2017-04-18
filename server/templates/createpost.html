@@ -81,6 +81,13 @@
                 $(">input[type=text]",".bootstrap-tagsinput").val("");
             }, 1);
         });
+        // No Enter button
+        $('.bootstrap-tagsinput').keydown(function(event){
+            if(event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
     </script>
 
 {% endblock %}
