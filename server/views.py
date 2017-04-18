@@ -59,31 +59,35 @@ def logout():
 @app.route('/profile/<net_id>', methods=['GET', 'POST'])
 @login_required
 def profile(net_id):
-    user = Student.get_student_by_netid(net_id)
-    favorited_projects = Student.get_student_favorited_projects(net_id)
     if request.method == 'POST':
         result = request.form
-        new_email = result["user_email"] or (net_id + "@cornell.edu")
-        new_year = result["user_year"] or "Freshman"
-        new_description = result["user_description"] or " "
-        interests = result["profile_interests"] or " "
-        skills = result["profile_skills"] or " "
-        availability = ','.join(result.getlist("weekday"))
-        # Flask fileupload ?
-        resume = result["resume"]
-        user = Student.update_student(
-            net_id, email=new_email, name=None, major=user.major, year=new_year,
-            skills=skills, resume=resume, description=new_description,
-            interests=interests, favorited_projects=None,
-            availability=availability
-        )
+        if current_user.is_student: # user is a PROFESSOR
+            user = Student.get_student_by_netid(net_id)
+            favorited_projects = Student.get_student_favorited_projects(net_id)
+            new_email = result["user_email"] or (net_id + "@cornell.edu")
+            new_year = result["user_year"] or "Freshman"
+            new_description = result["user_description"] or " "
+            interests = result["profile_interests"] or " "
+            skills = result["profile_skills"] or " "
+            availability = ','.join(result.getlist("weekday"))
+            # Flask fileupload ?
+            resume = result["resume"]
+            Student.update_student(
+                net_id, email=new_email, name=None, major=user.major, year=new_year,
+                skills=skills, resume=resume, description=new_description,
+                interests=interests, favorited_projects=None,
+                availability=availability
+            )
+        else: # user is a PROFESSOR
+            new_email = result["user_email"] or (net_id + "@cornell.edu")
+            new_description = result["user_description"] or "no bio"
+            Professor.update_professor(net_id, name=None, email=new_email, desc=new_description, interests=None)
         return redirect("/profile/" + net_id, code=302)
     else:
         return render_template(
           'profile.html',
           title=current_user.name + "'s Profile",
-          profile=user,
-          favorited_projects=favorited_projects,
+          profile=current_user
         )
 
 
