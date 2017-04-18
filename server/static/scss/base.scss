@@ -146,6 +146,12 @@ p, a {
 	    font-size: 25px;
 	    color: #666;
 	}
+
+	&.narrow {
+		max-width: 400px;
+		margin-left: auto;
+		margin-right: auto;
+	}
 }
 
 .shadowed {
@@ -308,5 +314,17 @@ a.no-decoration {
 	    margin-top: 2px;
 	    margin-bottom: 2px;
 	    text-transform: none !important;
+	}
+}
+.twitter-typeahead {
+	.tt-input {
+		vertical-align: 0 !important;
+	}
+}
+
+.alert {
+	background-color: $border-color;
+	* {
+		margin-bottom: 0;
 	}
 }

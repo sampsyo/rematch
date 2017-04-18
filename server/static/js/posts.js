@@ -1,19 +1,35 @@
-// posts
 $(document).ready(function() {
-    $(".star").on("click", function() {
-        console.log('Unstar this post id: ' + $(this).data('id'));
-        // can grab out of jinja, since its globally defined unlike each post
-        console.log('user netid: ' + '{{profile.netid}}');
-        $.ajax({
-            type: 'DELETE',
-            url: "/api/students//{{post['id']}}",
-            done: function(response) {
-                console.log(response);
-            }
-        });
-    });
-    $(".star-outline").on("click", function() {
-        console.log('Star this post: ' + $(this).data('id'));
-        console.log('user netid: ' + profile);
+    $(".post_star").on("click", function() {
+        if($(this).hasClass('star') && $(this).hasClass('ion-ios-star')) {
+            $(this).addClass('star-outline');
+            $(this).addClass('ion-ios-star-outline');
+            $(this).removeClass('star');
+            $(this).removeClass('ion-ios-star');
+            $.ajax({
+                type: 'DELETE',
+                url: "/api/students/" + $('meta').data('user-id') + "/" + $(this).data('id'),
+                success: function(response) {
+                    console.log(response);
+                },
+                failure: function(response) {
+                    console.log(response);
+                }
+            });
+        } else {
+            $(this).addClass('star');
+            $(this).addClass('ion-ios-star');
+            $(this).removeClass('star-outline');
+            $(this).removeClass('ion-ios-star-outline');
+            $.ajax({
+                type: 'POST',
+                url: "/api/students/" + $('meta').data('user-id') + "/" + $(this).data('id'),
+                success: function(response) {
+                    console.log(response);
+                },
+                failure: function(response) {
+                    console.log(response);
+                }
+            });
+        }
     });
 });

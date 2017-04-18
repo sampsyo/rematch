@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import jsonify, request, redirect, url_for
 from server import app
 from server.models.post import Post
 
@@ -40,7 +40,8 @@ def create_post():
         description=r.get('description'),
         tags=r.get('tags'),
         qualifications='',
-        desired_skills=""
+        desired_skills="",
+        stale_days=int(r.get('stale_days'))
     )
     return jsonify(post=post.serialize)
 
@@ -83,5 +84,7 @@ def get_professor_posts_raw(professor_id):
     )
 
 
-
+@app.route('/raw/post-tags.json', methods=['GET'])
+def get_post_tags_raw():
+    return jsonify(tags=list(Post.TAGS))
 
