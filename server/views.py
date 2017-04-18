@@ -62,7 +62,7 @@ def profile(net_id):
     favorited_projects = Student.get_student_favorited_projects(net_id)
     if request.method == 'POST':
         result = request.form
-        if current_user.is_student: # user is a PROFESSOR
+        if current_user.is_student:
             user = Student.get_student_by_netid(net_id)
             new_email = result["user_email"] or (net_id + "@cornell.edu")
             new_year = result["user_year"] or "Freshman"
@@ -73,15 +73,19 @@ def profile(net_id):
             # Flask fileupload ?
             resume = result["resume"]
             Student.update_student(
-                net_id, email=new_email, name=None, major=user.major, year=new_year,
+                net_id, email=new_email, name=None, major=user.major,
+                year=new_year,
                 skills=skills, resume=resume, description=new_description,
                 interests=interests, favorited_projects=None,
                 availability=availability
             )
-        else: # user is a PROFESSOR
+        else:
             new_email = result["user_email"] or (net_id + "@cornell.edu")
             new_description = result["user_description"] or "no bio"
-            Professor.update_professor(net_id, name=None, email=new_email, desc=new_description, interests=None)
+            Professor.update_professor(
+                net_id, name=None, email=new_email,
+                desc=new_description, interests=None
+            )
         return redirect("/profile/" + net_id, code=302)
     else:
         return render_template(
@@ -101,20 +105,22 @@ def createpost():
     if request.method == 'POST':
         result = request.form
         print(result)
+        import ipdb; ipdb.set_trace()
         Post.create_post(
             result["post_title"],
             result["post_description"],
             current_user.net_id,
             result['tags'].lower().strip().split(','),
-            "qualifications",
-            result["required-skills"],
-            result['stale_days']
+            '',  # qualifications
+            '',  # desired skills
+            None if result['stale-days'] == '-1' else int(result['stale-days'])
         )
         return redirect("/posts", code=302)
     else:
         return render_template(
             'createpost.html',
-            title='Sign In'
+            title='Submit Research Listing',
+            tags=Post.TAGS
         )
 
 

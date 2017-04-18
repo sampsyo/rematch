@@ -10,28 +10,8 @@
     <form method="POST">
 
         <div class="form-group">
-            <label>Email*:</label>
-            <input type="text" name="post_professor_email" class="form-control">
-        </div>
-
-        <div class="form-group">
             <label>Project Title*:</label>
             <input type="text" name="post_title" class="form-control">
-        </div>
-
-        <div class="form-group">
-            <label>Department:</label>
-            <input type="text" name="post_department" class="form-control">
-        </div>
-
-        <div class="form-group">
-            <label>Research Areas*:</label><br>
-            <input autocomplete="off" class="tags-input" type="text" data-role="tagsinput" name="tags"/>
-        </div>
-
-        <div class="form-group">
-            <label>Project Description*:</label>
-            <textarea name="post_description" class="form-control" rows="5"></textarea>
         </div>
 
         <div class="form-group">
@@ -40,16 +20,35 @@
         </div>
 
         <div class="form-group">
-            <label>Required Skills:</label>
-            <textarea name="required-skills" class="form-control" rows="5"></textarea>
+            <label>Project Description*:</label>
+            <textarea name="post_description" class="form-control" rows="5"></textarea>
         </div>
 
         <div class="form-group">
-        <label>Available Semesters:</label><br>
-            <input type="checkbox"> Spring &nbsp;
-            <input type="checkbox"> Summer &nbsp;
-            <input type="checkbox"> Fall &nbsp;
-            <input type="checkbox"> Winter &nbsp;
+            <label>tags*:</label><br>
+            <input autocomplete="off" class="tags-input" type="text" data-role="tagsinput" name="tags"/>
+        </div>
+
+
+        {#
+        <div class="form-group">
+            <label>Required Skills:</label>
+            <textarea name="required-skills" class="form-control" rows="5"></textarea>
+        </div>
+        #}
+
+        <div class="form-group">
+        <label>How long would you like to keep this listing live?:</label><br>
+            <input type="checkbox" name="stale-days" value="30"> 30 Days &nbsp;
+            <input type="checkbox" name="stale-days" value="60"> 60 Days &nbsp;
+            <input type="checkbox" name="stale-days" value="90"> 90 Days &nbsp;
+            <input type="checkbox" name="stale-days" value="-1"> Continuously &nbsp;
+        </div>
+
+        <div class="form-group">
+            <label>Contact Email*:</label>
+            <input type="text" name="post_professor_email" class="form-control"
+                                                           value='{{current_user.email}}'>
         </div>
 
         <div class="form-group">
@@ -61,7 +60,7 @@
     <script type="text/javascript">
         $('.tags-input').tagsinput({
             typeahead: {
-                source: ['Artificial Intelligence', 'Computer Architecture & Engineering', 'Biosystems & Computational Biology', 'Bioinformatics Programming', 'Database Management Systems', 'Education', 'Graphics', 'Human-Computer Interaction', 'Operating Systems & Networking', 'Programming Systems', 'Scientific Computing', 'Security', 'Theory', 'Natural Language Processing', 'Distributed Computing', 'Algorithms', 'Robotics', 'Information Processing', 'Computer Vision', 'Ethics', 'Design', 'Other']
+                source: {{ tags | safe}}
             },
             freeInput: false,
             // Typeahead fix

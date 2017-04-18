@@ -82,3 +82,8 @@ def get_professor_posts_raw(professor_id):
         professor_id=professor_id,
         posts=Post.get_posts_by_professor_id(professor_id)
     )
+
+
+@app.route('/raw/post-tags.json', methods=['GET'])
+def get_post_tags_raw():
+    return jsonify(tags=list(Post.TAGS))

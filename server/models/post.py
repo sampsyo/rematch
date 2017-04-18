@@ -26,7 +26,7 @@ class Post(db.Model):
     current_number = db.Column(db.Integer)
 
     def is_stale(self):
-        return self.stale_date is not None and self.stale_date < datetime.now()
+        return self.stale_date is not None and self.stale_date < datetime.datetime.now()
 
     @classmethod
     def refresh(cls, post_id, days_added):
@@ -83,9 +83,10 @@ class Post(db.Model):
                     qualifications, desired_skills, stale_days):
         # if not (Professor.get_professor_by_netid(professor_id)):
         #    return None
+        import ipdb; ipdb.set_trace()
         stale_date = None
         if stale_days:
-            stale_date = datetime.now() + datetime.timedelta(days=stale_days)
+            stale_date = datetime.datetime.now() + datetime.timedelta(days=stale_days)
 
         post = Post(
             title=title,
@@ -218,3 +219,30 @@ class Post(db.Model):
             'date_created': self.date_created,
             'date_modified': self.date_modified
         }
+
+    TAGS = [
+        'artificial intelligence',
+        'computer architecture',
+        'computational biology',
+        'databases',
+        'education',
+        'graphics',
+        'human computer interaction',
+        'operating systems',
+        'networking',
+        'programming languages',
+        'scientific computing',
+        'security',
+        'theory',
+        'natural language processing',
+        'algorithms',
+        'distributed systems',
+        'robotics',
+        'information processing',
+        'computer vision',
+        'ethics',
+        'design',
+        'compilers',
+        'machine learning',
+        'other'
+    ]
