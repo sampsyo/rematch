@@ -120,7 +120,9 @@
                     <input id="resume-upload" type="file" name="resume"/>
                     <i class="fa fa-cloud-upload"></i> Upload Reusme
                 </label>
-                <span class="file-selected"></span>
+                {% if profile.resume %}
+                    <span class="file-selected">{{profile.resume}}</span>
+                {% endif %}
                 <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary">
             </div>
         </div>
@@ -178,8 +180,9 @@
                     $(">input[type=text]",".bootstrap-tagsinput").val("");
                 }, 1);
             });
+            
             // No Enter button
-            $(window).keydown(function(event){
+            $('.typeahead input').keydown(function(event){
                 if(event.keyCode == 13) {
                     event.preventDefault();
                     return false;
