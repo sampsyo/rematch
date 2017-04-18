@@ -40,7 +40,8 @@ def create_post():
         description=r.get('description'),
         tags=r.get('tags'),
         qualifications='',
-        desired_skills=""
+        desired_skills="",
+        stale_days=int(r.get('stale_days'))
     )
     return jsonify(post=post.serialize)
 
@@ -81,7 +82,3 @@ def get_professor_posts_raw(professor_id):
         professor_id=professor_id,
         posts=Post.get_posts_by_professor_id(professor_id)
     )
-
-
-
-
