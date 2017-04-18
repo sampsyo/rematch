@@ -51,7 +51,6 @@ def login():
             else:
                 flash('Username or Password Incorrect!')
                 return redirect('/login')
-    flash('Username or Password Incorrect!')
     return render_template('login.html', form=form)
 
 
