@@ -24,7 +24,7 @@ def index(tags=None, all=None):
         post['professor_name'] = Professor.get_professor_by_netid(
             post['professor_id']).name
 
-    print posts
+    posts.sort(key=lambda x: x['date_created'], reverse=True)
     return render_template(
         "index.html",
         title='Home',
