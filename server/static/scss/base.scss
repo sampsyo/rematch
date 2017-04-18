@@ -146,6 +146,12 @@ p, a {
 	    font-size: 25px;
 	    color: #666;
 	}
+
+	&.narrow {
+		max-width: 400px;
+		margin-left: auto;
+		margin-right: auto;
+	}
 }
 
 .shadowed {
