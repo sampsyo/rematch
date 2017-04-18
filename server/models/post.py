@@ -178,8 +178,8 @@ class Post(db.Model):
         posts = []
         for p in Post.query.filter_by(is_active=True).all():
             for keyword in keywords: #check if its actually gonna be a list
-                if (keyword in p.title) or (keyword in p.description) 
-                    or (keyword in p.tags) or (keyword in p.professor_id)
+                if (keyword in p.title) or (keyword in p.description) \
+                    or (keyword in p.tags) or (keyword in p.professor_id) \
                     or (keyword in p.desired_skills):
                     posts.append(p.serialize_compressed_post)
         return posts
