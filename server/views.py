@@ -129,7 +129,7 @@ def showpost(post_id):
     post = Post.get_post_by_id(post_id)
     return render_template(
         'post.html',
-        post=post
+        post=post.serialize
     )
 
 

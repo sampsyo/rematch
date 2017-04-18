@@ -1,9 +1,11 @@
 <div class="card">
+    {% if current_user.is_student %}
     <!-- if is starred by user -->
     {% if current_user.favorited_projects and post['id']|string in current_user.favorited_projects.split(",") %}
         <div class="post_star ion-ios-star star" data-id="{{post['id']}}"></div>
     {% else %}
         <div class="post_star ion-ios-star-outline star-outline" data-id="{{post['id']}}"></div>
+    {% endif %}
     {% endif %}
 
     <h1 class="title">{{ post["title"] }}</h1>
@@ -14,7 +16,7 @@
     {% endif %}
     <ul class="tags">
         {% for tag in post['tags'] %}
-        <a class="tag" href="#">{{tag}}</a>
+        <a class="tag" href="/posts/tags={{tag}}">{{tag}}</a>
         {% endfor %}
     </ul>
 </div>
