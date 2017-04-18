@@ -1,9 +1,9 @@
 <div class="card">
     <!-- if is starred by user -->
     {% if post in favorited_projects %}
-        <div class="ion-ios-star star" data-id="{{post['id']}}"></div>
+        <div class="post_star ion-ios-star star" data-id="{{post['id']}}"></div>
     {% else %}
-        <div class="ion-ios-star-outline star-outline" data-id="{{post['id']}}"></div>
+        <div class="post_star ion-ios-star-outline star-outline" data-id="{{post['id']}}"></div>
     {% endif %}
     <h1 class="title">{{ post["title"] }}</h1>
     <h2 class="professor">{{ post["professor_id"] }}</h2>
