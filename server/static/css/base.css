@@ -117,6 +117,10 @@ p, a {
     float: right;
     font-size: 25px;
     color: #666; }
+  .card.narrow {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto; }
 
 .shadowed {
   box-shadow: 0.1px 0.1px 0.1px 0.1px rgba(33, 33, 33, 0.2); }
