@@ -2,7 +2,6 @@ from flask import render_template, flash, redirect, request
 from server import app
 from .forms import LoginForm
 from flask_login import login_user, logout_user, login_required, current_user
-from flask import render_template_string
 from models import Post, Student, Professor
 
 
@@ -70,6 +69,9 @@ def logout():
 def profile(net_id):
     favorited_projects = Student.get_student_favorited_projects(net_id)
     post_collection = Post.get_posts_by_professor_id(net_id)
+    for post in post_collection:
+        post['professor_name'] = Professor.get_professor_by_netid(
+            post['professor_id']).name
     if request.method == 'POST':
         result = request.form
         if current_user.is_student:
@@ -133,7 +135,8 @@ def createpost():
         return render_template(
             'createpost.html',
             title='Submit Research Listing',
-            tags=Post.TAGS
+            tags=Post.TAGS,
+            post=Post.empty
         )
 
 
@@ -162,15 +165,22 @@ def editpost(post_id):
 
     if request.method == 'POST':
         result = request.form
-        return render_template_string(
-            "{{ result.title }} result {{ result.description }}",
-            result=result
+        Post.update_post(
+            post_id,
+            description=result['post_description'],
+            tags=result['tags'].split(','),
+            title=result['post_title'],
+            contact_email=result['post_professor_email'],
+            project_link=result['project-link']
         )
+        return redirect('/posts/%s' % post_id)
     else:
+        post = post.serialize
+        post['tags'] = ",".join(post['tags'])
         return render_template(
             'createpost.html',
             id='Sign In',
-            post=post.serialize
+            post=post
         )
 
 
