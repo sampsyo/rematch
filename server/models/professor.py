@@ -9,6 +9,7 @@ class Professor(db.Model):
     password = db.Column(db.String(128))
     desc = db.Column(db.String(10000))
     interests = db.Column(db.String(10000))
+    is_student = False
     # This is for Login Stuff
     is_authenticated = True
     is_active = True

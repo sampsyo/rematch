@@ -16,7 +16,6 @@ from models import Post, Student, Professor
 # favorited_projects for them on the search / home page.
 @login_required
 def index(tags=None, all=None):
-    user = {'nickname': 'Michael'}
     if tags:
         tags = tags.lower().strip().split(',')
     posts = Post.get_compressed_posts(tags=tags, exclusive=True if
@@ -24,7 +23,7 @@ def index(tags=None, all=None):
     return render_template(
         "index.html",
         title='Home',
-        user=user,
+        user=current_user,
         posts=posts,
         search=True,
         isInIndex=True
@@ -46,7 +45,7 @@ def login():
             else:
                 flash('Username or Password Incorrect!')
                 return redirect('/login')
-    flash('Invalid Input. Please Type both Username and Password.')
+    flash('Username or Password Incorrect!')
     return render_template('login.html', form=form)
 
 
