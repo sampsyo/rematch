@@ -1,10 +1,11 @@
 <div class="card">
     <!-- if is starred by user -->
-    {% if post in favorited_projects %}
+    {% if current_user.favorited_projects and post['id']|string in current_user.favorited_projects.split(",") %}
         <div class="post_star ion-ios-star star" data-id="{{post['id']}}"></div>
     {% else %}
         <div class="post_star ion-ios-star-outline star-outline" data-id="{{post['id']}}"></div>
     {% endif %}
+
     <h1 class="title">{{ post["title"] }}</h1>
     <h2 class="professor">{{ post["professor_id"] }}</h2>
     <p class="description">{{ post["description"] }}</p>
