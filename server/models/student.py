@@ -62,7 +62,7 @@ class Student(db.Model):
             student.major = major
         if year:
             student.year = year
-        if skills:
+        if skills is not None:
             student.skills = skills
         if resume:
             student.resume = resume
@@ -70,7 +70,7 @@ class Student(db.Model):
             student.description = description
         if interests:
             student.interests = interests
-        if favorited_projects:
+        if favorited_projects is not None:
             student.favorited_projects = favorited_projects
         if availability:
             student.availability = availability
@@ -122,7 +122,11 @@ class Student(db.Model):
         student = Student.get_student_by_netid(net_id)
         post = Post.get_post_by_id(post_id)
         if student and post:
-            favorites = set(student.favorited_projects.split(','))
+
+            favorites = set()
+            if student.favorited_projects:
+                favorites = set(student.favorited_projects.split(','))
+
             favorites.add(str(post_id))
             new_favorites = ",".join(favorites)
             Student.update_student(net_id, favorited_projects=new_favorites)
