@@ -60,12 +60,9 @@ def logout():
 @login_required
 def profile(net_id):
     user = Student.get_student_by_netid(net_id)
-    print(user.skills)
-    print(user.interests)
     favorited_projects = Student.get_student_favorited_projects(net_id)
     if request.method == 'POST':
         result = request.form
-        print(result)
         new_email = result["user_email"] or (net_id + "@cornell.edu")
         new_year = result["user_year"] or "Freshman"
         new_description = result["user_description"] or " "
@@ -84,10 +81,9 @@ def profile(net_id):
     else:
         return render_template(
           'profile.html',
-          title=user.name + "'s Profile",
+          title=current_user.name + "'s Profile",
           profile=user,
           favorited_projects=favorited_projects,
-          current_user=current_user
         )
 
 
