@@ -99,7 +99,7 @@ def createpost():
 
     if request.method == 'POST':
         result = request.form
-
+        print(result)
         Post.create_post(
             result["post_title"],
             result["post_description"],
