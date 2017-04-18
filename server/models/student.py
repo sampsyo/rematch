@@ -110,7 +110,7 @@ class Student(db.Model):
                 for p in student.favorited_projects.split(','):
                     post_obj = Post.get_post_by_id(p)
                     if post_obj:
-                        posts.append(post_obj)
+                        posts.append(post_obj.serialize_compressed_post)
                 return posts
 
         else:

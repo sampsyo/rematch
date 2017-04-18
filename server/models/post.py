@@ -172,6 +172,18 @@ class Post(db.Model):
             s.serialize for s in Post.query.filter_by(is_active=False).all()
         ]
 
+    #may be broken
+    @classmethod
+    def get_posts_by_keywords(cls, keywords):
+        posts = []
+        for p in Post.query.filter_by(is_active=True).all():
+            for keyword in keywords: #check if its actually gonna be a list
+                if (keyword in p.title) or (keyword in p.description) 
+                    or (keyword in p.tags) or (keyword in p.professor_id)
+                    or (keyword in p.desired_skills):
+                    posts.append(p.serialize_compressed_post)
+        return posts
+
     @property
     def serialize(self):
         return {
