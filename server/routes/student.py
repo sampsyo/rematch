@@ -54,7 +54,7 @@ def add_favorited_project(net_id, post_id):
         return "Added post to favorited posts"
     else:
         return jsonify({
-            "error": "Could not delete student"
+            "error": "Could not add favorited post to student"
         })
 
 

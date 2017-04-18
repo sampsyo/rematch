@@ -126,8 +126,9 @@ class Student(db.Model):
                 updated_projects = str(post_id) + ","
             else:
                 updated_projects = updated_projects + str(post_id) + ","
-            Student.update_student(net_id,
-                                   favorited_projects=updated_projects)
+            Student.update_student(net_id,favorited_projects=updated_projects)
+            return True
+
 
     @classmethod
     def delete_favorited_project(cls, net_id, post_id):

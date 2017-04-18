@@ -245,4 +245,7 @@ a.no-decoration {
     margin-bottom: 2px;
     text-transform: none !important; }
 
+.twitter-typeahead .tt-input {
+  vertical-align: 0 !important; }
+
 /*# sourceMappingURL=base.css.map */

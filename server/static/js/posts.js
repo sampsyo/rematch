@@ -6,7 +6,7 @@ $(document).ready(function() {
         console.log('user netid: ' + '{{profile.netid}}');
         $.ajax({
             type: 'DELETE',
-            url: "/api/students//{{post['id']}}",
+            url: "/api/students/laz37/1",
             done: function(response) {
                 console.log(response);
             }

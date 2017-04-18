@@ -81,11 +81,11 @@
                 </div>
                 <div class="form-group typeahead">
                     <label>Skills</label><br>
-                    <input class="tags-input" type="text" value="" data-role="tagsinput"/>
+                    <input autocomplete="off" class="tags-input" type="text" value="" data-role="tagsinput"/>
                 </div>
-                <div class="form-group typeahead">
+                <div class="form-group">
                     <label>Research Interests</label><br>
-                    <input class="tags-input" type="text" value="" data-role="tagsinput"/>
+                    <input autocomplete="off" class="tags-input" type="text" value="" data-role="tagsinput"/>
                 </div>
                 <label class="resume">
                     <input id="resume-upload" type="file"/>
@@ -101,9 +101,8 @@
 
     </div>
     <div role="tabpanel" class="tab-pane" id="starred">
-        
-        {% if favorited_posts %}
-            {% for post in favorited_posts %}        
+        {% if favorited_projects %}
+            {% for post in favorited_projects %}        
                 {% include "partials/post.html" %}
             {% endfor %}
         {% else %}
@@ -140,7 +139,23 @@
           typeahead: {
             source: ['C++', 'Java', 'Test', 'Something', 'OK']
           },
-          freeInput: false
+          freeInput: false,
+          onTagExists: function(){
+            setTimeout(function(){
+                $(">input[type=text]",".bootstrap-tagsinput").val("");
+            }, 1);
+          }
+        });
+        $('.typeahead input').on('itemAdded', function(event) {
+            setTimeout(function(){
+                $(">input[type=text]",".bootstrap-tagsinput").val("");
+            }, 1);
+        });
+        $(window).keydown(function(event){
+            if(event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
         });
     </script>
 

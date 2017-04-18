@@ -1,6 +1,6 @@
 <div class="card">
     <!-- if is starred by user -->
-    {% if post['id'] in favorited_projects %}
+    {% if post in favorited_projects %}
         <div class="ion-ios-star star" data-id="{{post['id']}}"></div>
     {% else %}
         <div class="ion-ios-star-outline star-outline" data-id="{{post['id']}}"></div>
