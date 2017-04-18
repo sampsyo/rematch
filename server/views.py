@@ -87,13 +87,16 @@ def profile(net_id):
           title=user.name + "'s Profile",
           profile=user,
           favorited_projects=favorited_projects,
-          current_user=user
+          current_user=current_user
         )
 
 
 @app.route('/posts/create', methods=['GET', 'POST'])
 @login_required
 def createpost():
+    if current_user.is_student:
+        return redirect('/index')
+
     if request.method == 'POST':
         result = request.form
 

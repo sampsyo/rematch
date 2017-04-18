@@ -1,10 +1,9 @@
-<!-- extend base layout -->
-{% extends "base.html" %}
-{% block content %}
 
-<div class="spacer"></div>
-
-    {% include "partials/student_profile.html" %}
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#myprofile" aria-controls="myprofile" role="tab" data-toggle="tab">My Profile</a></li>
+    <li role="presentation"><a href="#starred" aria-controls="starred" role="tab" data-toggle="tab">Starred Posts</a></li>
+  </ul>
 
   <!-- Tab panes -->
   <div class="tab-content">
@@ -18,6 +17,7 @@
                 <div class="form-group">
                     <label>Major</label>
                     <p>{{profile.major}}</p>
+                    <!-- <p>aa: {{starred}}</p> -->
                 </div>
 
                 <div class="form-group">
@@ -137,51 +137,3 @@
         {% endif %}
     </div>
   </div>
-    <script type="text/javascript">
-        
-            $('#user_year_select option').each(function() {
-              if ($(this).val() == "{{ profile.year }}") {
-                $(this).prop('selected','selected');
-              }
-            });
-            $(document).on("change keyup", "input, select, textarea", function () {
-                $('#save-profile-updates').css('display', 'block');
-            });
-            $('#resume-upload').bind('change', function() {
-                fileName = $(this).val().substring($(this).val().lastIndexOf("\\")+1);
-                $('.file-selected').html(fileName); 
-            });
-            // $('.checkbox').on("click", function() {
-            //     // need an endpoint to load files from templates
-            //     $(this).load("templates/partials/optional-times-form.html .times-form");
-            // });
-            $('.typeahead input').tagsinput({
-                typeahead: {
-                    source: ['C++', 'Java', 'Test', 'Something', 'OK']
-                },
-                freeInput: false,
-                // Typeahead fix
-                onTagExists: function() {
-                    setTimeout(function() {
-                        $(">input[type=text]",".bootstrap-tagsinput").val("");
-                    }, 1);
-                }
-            });
-            // Typeahead fix
-            $('.typeahead input').on('itemAdded', function(event) {
-                setTimeout(function(){
-                    $(">input[type=text]",".bootstrap-tagsinput").val("");
-                }, 1);
-            });
-            
-            // No Enter button
-            $('.typeahead input').keydown(function(event){
-                if(event.keyCode == 13) {
-                    event.preventDefault();
-                    return false;
-                }
-            });
-        
-    </script>
-
-{% endblock %}

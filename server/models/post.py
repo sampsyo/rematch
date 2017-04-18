@@ -128,7 +128,10 @@ class Post(db.Model):
 
     @classmethod
     def get_post_by_id(cls, post_id):
-        post = Post.query.filter(Post.id == post_id).first()
+        if not post_id:
+            return None
+
+        post = Post.query.filter(Post.id == int(post_id)).first()
         if post:
             return post
         else:
@@ -140,7 +143,6 @@ class Post(db.Model):
             p.serialize for p in
             Post.query.filter(Post.professor_id == professor_id).all()
         ]
-
 
     @classmethod
     def delete_post(cls, post_id):
