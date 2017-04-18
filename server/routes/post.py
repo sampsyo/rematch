@@ -88,9 +88,3 @@ def get_professor_posts_raw(professor_id):
 def get_post_tags_raw():
     return jsonify(tags=list(Post.TAGS))
 
-
-@app.route('/api/search/keywords=<keywords>', methods=['GET'])
-def search(keywords):
-    keywords = keywords.lower().split(',')
-    return redirect(url_for("index",tags=None, all=None, posts=Post.get_posts_by_keywords(keywords=keywords)))
-
