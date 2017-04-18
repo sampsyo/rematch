@@ -46,11 +46,14 @@
                     <label>Bio &amp; Experience</label><br>
                     <textarea name="user_description" rows="5" class="form-control">{{profile.description}}</textarea>
                 </div>
+                {% if profile.availability %}
+                    {% set avalible = profile.availability.split(',') %}
+                {% endif %}
                 <div class="form-group availability">
                     <label>Availability</label><br>
                     <div class="checkbox">
                         <label>
-                            {% if 'monday' in profile.availability.split(',') %}
+                            {% if 'monday' in avalible %}
                                 <input type="checkbox" name="weekday" value="monday" checked> Monday
                             {% else %}
                                 <input type="checkbox" name="weekday" value="monday"> Monday
@@ -60,7 +63,7 @@
                     <div class="times-form"></div>
                     <div class="checkbox">
                         <label>
-                            {% if 'tuesday' in profile.availability.split(',') %}
+                            {% if 'tuesday' in avalible %}
                             <input type="checkbox" name="weekday" value="tuesday" checked> Tuesday
                             {% else %}
                             <input type="checkbox" name="weekday" value="tuesday"> Tuesday
@@ -70,7 +73,7 @@
                     <div class="times-form"></div>
                     <div class="checkbox">
                         <label>
-                            {% if 'wednessday' in profile.availability.split(',') %}
+                            {% if 'wednessday' in avalible %}
                             <input type="checkbox" name="weekday" value="wednessday" checked> Wednessday
                             {% else %}
                             <input type="checkbox" name="weekday" value="wednessday"> Wednessday
@@ -80,7 +83,7 @@
                     <div class="times-form"></div>
                     <div class="checkbox">
                         <label>
-                            {% if 'thursday' in profile.availability.split(',') %}
+                            {% if 'thursday' in avalible %}
                             <input type="checkbox" name="weekday" value="thursday" checked> Thursday
                             {% else %}
                             <input type="checkbox" name="weekday" value="thursday"> Thursday
@@ -90,7 +93,7 @@
                     <div class="times-form"></div>
                     <div class="checkbox">
                         <label>
-                            {% if 'friday' in profile.availability.split(',') %}
+                            {% if 'friday' in avalible %}
                             <input type="checkbox" name="weekday" value="friday" checked> Friday
                             {% else %}
                             <input type="checkbox" name="weekday" value="friday"> Friday
@@ -99,13 +102,19 @@
                     </div>
                     <div class="times-form"></div>
                 </div>
+                {% if profile.skills %}
+                    {% set skills = profile.skills %}
+                {% endif %}
                 <div class="form-group typeahead">
                     <label>Skills</label><br>
-                    <input autocomplete="off" class="tags-input" type="text" value="{{ profile.skills }}" data-role="tagsinput" name="profile_skills"/>
+                    <input autocomplete="off" class="tags-input" type="text" value="{{ skills }}" data-role="tagsinput" name="profile_skills"/>
                 </div>
+                {% if profile.interests %}
+                    {% set interests = profile.interests %}
+                {% endif %}
                 <div class="form-group">
                     <label>Research Interests</label><br>
-                    <input autocomplete="off" class="tags-input" type="text" value="{{ profile.interests }}" data-role="tagsinput" name="profile_interests"/>
+                    <input autocomplete="off" class="tags-input" type="text" value="{{ interests }}" data-role="tagsinput" name="profile_interests"/>
                 </div>
                 <label class="resume">
                     <input id="resume-upload" type="file" name="resume"/>
