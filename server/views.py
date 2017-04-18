@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, request
 from server import app
 from .forms import LoginForm
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from flask import render_template_string
 from models import Post, Student, Professor
 
@@ -44,7 +44,9 @@ def login():
                 next = request.args.get('next')
                 return redirect(next or '/index')
             else:
+                flash('Username or Password Incorrect!')
                 return redirect('/login')
+    flash('Invalid Input. Please Type both Username and Password.')
     return render_template('login.html', form=form)
 
 
