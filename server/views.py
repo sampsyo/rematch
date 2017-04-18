@@ -59,11 +59,11 @@ def logout():
 @app.route('/profile/<net_id>', methods=['GET', 'POST'])
 @login_required
 def profile(net_id):
+    favorited_projects = Student.get_student_favorited_projects(net_id)
     if request.method == 'POST':
         result = request.form
         if current_user.is_student: # user is a PROFESSOR
             user = Student.get_student_by_netid(net_id)
-            favorited_projects = Student.get_student_favorited_projects(net_id)
             new_email = result["user_email"] or (net_id + "@cornell.edu")
             new_year = result["user_year"] or "Freshman"
             new_description = result["user_description"] or " "
@@ -87,7 +87,8 @@ def profile(net_id):
         return render_template(
           'profile.html',
           title=current_user.name + "'s Profile",
-          profile=current_user
+          profile=current_user,
+          favorited_projects=favorited_projects
         )
 
 
@@ -103,7 +104,7 @@ def createpost():
         Post.create_post(
             result["post_title"],
             result["post_description"],
-            "professor_id",
+            current_user.net_id,
             result['tags'].lower().strip().split(','),
             "qualifications",
             result["required-skills"],
