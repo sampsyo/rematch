@@ -16,11 +16,10 @@ from models import Post, Student, Professor
 def index(tags=None, all=None, posts=None):
     if tags:
         tags = tags.lower().strip().split(',')
-    else:
-        tags = Post.TAGS
+
     if not posts:
-        posts = Post.get_compressed_posts(tags=tags, exclusive=True if
-                                      all == 'all' else False)
+        posts = Post.get_compressed_posts(
+            tags=tags, exclusive=True if all == 'all' else False)
     for post in posts:
         post['professor_name'] = Professor.get_professor_by_netid(
             post['professor_id']).name
@@ -33,7 +32,7 @@ def index(tags=None, all=None, posts=None):
         posts=posts,
         search=True,
         isInIndex=True,
-        tags=tags
+        tags=Post.TAGS if tags is None else tags
     )
 
 
@@ -154,6 +153,10 @@ def showpost(post_id):
 @app.route('/posts/<int:post_id>/edit', methods=['GET', 'POST'])
 @login_required
 def editpost(post_id):
+    post = Post.get_post_by_id(post_id)
+    if not post:
+        return redirect('/index')
+
     if request.method == 'POST':
         result = request.form
         return render_template_string(
@@ -163,7 +166,8 @@ def editpost(post_id):
     else:
         return render_template(
             'createpost.html',
-            id='Sign In'
+            id='Sign In',
+            post=post.serialize
         )
 
 
