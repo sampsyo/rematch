@@ -114,7 +114,9 @@ def createpost():
             result['tags'].lower().strip().split(','),
             '',  # qualifications
             '',  # desired skills
-            None if result['stale-days'] == '-1' else int(result['stale-days'])
+            None if result['stale-days'] == '-1' else int(result['stale-days']),
+            result['post_professor_email'],
+            result['project-link']
         )
         return redirect("/posts", code=302)
     else:

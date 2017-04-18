@@ -17,6 +17,8 @@ class Post(db.Model):
                               onupdate=db.func.current_timestamp())
 
     stale_date = db.Column(db.DateTime)
+    contact_email = db.Column(db.String(10000))
+    project_link = db.Column(db.String(10000))
 
     # unimplemented
     qualifications = db.Column(db.String(10000))
@@ -26,7 +28,8 @@ class Post(db.Model):
     current_number = db.Column(db.Integer)
 
     def is_stale(self):
-        return self.stale_date is not None and self.stale_date < datetime.datetime.now()
+        return self.stale_date is not None and \
+                self.stale_date < datetime.datetime.now()
 
     @classmethod
     def refresh(cls, post_id, days_added):
@@ -80,13 +83,15 @@ class Post(db.Model):
 
     @classmethod
     def create_post(cls, title, description, professor_id, tags,
-                    qualifications, desired_skills, stale_days):
+                    qualifications, desired_skills, stale_days,
+                    contact_email, project_link):
         # if not (Professor.get_professor_by_netid(professor_id)):
         #    return None
-        import ipdb; ipdb.set_trace()
         stale_date = None
         if stale_days:
-            stale_date = datetime.datetime.now() + datetime.timedelta(days=stale_days)
+            stale_date = datetime.datetime.now() + datetime.timedelta(
+                days=stale_days
+            )
 
         post = Post(
             title=title,
@@ -95,7 +100,9 @@ class Post(db.Model):
             professor_id=professor_id,
             qualifications=qualifications,
             desired_skills="",
-            stale_date=stale_date
+            stale_date=stale_date,
+            contact_email=contact_email,
+            project_link=project_link
         )
         db.session.add(post)
         db.session.commit()
@@ -106,7 +113,7 @@ class Post(db.Model):
     def update_post(cls, post_id,
                     description=None, desired_skills=None, is_active=None,
                     professor_id=None, qualifications=None, tags=None,
-                    title=None):
+                    title=None, project_link=None, contact_email=None):
         post = Post.get_post_by_id(post_id)
         if not post:
             return None
@@ -124,6 +131,10 @@ class Post(db.Model):
             post.desired_skills = desired_skills
         if is_active is not None:
             post.is_active = is_active
+        if project_link is not None:
+            post.project_link = project_link
+        if contact_email is not None:
+            post.contact_email = contact_email
         db.session.commit()
         return post
 
@@ -175,15 +186,15 @@ class Post(db.Model):
             s.serialize for s in Post.query.filter_by(is_active=False).all()
         ]
 
-    #may be broken
+    # may be broken
     @classmethod
     def get_posts_by_keywords(cls, keywords):
         posts = []
         for p in Post.query.filter_by(is_active=True).all():
-            for keyword in keywords: #check if its actually gonna be a list
+            for keyword in keywords:  # check if its actually gonna be a list
                 if (keyword in p.title) or (keyword in p.description) \
-                    or (keyword in p.tags) or (keyword in p.professor_id) \
-                    or (keyword in p.desired_skills):
+                   or (keyword in p.tags) or (keyword in p.professor_id) \
+                   or (keyword in p.desired_skills):
                     posts.append(p.serialize_compressed_post)
         return posts
 
@@ -200,7 +211,9 @@ class Post(db.Model):
             'is_active': self.is_active,
             'date_created': self.date_created,
             'date_modified': self.date_modified,
-            'stale_date': self.stale_date
+            'stale_date': self.stale_date,
+            'project_link': self.project_link,
+            'contact_email': self.contact_email
         }
 
     @property
@@ -244,5 +257,14 @@ class Post(db.Model):
         'design',
         'compilers',
         'machine learning',
-        'other'
+        'other',
+        'java',
+        'c',
+        'c#',
+        'c++',
+        'python',
+        'ocaml',
+        'javascript',
+        'mongodb',
+        'sql'
     ]
