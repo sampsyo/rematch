@@ -50,45 +50,65 @@
                     <label>Availability</label><br>
                     <div class="checkbox">
                         <label>
-                          <input type="checkbox"> Monday
+                            {% if 'monday' in profile.availability.split(',') %}
+                                <input type="checkbox" name="weekday" value="monday" checked> Monday
+                            {% else %}
+                                <input type="checkbox" name="weekday" value="monday"> Monday
+                            {% endif %}
                         </label>
                     </div>
                     <div class="times-form"></div>
                     <div class="checkbox">
                         <label>
-                          <input type="checkbox"> Tuesday
+                            {% if 'tuesday' in profile.availability.split(',') %}
+                            <input type="checkbox" name="weekday" value="tuesday" checked> Tuesday
+                            {% else %}
+                            <input type="checkbox" name="weekday" value="tuesday"> Tuesday
+                            {% endif %}
                         </label>
                     </div>
                     <div class="times-form"></div>
                     <div class="checkbox">
                         <label>
-                          <input type="checkbox"> Wednessday
+                            {% if 'wednessday' in profile.availability.split(',') %}
+                            <input type="checkbox" name="weekday" value="wednessday" checked> Wednessday
+                            {% else %}
+                            <input type="checkbox" name="weekday" value="wednessday"> Wednessday
+                            {% endif %}
                         </label>
                     </div>
                     <div class="times-form"></div>
                     <div class="checkbox">
                         <label>
-                          <input type="checkbox"> Thursday
+                            {% if 'thursday' in profile.availability.split(',') %}
+                            <input type="checkbox" name="weekday" value="thursday" checked> Thursday
+                            {% else %}
+                            <input type="checkbox" name="weekday" value="thursday"> Thursday
+                            {% endif %}
                         </label>
                     </div>
                     <div class="times-form"></div>
                     <div class="checkbox">
                         <label>
-                          <input type="checkbox"> Friday
+                            {% if 'friday' in profile.availability.split(',') %}
+                            <input type="checkbox" name="weekday" value="friday" checked> Friday
+                            {% else %}
+                            <input type="checkbox" name="weekday" value="friday"> Friday
+                            {% endif %}
                         </label>
                     </div>
                     <div class="times-form"></div>
                 </div>
                 <div class="form-group typeahead">
                     <label>Skills</label><br>
-                    <input autocomplete="off" class="tags-input" type="text" value="" data-role="tagsinput"/>
+                    <input autocomplete="off" class="tags-input" type="text" value="" data-role="tagsinput" name="skills"/>
                 </div>
                 <div class="form-group">
                     <label>Research Interests</label><br>
-                    <input autocomplete="off" class="tags-input" type="text" value="" data-role="tagsinput"/>
+                    <input autocomplete="off" class="tags-input" type="text" value="" data-role="tagsinput" name="interests"/>
                 </div>
                 <label class="resume">
-                    <input id="resume-upload" type="file"/>
+                    <input id="resume-upload" type="file" name="resume"/>
                     <i class="fa fa-cloud-upload"></i> Upload Reusme
                 </label>
                 <span class="file-selected"></span>

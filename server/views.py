@@ -65,10 +65,15 @@ def profile(net_id):
         new_email = result["user_email"] or (net_id + "@cornell.edu")
         new_year = result["user_year"] or "Freshman"
         new_description = result["user_description"] or " "
+        interests = result["interests"]
+        skills = result["skills"]
+        availability = ','.join(result.getlist("weekday"))
+        # Flask fileupload ?
+        resume = result["resume"]
         user = Student.update_student(
-            net_id, email=new_email, name=None, major=None, year=new_year,
-            skills=None, resume=None, description=new_description,
-            interests=None, favorited_projects=None, availability=None
+            net_id, email=new_email, name=None, major=user.major, year=new_year,
+            skills=skills, resume=resume, description=new_description,
+            interests=interests, favorited_projects=None, availability=availability
         )
         return redirect("/profile/" + net_id, code=302)
     else:
