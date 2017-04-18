@@ -23,13 +23,6 @@
                     <label>Bio &amp; Experience</label><br>
                     <textarea name="user_description" rows="5" class="form-control">{{current_user.desc}}</textarea>
                 </div>
-                {% if current_user.skills %}
-                    {% set skills = current_user.skills %}
-                {% endif %}
-                <div class="form-group typeahead">
-                    <label>Skills</label><br>
-                    <input autocomplete="off" class="tags-input" type="text" value="{{ skills }}" data-role="tagsinput" name="profile_skills"/>
-                </div>
                 {% if current_user.interests %}
                     {% set interests = current_user.interests %}
                 {% endif %}
@@ -37,10 +30,6 @@
                     <label>Research Interests</label><br>
                     <input autocomplete="off" class="tags-input" type="text" value="{{ interests }}" data-role="tagsinput" name="profile_interests"/>
                 </div>
-                <label class="resume">
-                    <input id="resume-upload" type="file" name="resume"/>
-                    <i class="fa fa-cloud-upload"></i> Upload R&eacute;sum&eacute;
-                </label>
                 {% if profile.resume %}
                     <span class="file-selected">{{profile.resume}}</span>
                 {% endif %}
@@ -50,8 +39,8 @@
         </form>
     </div>
     <div role="tabpanel" class="tab-pane" id="starred">
-        {% if favorited_projects %}
-            {% for post in favorited_projects %}        
+        {% if post_collection %}
+            {% for post in post_collection %}        
                 {% include "partials/post.html" %}
             {% endfor %}
         {% else %}
