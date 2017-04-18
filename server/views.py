@@ -13,12 +13,13 @@ from models import Post, Student, Professor
 @app.route('/posts/tags=<tags>')
 @app.route('/posts/tags=<tags>/<all>')
 @login_required
-def index(tags=None, all=None):
+def index(tags=None, all=None, posts=None):
     if tags:
         tags = tags.lower().strip().split(',')
     else:
         tags = Post.TAGS
-    posts = Post.get_compressed_posts(tags=tags, exclusive=True if
+    if not posts:
+        posts = Post.get_compressed_posts(tags=tags, exclusive=True if
                                       all == 'all' else False)
     for post in posts:
         post['professor_name'] = Professor.get_professor_by_netid(
@@ -89,9 +90,10 @@ def profile(net_id):
         else:
             new_email = result["user_email"] or (net_id + "@cornell.edu")
             new_description = result["user_description"] or "no bio"
+            new_interests = result["profile_interests"] or " "
             Professor.update_professor(
                 net_id, name=None, email=new_email,
-                desc=new_description, interests=None
+                desc=new_description, interests=new_interests
             )
         return redirect("/profile/" + net_id, code=302)
     else:

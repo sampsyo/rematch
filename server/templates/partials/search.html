@@ -25,7 +25,23 @@
 	            }, 1);
 	        }
 	    });
-	    $('.tags-input').on('itemAdded', function(event) {
+	    $('.tags-input').on('change', function(event) {
+	    	console.log($(".tags-input").val());
+	    	if($(".tags-input").val() == "") {
+	    		window.location = "/";
+	    	} else {
+	    		$.ajax({
+				    type: 'GET',
+				    url: "/api/search/keywords="+$(".tags-input").val(),
+				    success: function(response) {
+				    	console.log(response);
+				        
+				    },
+				    failure: function(response) {
+				        console.log(response);
+				    }
+				});	
+	    	}
 	        setTimeout(function(){
 	            $(">input[type=text]",".bootstrap-tagsinput").val("");
 	        }, 1);

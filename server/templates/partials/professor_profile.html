@@ -30,9 +30,6 @@
                     <label>Research Interests</label><br>
                     <input autocomplete="off" class="tags-input" type="text" value="{{ interests }}" data-role="tagsinput" name="profile_interests"/>
                 </div>
-                {% if profile.resume %}
-                    <span class="file-selected">{{profile.resume}}</span>
-                {% endif %}
                 <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary">
             </div>
         </div>
