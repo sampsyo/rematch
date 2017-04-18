@@ -25,32 +25,8 @@
         </div>
 
         <div class="form-group">
-            <label>Research Area*:</label><br>
-            <select name="research_area" class="form-control">
-                <option>Select an area of research:</option>
-                <option>Artificial Intelligence</option>
-                <option>Computer Architecture & Engineering</option>
-                <option>Biosystems & Computational Biology</option>
-                <option>Bioinformatics Programming</option>
-                <option>Database Management Systems</option>
-                <option>Education</option>
-                <option>Graphics</option>
-                <option>Human-Computer Interaction</option>
-                <option>Operating Systems & Networking</option>
-                <option>Programming Systems</option>
-                <option>Scientific Computing</option>
-                <option>Security</option>
-                <option>Theory</option>
-                <option>Natural Language Processing</option>
-                <option>Distributed Computing</option>
-                <option>Algorithms</option>
-                <option>Robotics</option>
-                <option>Information Processing</option>
-                <option>Computer Vision</option>
-                <option>Ethics</option>
-                <option>Design</option>
-                <option>Other</option>
-            </select>
+            <label>Research Areas*:</label><br>
+            <input autocomplete="off" class="tags-input" type="text" data-role="tagsinput" name="tags"/>
         </div>
 
         <div class="form-group">
@@ -82,5 +58,24 @@
     </form>
     </div>
 
+    <script type="text/javascript">
+        $('.tags-input').tagsinput({
+            typeahead: {
+                source: ['Artificial Intelligence', 'Computer Architecture & Engineering', 'Biosystems & Computational Biology', 'Bioinformatics Programming', 'Database Management Systems', 'Education', 'Graphics', 'Human-Computer Interaction', 'Operating Systems & Networking', 'Programming Systems', 'Scientific Computing', 'Security', 'Theory', 'Natural Language Processing', 'Distributed Computing', 'Algorithms', 'Robotics', 'Information Processing', 'Computer Vision', 'Ethics', 'Design', 'Other']
+            },
+            freeInput: false,
+            // Typeahead fix
+            onTagExists: function() {
+                setTimeout(function() {
+                    $(">input[type=text]",".bootstrap-tagsinput").val("");
+                }, 1);
+            }
+        });
+        $('.tags-input').on('itemAdded', function(event) {
+            setTimeout(function(){
+                $(">input[type=text]",".bootstrap-tagsinput").val("");
+            }, 1);
+        });
+    </script>
 
 {% endblock %}

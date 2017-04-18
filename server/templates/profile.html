@@ -4,9 +4,11 @@
 
 <div class="spacer"></div>
 
-    {% include "partials/student_profile.html" %}
-
-
+    {% if current_user.is_student %}
+        {% include "partials/student_profile.html" %}
+    {% else %}
+        {% include "partials/professor_profile.html" %}
+    {% endif %}
 
     <script type="text/javascript">
         
