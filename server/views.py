@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, request
 from server import app
 from .forms import LoginForm
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from flask import render_template_string
 from models import Post, Student, Professor
 
@@ -16,7 +16,6 @@ from models import Post, Student, Professor
 # favorited_projects for them on the search / home page.
 @login_required
 def index(tags=None, all=None):
-    user = {'nickname': 'Michael'}
     if tags:
         tags = tags.lower().strip().split(',')
     posts = Post.get_compressed_posts(tags=tags, exclusive=True if
@@ -24,7 +23,7 @@ def index(tags=None, all=None):
     return render_template(
         "index.html",
         title='Home',
-        user=user,
+        user=current_user,
         posts=posts,
         search=True,
         isInIndex=True
@@ -44,7 +43,9 @@ def login():
                 next = request.args.get('next')
                 return redirect(next or '/index')
             else:
+                flash('Username or Password Incorrect!')
                 return redirect('/login')
+    flash('Username or Password Incorrect!')
     return render_template('login.html', form=form)
 
 
@@ -76,7 +77,8 @@ def profile(net_id):
         user = Student.update_student(
             net_id, email=new_email, name=None, major=user.major, year=new_year,
             skills=skills, resume=resume, description=new_description,
-            interests=interests, favorited_projects=None, availability=availability
+            interests=interests, favorited_projects=None,
+            availability=availability
         )
         return redirect("/profile/" + net_id, code=302)
     else:
@@ -94,10 +96,15 @@ def profile(net_id):
 def createpost():
     if request.method == 'POST':
         result = request.form
+
         Post.create_post(
-            result["post_title"], result["post_description"], "professor_id",
-            "tags", "qualifications", "current_students", "desired_skills",
-            "capacity", "current_number"
+            result["post_title"],
+            result["post_description"],
+            "professor_id",
+            result['tags'].lower().strip().split(','),
+            "qualifications",
+            result["required-skills"],
+            result['stale_days']
         )
         return redirect("/posts", code=302)
     else:

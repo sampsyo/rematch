@@ -16,6 +16,7 @@ class Student(db.Model):
     interests = db.Column(db.String(10000))
     favorited_projects = db.Column(db.String(10000))
     availability = db.Column(db.String(10000))
+    is_student = True
     # This is for Login Stuff
     is_authenticated = True
     is_active = True
