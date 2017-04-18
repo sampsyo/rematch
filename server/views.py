@@ -12,12 +12,12 @@ from models import Post, Student, Professor
 @app.route('/posts/')
 @app.route('/posts/tags=<tags>')
 @app.route('/posts/tags=<tags>/<all>')
-# I need to know the netid of the student here so I can get back the
-# favorited_projects for them on the search / home page.
 @login_required
 def index(tags=None, all=None):
     if tags:
         tags = tags.lower().strip().split(',')
+    else:
+        tags = Post.TAGS
     posts = Post.get_compressed_posts(tags=tags, exclusive=True if
                                       all == 'all' else False)
     return render_template(
@@ -26,7 +26,8 @@ def index(tags=None, all=None):
         user=current_user,
         posts=posts,
         search=True,
-        isInIndex=True
+        isInIndex=True,
+        tags=tags
     )
 
 

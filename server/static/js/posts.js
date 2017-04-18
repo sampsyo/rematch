@@ -1,4 +1,3 @@
-// posts
 $(document).ready(function() {
     $(".post_star").on("click", function() {
         if($(this).hasClass('star') && $(this).hasClass('ion-ios-star')) {
