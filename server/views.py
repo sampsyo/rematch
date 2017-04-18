@@ -90,9 +90,10 @@ def profile(net_id):
         else:
             new_email = result["user_email"] or (net_id + "@cornell.edu")
             new_description = result["user_description"] or "no bio"
+            new_interests = result["profile_interests"] or " "
             Professor.update_professor(
                 net_id, name=None, email=new_email,
-                desc=new_description, interests=None
+                desc=new_description, interests=new_interests
             )
         return redirect("/profile/" + net_id, code=302)
     else:
