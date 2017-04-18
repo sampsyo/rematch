@@ -252,4 +252,9 @@ a.no-decoration {
 .twitter-typeahead .tt-input {
   vertical-align: 0 !important; }
 
+.alert {
+  background-color: #e7e7e7; }
+  .alert * {
+    margin-bottom: 0; }
+
 /*# sourceMappingURL=base.css.map */

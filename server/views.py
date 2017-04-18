@@ -60,6 +60,7 @@ def logout():
 @login_required
 def profile(net_id):
     favorited_projects = Student.get_student_favorited_projects(net_id)
+    post_collection = Post.get_posts_by_professor_id(net_id)
     if request.method == 'POST':
         result = request.form
         if current_user.is_student:
@@ -92,7 +93,8 @@ def profile(net_id):
           'profile.html',
           title=current_user.name + "'s Profile",
           profile=current_user,
-          favorited_projects=favorited_projects
+          favorited_projects=favorited_projects,
+          post_collection=post_collection
         )
 
 

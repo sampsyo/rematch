@@ -28,9 +28,14 @@
   </head>
   <body>
     {% include "partials/header.html" %}
-    
+
+    {% if search: %}
+      {% include "partials/search.html" %}
+    {% endif %}
+
     {% with messages = get_flashed_messages() %}
       {% if messages %}
+      <div class="alert narrow">
         <div class="container">
           <ul>
           {% for message in messages %}
@@ -38,12 +43,10 @@
           {% endfor %}
           </ul>
         </div>
+      </div>
+      </div>
       {% endif %}
     {% endwith %}
-
-    {% if search: %}
-      {% include "partials/search.html" %}
-    {% endif %}
 
     <div class="container">
       <div class="row">
