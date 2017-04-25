@@ -21,6 +21,8 @@ class Post(db.Model):
     project_link = db.Column(db.String(10000))
 
     # unimplemented
+    required_courses = db.Column(db.String(10000))
+    grad_requirements = db.Column(db.String(10000)) #['grad'],['grad','undergrad'],['undergrad']
     qualifications = db.Column(db.String(10000))
     current_students = db.Column(db.String(10000))
     desired_skills = db.Column(db.String(10000))
@@ -84,7 +86,8 @@ class Post(db.Model):
     @classmethod
     def create_post(cls, title, description, professor_id, tags,
                     qualifications, desired_skills, stale_days,
-                    contact_email, project_link):
+                    contact_email, project_link, required_courses, 
+                    grad_requirements):
         # if not (Professor.get_professor_by_netid(professor_id)):
         #    return None
         stale_date = None
@@ -102,7 +105,9 @@ class Post(db.Model):
             desired_skills="",
             stale_date=stale_date,
             contact_email=contact_email,
-            project_link=project_link
+            project_link=project_link,
+            required_courses=required_courses,
+            grad_requirements=grad_requirements
         )
         db.session.add(post)
         db.session.commit()
@@ -112,8 +117,8 @@ class Post(db.Model):
     @classmethod
     def update_post(cls, post_id,
                     description=None, desired_skills=None, is_active=None,
-                    professor_id=None, qualifications=None, tags=None,
-                    title=None, project_link=None, contact_email=None):
+                    professor_id=None, qualifications=None, required_courses=None,
+                    tags=None, title=None, project_link=None, contact_email=None):
         post = Post.get_post_by_id(post_id)
         if not post:
             return None
@@ -135,6 +140,10 @@ class Post(db.Model):
             post.project_link = project_link
         if contact_email is not None:
             post.contact_email = contact_email
+        if required_courses is not None:
+            post.required_courses = required_courses
+        if grad_requirements is not None:
+            post.grad_requirements = grad_requirements
         db.session.commit()
         return post
 
@@ -186,18 +195,39 @@ class Post(db.Model):
             s.serialize for s in Post.query.filter_by(is_active=False).all()
         ]
 
+    #considering combining these following two functions 
+    #def search_posts(cls, courses=None, keywords=None):
+    #it will filter out not searched for courses then search that 
+    #filtered list for the keywords.
+    #For now, I just have separate functions 
     @classmethod
     def get_posts_by_keywords(cls, keywords):
         posts = []
-        post_ids = []
+        post_ids = set()
         for p in Post.query.filter_by(is_active=True).all():
-            for keyword in keywords.lower():  # check if its actually gonna be a list
-                if (keyword in p.title.lower()) or (keyword in p.description.lower()) \
-                    or (keyword in p.tags.lower()) or (keyword in p.professor_id.lower()) \
-                    or (keyword in p.desired_skills.lower()):
-                    if not p.id in post_ids:
-                        post_ids.append(p.id)
+            for keyword in keywords.lower():
+                if (keyword in p.title.lower()) \
+                    or (keyword in p.description.lower()) \
+                    or (keyword in p.tags.lower()) \
+                    or (keyword in p.professor_id.lower()) \
+                    or (keyword in p.desired_skills.lower()) \
+                    or (keyword in p.required_courses.lower()):
+                    if p.id not in post_ids:
+                        post_ids.add(p.id)
                         posts.append(p.serialize_compressed_post)
+        return posts
+
+    #returns only the posts that all required courses part of 
+    #the searched for course list
+    @classmethod 
+    def get_posts_by_courses(cls, courses):
+        posts = []
+        post_ids = set()
+        for p in Post.query.filter_by(is_active=True).all():
+            if set(p.required_courses.lower()).issubset(set(courses.lower())):
+                if p.id not in post_ids:
+                    post_ids.add(p.id)
+                    posts.append(p.serialize_compressed_post)
         return posts
 
     @property
@@ -215,7 +245,9 @@ class Post(db.Model):
             'date_modified': self.date_modified,
             'stale_date': self.stale_date,
             'project_link': self.project_link,
-            'contact_email': self.contact_email
+            'contact_email': self.contact_email,
+            'required_courses': self.required_courses,
+            'grad_requirements': self.grad_requirements
         }
 
     @property
@@ -250,7 +282,9 @@ class Post(db.Model):
             'date_modified': '',
             'stale_date': '',
             'project_link': '',
-            'contact_email': ''
+            'contact_email': '',
+            'required_courses': '',
+            'grad_requirements': ''
         }
 
     TAGS = [
