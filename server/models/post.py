@@ -22,7 +22,7 @@ class Post(db.Model):
 
     # unimplemented
     required_courses = db.Column(db.String(10000))
-    grad_only = db.Column(db.Boolean, default = False, nullable=False) #['grad'],['grad','undergrad'],['undergrad']
+    grad_only = db.Column(db.Boolean, default = False) #['grad'],['grad','undergrad'],['undergrad']
     qualifications = db.Column(db.String(10000))
     current_students = db.Column(db.String(10000))
     desired_skills = db.Column(db.String(10000))
@@ -86,7 +86,7 @@ class Post(db.Model):
     @classmethod
     def create_post(cls, title, description, professor_id, tags,
                     qualifications, desired_skills, stale_days,
-                    contact_email, project_link, required_courses, 
+                    contact_email, project_link, required_courses,
                     grad_only):
         # if not (Professor.get_professor_by_netid(professor_id)):
         #    return None
@@ -240,11 +240,11 @@ class Post(db.Model):
         search_list = Post.query.filter_by(is_active=True).all()
         if is_grad is not None:
             for p in list(search_list):
-                if p.grad_only and !is_grad:
+                if p.grad_only and not is_grad:
                     search_list.remove(p)
         if taken_courses is not None:
             for p in list(search_list):
-                if !set(p.required_courses.lower()).issubset(set(taken_courses.lower())):
+                if not set(p.required_courses.lower()).issubset(set(taken_courses.lower())):
                     search_list.remove(p)
         if tags is not None:
             for p in list(search_list):
