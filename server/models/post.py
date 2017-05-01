@@ -22,7 +22,7 @@ class Post(db.Model):
 
     # unimplemented
     required_courses = db.Column(db.String(10000))
-    grad_requirements = db.Column(db.String(10000)) #['grad'],['grad','undergrad'],['undergrad']
+    grad_only = db.Column(db.Boolean, default = False, nullable=False) #['grad'],['grad','undergrad'],['undergrad']
     qualifications = db.Column(db.String(10000))
     current_students = db.Column(db.String(10000))
     desired_skills = db.Column(db.String(10000))
@@ -87,7 +87,7 @@ class Post(db.Model):
     def create_post(cls, title, description, professor_id, tags,
                     qualifications, desired_skills, stale_days,
                     contact_email, project_link, required_courses, 
-                    grad_requirements):
+                    grad_only):
         # if not (Professor.get_professor_by_netid(professor_id)):
         #    return None
         stale_date = None
@@ -107,7 +107,7 @@ class Post(db.Model):
             contact_email=contact_email,
             project_link=project_link,
             required_courses=required_courses,
-            grad_requirements=grad_requirements
+            grad_only=grad_only
         )
         db.session.add(post)
         db.session.commit()
@@ -118,7 +118,8 @@ class Post(db.Model):
     def update_post(cls, post_id,
                     description=None, desired_skills=None, is_active=None,
                     professor_id=None, qualifications=None, required_courses=None,
-                    tags=None, title=None, project_link=None, contact_email=None):
+                    tags=None, title=None, project_link=None, contact_email=None,
+                    grad_only=None):
         post = Post.get_post_by_id(post_id)
         if not post:
             return None
@@ -142,8 +143,8 @@ class Post(db.Model):
             post.contact_email = contact_email
         if required_courses is not None:
             post.required_courses = required_courses
-        if grad_requirements is not None:
-            post.grad_requirements = grad_requirements
+        if grad_only is not None:
+            post.grad_only = grad_only
         db.session.commit()
         return post
 
@@ -200,6 +201,10 @@ class Post(db.Model):
     #it will filter out not searched for courses then search that 
     #filtered list for the keywords.
     #For now, I just have separate functions 
+
+    #first filter by courses if checked
+    #then filter by tag section
+    #then filter by descrit
     @classmethod
     def get_posts_by_keywords(cls, keywords):
         posts = []
@@ -230,6 +235,35 @@ class Post(db.Model):
                     posts.append(p.serialize_compressed_post)
         return posts
 
+    @classmethod 
+    def search(cls, is_grad=None, taken_courses=None, tags=None, keywords=None):
+        search_list = Post.query.filter_by(is_active=True).all()
+        if is_grad is not None:
+            for p in list(search_list):
+                if p.grad_only and !is_grad:
+                    search_list.remove(p)
+        if taken_courses is not None:
+            for p in list(search_list):
+                if !set(p.required_courses.lower()).issubset(set(taken_courses.lower())):
+                    search_list.remove(p)
+        if tags is not None:
+            for p in list(search_list):
+                if len(set(tags.lower()).intersection(set(p.tags.lower()))) == 0: #no overlap in searched tags vs post tags
+                    search_list.remove(p)
+        if keywords is not None:
+            for p in list(search_list):
+                if len(set(keywords.lower()).intersection(set(p.title.lower()))) == 0 \
+                    and len(set(keywords.lower()).intersection(set(p.description.lower()))) == 0 \
+                    and len(set(keywords.lower()).intersection(set(p.professor_id.lower()))) == 0 \
+                    and len(set(keywords.lower()).intersection(set(p.desired_skills.lower()))) == 0:
+                        search_list.remove(p)
+        posts = []
+        for p in search_list:
+            posts.append(p.serialize_compressed_post)
+        return posts
+
+
+
     @property
     def serialize(self):
         return {
@@ -247,7 +281,7 @@ class Post(db.Model):
             'project_link': self.project_link,
             'contact_email': self.contact_email,
             'required_courses': self.required_courses,
-            'grad_requirements': self.grad_requirements
+            'grad_only': self.grad_only
         }
 
     @property
@@ -284,7 +318,7 @@ class Post(db.Model):
             'project_link': '',
             'contact_email': '',
             'required_courses': '',
-            'grad_requirements': ''
+            'grad_only': ''
         }
 
     TAGS = [
