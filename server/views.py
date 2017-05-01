@@ -199,7 +199,7 @@ def search(keywords):
         post['professor_name'] = Professor.get_professor_by_netid(
             post['professor_id']).name
 
-    posts.sort(key=lambda x: x['date_created'], reverse=True)
+    posts.sort(key=lambda x: x['id'], reverse=True)
     return render_template(
         "index.html",
         title='Home',
