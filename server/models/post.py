@@ -12,9 +12,9 @@ class Post(db.Model):
     tags = db.Column(db.String(10000))
     is_active = db.Column(db.Boolean, default=True, nullable=False)
 
-    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
-    date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(),
-                              onupdate=db.func.current_timestamp())
+    # date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
+    # date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(),
+    #                           onupdate=db.func.current_timestamp())
 
     stale_date = db.Column(db.DateTime)
     contact_email = db.Column(db.String(10000))
@@ -275,8 +275,8 @@ class Post(db.Model):
             'professor_id': self.professor_id,
             'desired_skills': self.desired_skills,
             'is_active': self.is_active,
-            'date_created': self.date_created,
-            'date_modified': self.date_modified,
+            # 'date_created': self.date_created,
+            # 'date_modified': self.date_modified,
             'stale_date': self.stale_date,
             'project_link': self.project_link,
             'contact_email': self.contact_email,
@@ -296,9 +296,9 @@ class Post(db.Model):
             # only 5 tags
             'tags': self.tags.split(',')[:5],
             'professor_id': self.professor_id,
-            'is_active': self.is_active,
-            'date_created': self.date_created,
-            'date_modified': self.date_modified
+            'is_active': self.is_active
+            # 'date_created': self.date_created,
+            # 'date_modified': self.date_modified
         }
 
     @classmethod
@@ -312,8 +312,8 @@ class Post(db.Model):
             'professor_id': '',
             'desired_skills': '',
             'is_active': '',
-            'date_created': '',
-            'date_modified': '',
+            # 'date_created': '',
+            # 'date_modified': '',
             'stale_date': '',
             'project_link': '',
             'contact_email': '',

@@ -17,7 +17,7 @@ class Student(db.Model):
     favorited_projects = db.Column(db.String(10000))
     availability = db.Column(db.String(10000))
     courses = db.Column(db.String(10000))
-    is_grad = db.Column(db.Boolean, default = False, nullable=False)
+    is_grad = db.Column(db.Boolean, default = False)
     is_student = True
     # This is for Login Stuff
     is_authenticated = True
