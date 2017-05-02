@@ -1,7 +1,18 @@
 <!-- extend base layout -->
 {% extends "base.html" %}
+{% block search %}
+	{% include "partials/search.html" %}
+{% endblock %}
 {% block content %}
-    {% for post in posts %}        
-        {% include "partials/post.html" %}
+	<div class="row">
+    {% for i in range(posts|length) %}
+    	{% if i % 2 == 0 and i > 1 %}
+    		</div>
+    	{% else %} 
+    		<div class="row">
+    	{% endif %}
+		{% with post = posts[i] %}       
+    	{% include "partials/post.html" %}
+    	{% endwith %}
     {% endfor %}
 {% endblock %}
