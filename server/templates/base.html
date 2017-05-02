@@ -50,9 +50,7 @@
             {% block search %}{% endblock %}
           </div>
         {% endif %}
-        <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
-          {% block content %}{% endblock %}
-        </div>
+        {% block content %}{% endblock %}
       </div>
     </div>
     <script src="{{ url_for('static', filename='js/posts.js') }}"></script>

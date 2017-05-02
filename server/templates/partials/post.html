@@ -15,7 +15,7 @@
             {% endif %}</h2>
         <p class="description">{{ post["description"] }}</p>
         {% if isInIndex: %}
-        <a class="more" href="/posts/{{post['id']}}">Read more...</a>
+        <a class="more" href="/posts/{{post['id']}}">Read more &rsaquo;</a>
         {% elif post['project_link']: %}
         <a href="{{post['project_link']}}" class="more">Learn more about this project.</a>
         {% endif %}

@@ -4,15 +4,17 @@
 	{% include "partials/search.html" %}
 {% endblock %}
 {% block content %}
-	<div class="row">
-    {% for i in range(posts|length) %}
-    	{% if i % 2 == 0 and i > 1 %}
-    		</div>
-    	{% else %} 
-    		<div class="row">
-    	{% endif %}
-		{% with post = posts[i] %}       
-    	{% include "partials/post.html" %}
-    	{% endwith %}
-    {% endfor %}
+	<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+		<div class="row">
+	    {% for i in range(posts|length) %}
+	    	{% if i % 2 == 0 and i > 1 %}
+	    		</div>
+	    	{% else %} 
+	    		<div class="row">
+	    	{% endif %}
+			{% with post = posts[i] %}       
+	    	{% include "partials/post.html" %}
+	    	{% endwith %}
+	    {% endfor %}
+	</div>
 {% endblock %}

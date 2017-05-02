@@ -1,140 +1,140 @@
+<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 center">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#myprofile" aria-controls="myprofile" role="tab" data-toggle="tab">My Profile</a></li>
+    <li role="presentation"><a href="#starred" aria-controls="starred" role="tab" data-toggle="tab">Starred Posts</a></li>
+    </ul>
 
-<!-- Nav tabs -->
-<ul class="nav nav-tabs" role="tablist">
-<li role="presentation" class="active"><a href="#myprofile" aria-controls="myprofile" role="tab" data-toggle="tab">My Profile</a></li>
-<li role="presentation"><a href="#starred" aria-controls="starred" role="tab" data-toggle="tab">Starred Posts</a></li>
-</ul>
 
+    <!-- Tab panes -->
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="myprofile">
 
-<!-- Tab panes -->
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="myprofile">
-
-    <form method="POST">    
-        <div class="profile">
-            <div class="header card">
-                <div class="name">{{profile.name}}</div>
-                <br>
-                <div class="form-group">
-                    <label>Major</label>
-                    <p>{{profile.major}}</p>
-                </div>
-
-                <div class="form-group">
-                    <label>Email</label>
-                    <input class="form-control" type="text" name="user_email" value="{{profile.email}}">
-                </div>
-
-                <div class="form-group">
-                    <label>Year</label><br>
-                    <select id="user_year_select" name="user_year" class="form-control">
-                      <option value="Freshman">Freshman</option>
-                      <option value="Sophomore">Sophomore</option>
-                      <option value="Junior">Junior</option>
-                      <option value="Senior">Senior</option>
-                      <option value="Graduate">Graduate</option>
-                      <option value="Post-graduate">Post-graduate</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Bio &amp; Experience</label><br>
-                    <textarea name="user_description" rows="5" class="form-control">{{profile.description}}</textarea>
-                </div>
-                {% if profile.availability %}
-                    {% set avalible = profile.availability.split(',') %}
-                {% endif %}
-                <div class="form-group availability">
-                    <label>Availability</label><br>
-                    <div class="checkbox">
-                        <label>
-                            {% if 'monday' in avalible %}
-                                <input type="checkbox" name="weekday" value="monday" checked> Monday
-                            {% else %}
-                                <input type="checkbox" name="weekday" value="monday"> Monday
-                            {% endif %}
-                        </label>
-                    </div>
-                    <div class="times-form"></div>
-                    <div class="checkbox">
-                        <label>
-                            {% if 'tuesday' in avalible %}
-                            <input type="checkbox" name="weekday" value="tuesday" checked> Tuesday
-                            {% else %}
-                            <input type="checkbox" name="weekday" value="tuesday"> Tuesday
-                            {% endif %}
-                        </label>
-                    </div>
-                    <div class="times-form"></div>
-                    <div class="checkbox">
-                        <label>
-                            {% if 'wednessday' in avalible %}
-                            <input type="checkbox" name="weekday" value="wednessday" checked> Wednessday
-                            {% else %}
-                            <input type="checkbox" name="weekday" value="wednessday"> Wednessday
-                            {% endif %}
-                        </label>
-                    </div>
-                    <div class="times-form"></div>
-                    <div class="checkbox">
-                        <label>
-                            {% if 'thursday' in avalible %}
-                            <input type="checkbox" name="weekday" value="thursday" checked> Thursday
-                            {% else %}
-                            <input type="checkbox" name="weekday" value="thursday"> Thursday
-                            {% endif %}
-                        </label>
-                    </div>
-                    <div class="times-form"></div>
-                    <div class="checkbox">
-                        <label>
-                            {% if 'friday' in avalible %}
-                            <input type="checkbox" name="weekday" value="friday" checked> Friday
-                            {% else %}
-                            <input type="checkbox" name="weekday" value="friday"> Friday
-                            {% endif %}
-                        </label>
-                    </div>
-                    <div class="times-form"></div>
-                </div>
-                {% if profile.skills %}
-                    {% set skills = profile.skills %}
-                {% endif %}
-                <div class="form-group typeahead">
-                    <label>Skills</label><br>
-                    <input autocomplete="off" class="tags-input" type="text" value="{{ skills }}" data-role="tagsinput" name="profile_skills"/>
-                </div>
-                {% if profile.interests %}
-                    {% set interests = profile.interests %}
-                {% endif %}
-                <div class="form-group">
-                    <label>Research Interests</label><br>
-                    <input autocomplete="off" class="tags-input" type="text" value="{{ interests }}" data-role="tagsinput" name="profile_interests"/>
-                </div>
-                <label class="resume">
-                    <input id="resume-upload" type="file" name="resume"/>
-                    <i class="fa fa-cloud-upload"></i> Upload R&eacute;sum&eacute;
-                </label>
-                {% if profile.resume %}
-                    <span class="file-selected">{{profile.resume}}</span>
-                {% endif %}
-                <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary">
-            </div>
-        </div>
-        </form>
-    </div>
-    <div role="tabpanel" class="tab-pane" id="starred">
-        {% if favorited_projects %}
-            {% for post in favorited_projects %}        
-                {% include "partials/post.html" %}
-            {% endfor %}
-        {% else %}
+        <form method="POST">    
             <div class="profile">
-                <div class="card">
-                    <h2>You have no starred posts</h2>
+                <div class="header card">
+                    <div class="name">{{profile.name}}</div>
+                    <br>
+                    <div class="form-group">
+                        <label>Major</label>
+                        <p>{{profile.major}}</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input class="form-control" type="text" name="user_email" value="{{profile.email}}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Year</label><br>
+                        <select id="user_year_select" name="user_year" class="form-control">
+                          <option value="Freshman">Freshman</option>
+                          <option value="Sophomore">Sophomore</option>
+                          <option value="Junior">Junior</option>
+                          <option value="Senior">Senior</option>
+                          <option value="Graduate">Graduate</option>
+                          <option value="Post-graduate">Post-graduate</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Bio &amp; Experience</label><br>
+                        <textarea name="user_description" rows="5" class="form-control">{{profile.description}}</textarea>
+                    </div>
+                    {% if profile.availability %}
+                        {% set avalible = profile.availability.split(',') %}
+                    {% endif %}
+                    <div class="form-group availability">
+                        <label>Availability</label><br>
+                        <div class="checkbox">
+                            <label>
+                                {% if 'monday' in avalible %}
+                                    <input type="checkbox" name="weekday" value="monday" checked> Monday
+                                {% else %}
+                                    <input type="checkbox" name="weekday" value="monday"> Monday
+                                {% endif %}
+                            </label>
+                        </div>
+                        <div class="times-form"></div>
+                        <div class="checkbox">
+                            <label>
+                                {% if 'tuesday' in avalible %}
+                                <input type="checkbox" name="weekday" value="tuesday" checked> Tuesday
+                                {% else %}
+                                <input type="checkbox" name="weekday" value="tuesday"> Tuesday
+                                {% endif %}
+                            </label>
+                        </div>
+                        <div class="times-form"></div>
+                        <div class="checkbox">
+                            <label>
+                                {% if 'wednessday' in avalible %}
+                                <input type="checkbox" name="weekday" value="wednessday" checked> Wednessday
+                                {% else %}
+                                <input type="checkbox" name="weekday" value="wednessday"> Wednessday
+                                {% endif %}
+                            </label>
+                        </div>
+                        <div class="times-form"></div>
+                        <div class="checkbox">
+                            <label>
+                                {% if 'thursday' in avalible %}
+                                <input type="checkbox" name="weekday" value="thursday" checked> Thursday
+                                {% else %}
+                                <input type="checkbox" name="weekday" value="thursday"> Thursday
+                                {% endif %}
+                            </label>
+                        </div>
+                        <div class="times-form"></div>
+                        <div class="checkbox">
+                            <label>
+                                {% if 'friday' in avalible %}
+                                <input type="checkbox" name="weekday" value="friday" checked> Friday
+                                {% else %}
+                                <input type="checkbox" name="weekday" value="friday"> Friday
+                                {% endif %}
+                            </label>
+                        </div>
+                        <div class="times-form"></div>
+                    </div>
+                    {% if profile.skills %}
+                        {% set skills = profile.skills %}
+                    {% endif %}
+                    <div class="form-group typeahead">
+                        <label>Skills</label><br>
+                        <input autocomplete="off" class="tags-input" type="text" value="{{ skills }}" data-role="tagsinput" name="profile_skills"/>
+                    </div>
+                    {% if profile.interests %}
+                        {% set interests = profile.interests %}
+                    {% endif %}
+                    <div class="form-group">
+                        <label>Research Interests</label><br>
+                        <input autocomplete="off" class="tags-input" type="text" value="{{ interests }}" data-role="tagsinput" name="profile_interests"/>
+                    </div>
+                    <label class="resume">
+                        <input id="resume-upload" type="file" name="resume"/>
+                        <i class="fa fa-cloud-upload"></i> Upload R&eacute;sum&eacute;
+                    </label>
+                    {% if profile.resume %}
+                        <span class="file-selected">{{profile.resume}}</span>
+                    {% endif %}
+                    <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary">
                 </div>
             </div>
-        {% endif %}
+            </form>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="starred">
+            {% if favorited_projects %}
+                {% for post in favorited_projects %}        
+                    {% include "partials/post.html" %}
+                {% endfor %}
+            {% else %}
+                <div class="profile">
+                    <div class="card">
+                        <h2>You have no starred posts</h2>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
     </div>
-  </div>
-
+</div>
