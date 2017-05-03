@@ -1,6 +1,7 @@
 from flask import jsonify, request, redirect, url_for
 from server import app
 from server.models.post import Post
+import datetime
 
 
 @app.route('/api/posts', methods=['GET'])
@@ -41,7 +42,11 @@ def create_post():
         tags=r.get('tags'),
         qualifications='',
         desired_skills="",
-        stale_days=int(r.get('stale_days'))
+        stale_days=10,
+        grad_only=False,
+        required_courses="",
+        project_link="",
+        contact_email=""
     )
     return jsonify(post=post.serialize)
 
