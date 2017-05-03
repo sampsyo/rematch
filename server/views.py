@@ -151,7 +151,7 @@ def showpost(post_id):
     post['professor_name'] = Professor.get_professor_by_netid(
         post['professor_id']).name
     return render_template(
-        'post.html',
+        'full_post.html',
         post=post
     )
 

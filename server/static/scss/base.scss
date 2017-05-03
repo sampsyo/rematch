@@ -77,6 +77,16 @@ p, a {
 	}
 }
 
+.full-post {
+	.card {
+		.title {
+			font-size: 24px;
+		}
+		.description {
+			font-size: 15px;
+		}
+	}
+}
 
 .card {
 	border-radius: $border-radius;
@@ -138,6 +148,11 @@ p, a {
 	&:hover {
 		.link-bar {
 			opacity: 1;
+		}
+	}
+	.post_star{
+		&:hover {
+			cursor: pointer;
 		}
 	}
 	.star {

@@ -64,6 +64,11 @@ p, a {
     .navbar .nav > li > a:focus, .navbar .nav > li > a:hover {
       background-color: rgba(255, 255, 255, 0.3); }
 
+.full-post .card .title {
+  font-size: 24px; }
+.full-post .card .description {
+  font-size: 15px; }
+
 .card {
   border-radius: 3px;
   background-color: #fff;
@@ -112,6 +117,8 @@ p, a {
       text-decoration: none !important; }
   .card:hover .link-bar {
     opacity: 1; }
+  .card .post_star:hover {
+    cursor: pointer; }
   .card .star {
     float: right;
     font-size: 25px;
