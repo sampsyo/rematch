@@ -128,7 +128,9 @@ def createpost():
             '',  # desired skills
             None if result['stale-days'] == '-1' else int(result['stale-days']),
             result['post_professor_email'],
-            result['project-link']
+            result['project-link'],
+            '',#required courses
+            '' #grad_only
         )
         return redirect("/posts", code=302)
     else:
