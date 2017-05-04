@@ -12,8 +12,10 @@ class Post(db.Model):
     tags = db.Column(db.String(10000))
     is_active = db.Column(db.Boolean, default=True, nullable=False)
 
-    # date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
-    # date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(),
+    # date_created = db.Column(db.DateTime,
+    #                         default=db.func.current_timestamp())
+    # date_modified = db.Column(db.DateTime,
+    #                         default=db.func.current_timestamp(),
     #                           onupdate=db.func.current_timestamp())
 
     stale_date = db.Column(db.DateTime)
@@ -22,7 +24,7 @@ class Post(db.Model):
 
     # unimplemented
     required_courses = db.Column(db.String(10000))
-    grad_only = db.Column(db.Boolean, default = False) #['grad'],['grad','undergrad'],['undergrad']
+    grad_only = db.Column(db.Boolean, default=False)
     qualifications = db.Column(db.String(10000))
     current_students = db.Column(db.String(10000))
     desired_skills = db.Column(db.String(10000))
@@ -31,7 +33,7 @@ class Post(db.Model):
 
     def is_stale(self):
         return self.stale_date is not None and \
-                self.stale_date < datetime.datetime.now()
+            self.stale_date < datetime.datetime.now()
 
     @classmethod
     def refresh(cls, post_id, days_added):
@@ -196,15 +198,15 @@ class Post(db.Model):
             s.serialize for s in Post.query.filter_by(is_active=False).all()
         ]
 
-    #considering combining these following two functions 
-    #def search_posts(cls, courses=None, keywords=None):
-    #it will filter out not searched for courses then search that 
-    #filtered list for the keywords.
-    #For now, I just have separate functions 
+    # considering combining these following two functions
+    # def search_posts(cls, courses=None, keywords=None):
+    # it will filter out not searched for courses then search that
+    # filtered list for the keywords.
+    # For now, I just have separate functions
 
-    #first filter by courses if checked
-    #then filter by tag section
-    #then filter by descrit
+    # first filter by courses if checked
+    # then filter by tag section
+    # then filter by descrit
     @classmethod
     def get_posts_by_keywords(cls, keywords):
         posts = []
@@ -222,9 +224,9 @@ class Post(db.Model):
                         posts.append(p.serialize_compressed_post)
         return posts
 
-    #returns only the posts that all required courses part of 
-    #the searched for course list
-    @classmethod 
+    # returns only the posts that all required courses part of
+    # the searched for course list
+    @classmethod
     def get_posts_by_courses(cls, courses):
         posts = []
         post_ids = set()
@@ -235,7 +237,7 @@ class Post(db.Model):
                     posts.append(p.serialize_compressed_post)
         return posts
 
-    @classmethod 
+    @classmethod
     def search(cls, is_grad=None, taken_courses=None, tags=None, keywords=None):
         search_list = Post.query.filter_by(is_active=True).all()
         if is_grad is not None:

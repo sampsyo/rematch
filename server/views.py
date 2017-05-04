@@ -3,6 +3,9 @@ from server import app
 from .forms import LoginForm
 from flask_login import login_user, logout_user, login_required, current_user
 from models import Post, Student, Professor
+from werkzeug import secure_filename
+from werkzeug.exceptions import RequestEntityTooLarge
+import os
 
 
 @app.route('/')
@@ -61,6 +64,11 @@ def logout():
     return redirect('/index')
 
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+
+
 @app.route('/profile/<net_id>', methods=['GET', 'POST'])
 @login_required
 def profile(net_id):
@@ -79,12 +87,19 @@ def profile(net_id):
             interests = result["profile_interests"] or " "
             skills = result["profile_skills"] or " "
             availability = ','.join(result.getlist("weekday"))
-            # Flask fileupload ?
-            resume = result["resume"]
+            f = request.files['resume']
+            if f and allowed_file(f.filename):
+                extension = f.filename.rsplit('.', 1)[1]
+                f.filename = net_id + "_resume." + extension
+                filename = secure_filename(f.filename)
+                f.save(os.path.join('uploads/', filename))
+            else:
+                flash('Resume File Type Not Accepted')
+                filename = None
             Student.update_student(
                 net_id, email=new_email, name=None, major=user.major,
                 year=new_year,
-                skills=skills, resume=resume, description=new_description,
+                skills=skills, resume=filename, description=new_description,
                 interests=interests, favorited_projects=None,
                 availability=availability
             )
@@ -99,11 +114,11 @@ def profile(net_id):
         return redirect("/profile/" + net_id, code=302)
     else:
         return render_template(
-          'profile.html',
-          title=current_user.name + "'s Profile",
-          profile=current_user,
-          favorited_projects=favorited_projects,
-          post_collection=post_collection
+            'profile.html',
+            title=current_user.name + "'s Profile",
+            profile=current_user,
+            favorited_projects=favorited_projects,
+            post_collection=post_collection
         )
 
 
@@ -126,8 +141,8 @@ def createpost():
             None if result['stale-days'] == '-1' else int(result['stale-days']),
             result['post_professor_email'],
             result['project-link'],
-            '',#required courses
-            '' #grad_only
+            '',  # required courses
+            ''  # grad_only
         )
         return redirect("/posts", code=302)
     else:
@@ -189,6 +204,7 @@ def get_styleguide():
         'styleguide.html'
     )
 
+
 @app.route('/search', methods=['GET'])
 def search():
     if request.method == 'GET':
@@ -212,3 +228,9 @@ def search():
     #     tags=Post.TAGS,
     #     keywords = ','.join(keywords)
     # )
+
+
+@app.errorhandler(413)
+def page_not_found(e):
+    flash('Resume File Size Exceeds Limit')
+    return redirect("/profile/" + current_user.net_id, code=302)

@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+import os
 
 # NOTE: Need to do this once we enable searching with the db using whoosh
 # from config import basedir
@@ -9,6 +10,14 @@ from flask_login import LoginManager
 app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
+
+app.config['UPLOAD_FOLDER'] = 'uploads/'
+app.config['ALLOWED_EXTENSIONS'] = set(
+    ['txt', 'pdf', 'png', 'jpg', 'jpeg', 'doc'])
+app.config['MAX_CONTENT_LENGTH'] = 1000000
+
+if not os.path.isdir('uploads/'):
+    os.mkdir('uploads/')
 
 from server.views import *
 from routes import *
