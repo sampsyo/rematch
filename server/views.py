@@ -88,13 +88,16 @@ def profile(net_id):
             skills = result["profile_skills"] or " "
             availability = ','.join(result.getlist("weekday"))
             f = request.files['resume']
-            if f and allowed_file(f.filename):
-                extension = f.filename.rsplit('.', 1)[1]
-                f.filename = net_id + "_resume." + extension
-                filename = secure_filename(f.filename)
-                f.save(os.path.join('uploads/', filename))
+            if f:
+                if allowed_file(f.filename):
+                    extension = f.filename.rsplit('.', 1)[1]
+                    f.filename = net_id + "_resume." + extension
+                    filename = secure_filename(f.filename)
+                    f.save(os.path.join('uploads/', filename))
+                else:
+                    flash('Resume File Type Not Accepted')
+                    filename = None
             else:
-                flash('Resume File Type Not Accepted')
                 filename = None
             Student.update_student(
                 net_id, email=new_email, name=None, major=user.major,
