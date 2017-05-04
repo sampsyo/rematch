@@ -111,7 +111,7 @@ class Post(db.Model):
             required_courses=required_courses,
             grad_only=grad_only
         )
-        update_tags_from_desc(post)
+        #update_tags_from_desc(post)
         db.session.add(post)
         db.session.commit()
         return post
@@ -148,8 +148,8 @@ class Post(db.Model):
             post.required_courses = required_courses
         if grad_only is not None:
             post.grad_only = grad_only
-        if description is not None:
-            update_tags_from_desc(post)
+        #if description is not None:
+        #    update_tags_from_desc(post)
         db.session.commit()
         return post
 
