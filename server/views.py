@@ -13,8 +13,6 @@ from models import Post, Student, Professor
 @app.route('/posts/tags=<tags>/<all>')
 @login_required
 def index(tags=None, all=None, posts=None):
-    if posts is not None:
-        print(len(posts))
     if tags:
         tags = tags.lower().strip().split(',')
     else:
@@ -22,7 +20,6 @@ def index(tags=None, all=None, posts=None):
     if posts is None:
         posts = Post.get_compressed_posts(
             tags=tags, exclusive=True if all == 'all' else False)
-    # print(len(posts))
     for post in posts:
         post['professor_name'] = Professor.get_professor_by_netid(
             post['professor_id']).name
@@ -153,7 +150,7 @@ def showpost(post_id):
     post['professor_name'] = Professor.get_professor_by_netid(
         post['professor_id']).name
     return render_template(
-        'post.html',
+        'full_post.html',
         post=post
     )
 
@@ -192,23 +189,26 @@ def get_styleguide():
         'styleguide.html'
     )
 
-@app.route('/search/keywords=<keywords>', methods=['GET'])
-def search(keywords):
-    keywords = keywords.lower().split(',')
-    posts = Post.get_posts_by_keywords(keywords=keywords)
-    print(posts)
-    for post in posts:
-        post['professor_name'] = Professor.get_professor_by_netid(
-            post['professor_id']).name
+@app.route('/search', methods=['GET'])
+def search():
+    if request.method == 'GET':
+        result = request.form
+        print(result)
+    # keywords = keywords.lower().split(',')
+    # posts = Post.get_posts_by_keywords(keywords=keywords)
+    # print(posts)
+    # for post in posts:
+    #     post['professor_name'] = Professor.get_professor_by_netid(
+    #         post['professor_id']).name
 
-    posts.sort(key=lambda x: x['id'], reverse=True)
-    return render_template(
-        "index.html",
-        title='Home',
-        user=current_user,
-        posts=posts,
-        search=True,
-        isInIndex=True,
-        tags=Post.TAGS,
-        keywords = ','.join(keywords)
-    )
+    # posts.sort(key=lambda x: x['id'], reverse=True)
+    # return render_template(
+    #     "index.html",
+    #     title='Home',
+    #     user=current_user,
+    #     posts=posts,
+    #     search=True,
+    #     isInIndex=True,
+    #     tags=Post.TAGS,
+    #     keywords = ','.join(keywords)
+    # )

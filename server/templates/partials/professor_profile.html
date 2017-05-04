@@ -37,9 +37,11 @@
         </div>
         <div role="tabpanel" class="tab-pane" id="starred">
             {% if post_collection %}
-                {% for post in post_collection %}        
-                    {% include "partials/post.html" %}
-                {% endfor %}
+                <div class="row">
+                    {% for post in post_collection %}        
+                        {% include "partials/post.html" %}
+                    {% endfor %}
+                </div>
             {% else %}
                 <div class="profile">
                     <div class="card">
