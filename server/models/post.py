@@ -111,6 +111,7 @@ class Post(db.Model):
             required_courses=required_courses,
             grad_only=grad_only
         )
+        update_tags_from_desc(post)
         db.session.add(post)
         db.session.commit()
         return post
@@ -147,8 +148,18 @@ class Post(db.Model):
             post.required_courses = required_courses
         if grad_only is not None:
             post.grad_only = grad_only
+        if description is not None:
+            update_tags_from_desc(post)
         db.session.commit()
         return post
+
+    @classmethod
+    def update_tags_from_desc(cls, post):
+        new_tags = []
+        for tag in TAGS:
+            if tag in post.description.lower() and tag not in post.tags:
+                new_tags.append(tag)
+        post.tags = post.tags + "," + ",".join(new_tags)
 
     @classmethod
     def get_post_by_id(cls, post_id):
