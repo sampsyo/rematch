@@ -12,13 +12,11 @@ class Post(db.Model):
     professor_id = db.Column(db.String(64), db.ForeignKey('professors.net_id'))
     tags = db.Column(db.String(10000))
     is_active = db.Column(db.Boolean, default=True, nullable=False)
-
-    # date_created = db.Column(db.DateTime,
-    #                         default=db.func.current_timestamp())
-    # date_modified = db.Column(db.DateTime,
-    #                         default=db.func.current_timestamp(),
-    #                           onupdate=db.func.current_timestamp())
-
+    date_created = db.Column(db.DateTime,
+                            default=db.func.current_timestamp())
+    date_modified = db.Column(db.DateTime,
+                            default=db.func.current_timestamp(),
+                              onupdate=db.func.current_timestamp())
     stale_date = db.Column(db.DateTime)
     contact_email = db.Column(db.String(10000))
     project_link = db.Column(db.String(10000))
@@ -272,6 +270,13 @@ class Post(db.Model):
     @classmethod
     def search(cls, is_grad=None, taken_courses=None, tags=None, keywords=None):
         search_list = Post.query.filter_by(is_active=True).all()
+        print(is_grad)
+        print(taken_courses)
+        print(tags)
+        print(keywords)
+        for p in search_list:
+            if p.required_courses is None:
+                p.required_courses = " "
         if is_grad is not None:
             for p in list(search_list):
                 if p.grad_only and not is_grad:
@@ -309,8 +314,8 @@ class Post(db.Model):
             'professor_id': self.professor_id,
             'desired_skills': self.desired_skills,
             'is_active': self.is_active,
-            # 'date_created': self.date_created,
-            # 'date_modified': self.date_modified,
+            'date_created': self.date_created,
+            'date_modified': self.date_modified,
             'stale_date': self.stale_date,
             'project_link': self.project_link,
             'contact_email': self.contact_email,
@@ -323,16 +328,16 @@ class Post(db.Model):
         return {
             'id': self.id,
             'title': self.title,
-            # only 150 words
+            # only 60 words
             'description': (
                 " ".join(self.description.split(" ")[:60]) + '...'
                 if len(self.description.split(" ")) > 60 else self.description),
             # only 5 tags
             'tags': self.tags.split(',')[:5],
             'professor_id': self.professor_id,
-            'is_active': self.is_active
-            # 'date_created': self.date_created,
-            # 'date_modified': self.date_modified
+            'is_active': self.is_active,
+            'date_created': self.date_created,
+            'date_modified': self.date_modified
         }
 
     @classmethod
@@ -346,8 +351,8 @@ class Post(db.Model):
             'professor_id': '',
             'desired_skills': '',
             'is_active': '',
-            # 'date_created': '',
-            # 'date_modified': '',
+            'date_created': '',
+            'date_modified': '',
             'stale_date': '',
             'project_link': '',
             'contact_email': '',
