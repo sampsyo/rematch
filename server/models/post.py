@@ -1,6 +1,7 @@
 import datetime
 from server import db
 from config import PAGINATION_PER_PAGE
+from sqlalchemy import desc, or_
 # from server.models.professor import Professor
 
 
@@ -13,9 +14,9 @@ class Post(db.Model):
     tags = db.Column(db.String(10000))
     is_active = db.Column(db.Boolean, default=True, nullable=False)
     date_created = db.Column(db.DateTime,
-                            default=db.func.current_timestamp())
+                             default=db.func.current_timestamp())
     date_modified = db.Column(db.DateTime,
-                            default=db.func.current_timestamp(),
+                              default=db.func.current_timestamp(),
                               onupdate=db.func.current_timestamp())
     stale_date = db.Column(db.DateTime)
     contact_email = db.Column(db.String(10000))
@@ -41,68 +42,59 @@ class Post(db.Model):
             post.stale_date += datetime.timedelta(days=days_added)
 
     @classmethod
-    def get_posts_raw(cls):
-        return Post.query.all()
+    def get_posts(cls, page=None, compressed=False, descend=True,
+                  active_only=True, inactive_only=False, grad_only=False,
+                  professor_id=None, keywords=None, tags=None):
+        """
+            page: current page of pagination, else None to get all posts
+            compressed: True to get the compressed serialization
+            descend: True to order descending by post id (creation)
+            active_only: Only show active posts
+            inactive_only: Only show inactive posts
+            grad_only: True to only show listings for graduate listings
+            professor_id: string, usually netid
+            id: int of post id to find
+            keywords: a string of keywords, exact match searched in the
+                title and description of a post
+            tags: a string of tags, separated by a comma; posts must have at
+                least one tag
+        """
 
-    @classmethod
-    def get_posts(cls, page=None, tags=None, exclusive=False):
-        """ Gets posts in the database.  If a list of tags is supplied, filters
-        based on those tags.  If exclusive is set True, then post must have
-        all tags applied, else post must have at least one tag applied. """
-        # TODO: figure out how to paginate and filter
-        if page is None and tags is None:
-            posts = Post.query.all()
+        # Build a query object
+        query = Post.query
+        if active_only:
+            query = query.filter_by(is_active=True)
+        if grad_only:
+            query = query.filter_by(grad_only=True)
+        if professor_id:
+            query = query.filter_by(professor_id=professor_id)
+
+        # search features
+        if keywords:
+            keywords = keywords.lower().strip()
+            query = query.filter(or_(
+                Post.description.contains(keywords),
+                Post.title.contains(keywords)
+            ))
+        if tags:
+            tags = tags.strip().lower().split(',')
+            query = query.filter(or_(Post.tags.contains(tag) for tag in tags))
+
+        if descend:
+            query = query.order_by(desc(Post.id))
+
+        if page is None:
+            posts = query.all()
+            has_next = None
         else:
-            posts = Post.query.paginate(page=page, per_page=PAGINATION_PER_PAGE)
+            pagination = query.paginate(page=page, per_page=PAGINATION_PER_PAGE)
+            has_next = pagination.has_next
+            posts = pagination.items
 
-        if not tags:
-            return [p.serialize for p in posts]
-
-        # TODO inefficiency: currently must pull all posts, then filter,
-        # because tags cannot be searched through SQLLite
-        if exclusive:
-            return [
-                p.serialize for p in Post.query.all() if
-                set(tags).issubset(set(p.serialize['tags']))
-            ]
+        if compressed:
+            return ([p.serialize_compressed_post for p in posts], has_next)
         else:
-            return [
-                p.serialize for p in Post.query.all() if
-                len(set(tags).intersection(set(p.serialize['tags']))) > 0
-            ]
-
-    @classmethod
-    def get_compressed_posts(cls, page=None, tags=None, exclusive=False):
-        """ Gets posts in the database.  If a list of tags is supplied, filters
-        based on those tags.  If exclusive is set True, then post must have
-        all tags applied, else post must have at least one tag applied. """
-        print page, PAGINATION_PER_PAGE
-        # TODO: figure out how to paginate and filter
-        has_next = None
-        if page is None and tags is None:
-            posts = Post.query.all()
-        else:
-            page = Post.query.paginate(page=page, per_page=PAGINATION_PER_PAGE)
-            posts = page.items
-            has_next = page.has_next
-
-        if not tags:
-            return [p.serialize_compressed_post for p in posts], has_next
-
-        # TODO inefficiency: currently must pull all posts, then filter,
-        # because tags cannot be searched through SQLLite
-        if exclusive:
-            return [
-                p.serialize_compressed_post for p in Post.query.all() if
-                set(tags).issubset(set(p.serialize_compressed_post['tags']))
-            ]
-        else:
-            return [
-                p.serialize_compressed_post for p in Post.query.all() if
-                len(set(tags).intersection(
-                    set(p.serialize_compressed_post['tags'])
-                )) > 0
-            ]
+            return ([p.serialize for p in posts], has_next)
 
     @classmethod
     def create_post(cls, title, description, professor_id, tags,
@@ -192,13 +184,6 @@ class Post(db.Model):
             return None
 
     @classmethod
-    def get_posts_by_professor_id(cls, professor_id):
-        return [
-            p.serialize for p in
-            Post.query.filter(Post.professor_id == professor_id).all()
-        ]
-
-    @classmethod
     def delete_post(cls, post_id):
         post = Post.get_post_by_id(post_id)
         if post:
@@ -217,42 +202,6 @@ class Post(db.Model):
         cls.update_post(cls, post_id, is_active=False)
         db.session.commit()
         return True
-
-    @classmethod
-    def get_all_active_posts(cls):
-        return [s.serialize for s in Post.query.filter_by(is_active=True).all()]
-
-    @classmethod
-    def get_all_stale_posts(cls):
-        return [
-            s.serialize for s in Post.query.filter_by(is_active=False).all()
-        ]
-
-    # considering combining these following two functions
-    # def search_posts(cls, courses=None, keywords=None):
-    # it will filter out not searched for courses then search that
-    # filtered list for the keywords.
-    # For now, I just have separate functions
-
-    # first filter by courses if checked
-    # then filter by tag section
-    # then filter by descrit
-    @classmethod
-    def get_posts_by_keywords(cls, keywords):
-        posts = []
-        post_ids = set()
-        for p in Post.query.filter_by(is_active=True).all():
-            for keyword in keywords.lower():
-                if (keyword in p.title.lower()) \
-                    or (keyword in p.description.lower()) \
-                    or (keyword in p.tags.lower()) \
-                    or (keyword in p.professor_id.lower()) \
-                    or (keyword in p.desired_skills.lower()) \
-                    or (keyword in p.required_courses.lower()):
-                    if p.id not in post_ids:
-                        post_ids.add(p.id)
-                        posts.append(p.serialize_compressed_post)
-        return posts
 
     # returns only the posts that all required courses part of
     # the searched for course list

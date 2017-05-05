@@ -88,3 +88,9 @@ class Professor(db.Model):
             'desc': self.desc,
             'interests': self.interests
         }
+
+    @classmethod
+    def annotate_posts(cls, posts):
+        for post in posts:
+            post['professor_name'] = Professor.get_professor_by_netid(
+                post['professor_id']).name

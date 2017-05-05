@@ -8,40 +8,40 @@ from config import BASE_URL
 import os
 
 
-@app.route('/')
-@app.route('/index')
-@app.route('/posts')
-@app.route('/posts/')
-@app.route('/page/<int:page>')
-@app.route('/posts/tags=<tags>')
-@app.route('/posts/tags=<tags>/<all>')
+@app.route('/', methods=['GET'])
+@app.route('/posts', methods=['GET'])
 @login_required
-def index(tags=None, all=None, posts=None, page=None):
-    page = page if page else 1
+def posts():
+    keywords = request.args.get('keywords', None)
+    tags = request.args.get('tags', None)
+    page = int(request.args.get('page', 1))
 
+    url_params = []
     if tags:
-        tags = tags.lower().strip().split(',')
+        url_params.append('tags=%s' % tags)
+    if keywords:
+        url_params.append('keywords=%s' % keywords)
+    search_url = '&%s' % '&'.join(url_params)
 
-    if posts is None:
-        posts, has_next = Post.get_compressed_posts(
-            page=page,
-            tags=tags, exclusive=True if all == 'all' else False)
-    for post in posts:
-        post['professor_name'] = Professor.get_professor_by_netid(
-            post['professor_id']).name
+    posts, has_next = Post.get_posts(
+        page=page, compressed=True, tags=tags, keywords=keywords
+    )
+
+    Professor.annotate_posts(posts)
 
     posts.sort(key=lambda x: x['date_created'], reverse=True)
     return render_template(
         "index.html",
         title='Home',
-        url=BASE_URL,
         user=current_user,
+        base_url=BASE_URL,
         posts=posts,
         search=True,
         isInIndex=True,
         tags=Post.TAGS if tags is None else tags,
         page=page,
-        has_next_page=has_next
+        has_next_page=has_next,
+        search_url=search_url
     )
 
 
