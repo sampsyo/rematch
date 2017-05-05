@@ -145,7 +145,16 @@ def createpost():
 
     if request.method == 'POST':
         result = request.form
-        print(result)
+        """print(result)
+        if result.get("post_title") == None:
+            flash('Title Field is required.')
+            return redirect("/api/posts/create")
+        if result.get("post_description") == None:
+            flash('Project Description is required')
+            return redirect("/api/posts/create")
+        if result.get('tags') == None:
+            flash('Project Topics/Tags are required')
+            return redirect("/api/posts/create")"""
         Post.create_post(
             result["post_title"],
             result["post_description"],
