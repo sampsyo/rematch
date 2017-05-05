@@ -104,14 +104,12 @@
 
         //user is "finished typing," do something
         function doneTyping () {
-            var found = []
             var description = $('#post_description').val()
             $.each(TAGS, function(i, value) {
                 if (description.includes(value) && value.length > 1) {
                     $('.tags-input').tagsinput('add', value)
                 }
             });
-            console.log(found.join())
         }
 
     </script>
