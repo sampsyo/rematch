@@ -228,7 +228,10 @@ def search():
         from flask import jsonify
         rendered_posts = []
         for p in posts:
-            rendered_posts.append(render_template("partials/post.html", post=p))
+            rendered_posts.append(render_template("partials/post.html", 
+                post=p,
+                isInIndex=True,
+                user=current_user))
         return jsonify({
             "rendered_posts": rendered_posts
         })

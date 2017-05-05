@@ -49,6 +49,7 @@
 			    	desired_courses: $(".desired_courses").is(":checked")
 			    },
 			    success: function(response) {
+			    	console.log(response);
 			    	$(".posts").empty();
 			    	response.rendered_posts.forEach(function(post) {
 			    		$(".posts").append(post);
