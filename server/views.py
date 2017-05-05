@@ -42,6 +42,7 @@ def posts():
         search=True,
         isInIndex=True,
         tags=Post.TAGS,
+        total_number_of_pages=total_number_of_pages,
         search_tags=search_tags or '',
         page=page,
         phrase=phrase or '',

@@ -117,6 +117,8 @@ p, a {
 
 .fullpost-tags {
   margin: 0px; }
+  .fullpost-tags .course-tag:hover {
+    color: #888888; }
 
 .card {
   border-radius: 3px;

@@ -20,7 +20,7 @@
 	        			{{base_url}}/?page={{ page - 1 }}{{ search_url }}
 	        		{% else %}
 	        			javascript: void(0) 
-	        		{% endif %}" class="prev">&lsaquo; Prev</a><span>Page {{page}}</span><a href="
+	        		{% endif %}" class="prev">&lsaquo; Prev</a><span>Page {{page}} of {{total_number_of_pages}}</span><a href="
 	        		{% if has_next_page: %}
 	        			{{base_url}}/?page={{ page + 1 }}{{ search_url }}
 	        		{% else %}
