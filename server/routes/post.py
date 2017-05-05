@@ -20,6 +20,23 @@ def get_posts_inclusive(tags):
     return jsonify(posts=Post.get_posts(tags=tags, exclusive=False))
 
 
+@app.route('/api/setpostinactive/<int:post_id>', methods=['GET'])
+def setpostinactive(post_id):
+    post = Post.get_post_by_id(post_id)
+    if post:
+        post = Post.update_post(
+            post_id,
+            description=None, desired_skills=None, is_active=False,
+                    professor_id=None, qualifications=None, required_courses=None,
+                    tags=None, title=None, project_link=None, contact_email=None,
+                    grad_only=None
+        )
+        return jsonify(post=post.serialize)
+    else:
+        return jsonify({
+            "error": "Post not found with given id"
+        })
+
 @app.route('/api/posts/<int:id>', methods=['GET'])
 def get_post_by_id(post_id):
     post = Post.get_post_by_id(post_id)
@@ -67,7 +84,7 @@ def update_post(post_id):
         post_id,
         description=r.get('description', None),
         desired_skills=r.get('desired_skills', None),
-        is_active=r.get('is_active', None),
+        is_active=r.get('is_active', False),
         professor_id=r.get('professor_id', None),
         qualifications=r.get('qualifications', None),
         tags=r.get('tags', None),
