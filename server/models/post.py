@@ -19,7 +19,7 @@ class Post(db.Model):
                               onupdate=db.func.current_timestamp())
     stale_date = db.Column(db.DateTime)
     contact_email = db.Column(db.String(10000))
-    project_lin k= db.Column(db.String(10000))
+    project_link= db.Column(db.String(10000))
 
     # unimplemented
     required_courses = db.Column(db.String(10000))
