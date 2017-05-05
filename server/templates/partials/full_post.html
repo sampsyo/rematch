@@ -13,7 +13,7 @@
         {% endif %}
 
         <h1 class="title">{{ post["title"] }}</h1>
-        <h2 class="professor">{{ post['professor_name'] }}, Last updated on {{ "{:%b, %d %Y}".format(post['date_created']) }} </h2> 
+        <h2 class="professor">{{ post['professor_name'] }}, {{ "{:%b %d, %Y}".format(post['date_created']) }} </h2> 
         <br> 
         <label> Description </label> 
          <p class="description">

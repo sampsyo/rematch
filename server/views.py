@@ -234,6 +234,8 @@ def showpost(post_id):
     post = post.serialize
     post['professor_name'] = Professor.get_professor_by_netid(
         post['professor_id']).name
+    print(post['courses'])
+
     return render_template(
         'full_post.html',
         base_url=BASE_URL,

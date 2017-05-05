@@ -208,7 +208,8 @@ class Post(db.Model):
             'stale_date': self.stale_date,
             'project_link': self.project_link,
             'contact_email': self.contact_email,
-            'courses': self.required_courses.split(','),
+            'courses': self.required_courses.split(',') if self.required_courses
+            else None
         }
 
     @property
