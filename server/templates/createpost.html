@@ -19,7 +19,11 @@
                     <label>Project Link:</label>
                      <p class="helper-text"> Please include http:// at the start of your url. </p> 
                     <input type="text" name="project-link" class="form-control"
-                                                           value="{{post['project_link']}}">
+                                                           value="{% if not
+                                                           post['project_link']:
+                                                           %}http://{% else: %}
+                                                           {{post['project_ink']}}
+                                                           {% endif %}">
                 </div>
 
                 <div class="form-group">
