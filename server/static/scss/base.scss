@@ -472,7 +472,6 @@ a.no-decoration {
 }
 
 .toggle {
-	height: 25px !important;
 	text-transform: lowercase;
 	position: relative;
 	display: block;
@@ -481,15 +480,7 @@ a.no-decoration {
 		background-color: #ad1b1b;
     	color: white;
 	}
-	.toggle-handle {
-		border-radius: 0px;
-	}
-}
-.toggle.btn {
-	height: 25px !important;
 }
 .activate-post-toggle {
-	display: block;
+	display: inline;
 }
-.toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px; }
-  .toggle.ios .toggle-handle { border-radius: 20px; }

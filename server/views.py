@@ -90,8 +90,10 @@ def allowed_file(filename):
 def profile(net_id):
     if not current_user.net_id == net_id:
         return redirect("/", code=301)
-
-    favorited_projects = Student.get_student_favorited_projects(net_id)
+    favorited_projects = None
+    if current_user.is_student:
+        favorited_projects = Student.get_student_favorited_projects(net_id)
+        Professor.annotate_posts(favorited_projects)
     active_collection, _, _ = Post.get_posts(
         professor_id=net_id, active_only=True, compressed=True)
     inactive_collection, _, _ = Post.get_posts(
