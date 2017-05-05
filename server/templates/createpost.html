@@ -17,24 +17,37 @@
 
                 <div class="form-group">
                     <label>Project Link:</label>
+                     <p class="helper-text"> Please include http:// at the start of your url. </p> 
                     <input type="text" name="project-link" class="form-control"
                                                            value="{{post['project_link']}}">
                 </div>
 
                 <div class="form-group">
                     <label>Project Description*:</label>
+                     <p class="helper-text"> Provide information about research topic, qualifications, time committment, and number of students you are seeking.  </p> 
                     <textarea name="post_description" class="form-control"
                               id="post_description" rows="5">{{post['description']}}</textarea>
                 </div>
 
                 <div class="form-group">
                     <label>Topics*:</label><br>
-                    <p class="helper text"> Search and select research topics relevant to this listing. </p> 
+                    <p class="helper-text"> Search and select research topics relevant to this listing. </p> 
                     <input autocomplete="off" class="tags-input" type="text"
                                                                  data-role="tagsinput"
                                                                  name="tags"
                                                                  value="{{post['tags']}}"/>
                 </div>
+
+                <div class="form-group">
+                    <label>Desired Courses:</label><br>
+                    <p class="helper-text"> List the courses that you desire
+                    the applicants to have taken, if any.</p>
+                    <input autocomplete="off" class="courses-input" type="text"
+                                                                 data-role="coursesinput"
+                                                                 name="courses"
+                                                                 value="{{post['courses']}}"/>
+                </div>
+
 
 
                 {#
@@ -46,6 +59,7 @@
 
                 <div class="form-group">    
                     <label>Through which semester would you like to keep this listing live? </label> <br>
+                     <p class="helper-text"> Postings can be reactivated under your Profile page. </p> 
                     <select class="form-control" name="stale-days">
                          {% for i in range(options|length) %}
                              <option value={{i}}> {{ options[i] }}</option>
@@ -93,6 +107,31 @@
             }
         });
 
+        $('.courses-input').tagsinput({
+            typeahead: {
+                source: {{ all_courses | safe }}
+            },
+            freeInput: false,
+            // Typeahead fix
+            onTagExists: function() {
+                setTimeout(function() {
+                    $(">input[type=text]",".bootstrap-tagsinput").val("");
+                }, 1);
+            }
+        });
+        $('.courses-input').on('itemAdded', function(event) {
+            setTimeout(function(){
+                $(">input[type=text]",".bootstrap-tagsinput").val("");
+            }, 1);
+        });
+        // No Enter button
+        $('.bootstrap-tagsinput').keydown(function(event){
+            if(event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+
         var typingTimer;                //timer identifier
         var doneTypingInterval = 500;  //time in ms (5 seconds)
 
@@ -106,7 +145,7 @@
 
         //user is "finished typing," do something
         function doneTyping () {
-            var description = $('#post_description').val();
+            var description = $('#post_description').val().toLowerCase();
             $.each(TAGS, function(i, value) {
                 if (description.includes(value) && value.length > 1 &&
                         value != 'other') {

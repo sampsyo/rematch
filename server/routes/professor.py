@@ -8,7 +8,7 @@ def get_all_professors():
     return jsonify(professors=Professor.get_all_professors())
 
 
-# Add a new user to the database
+# Add a new user to the database 
 @app.route('/api/professors', methods=['POST'])
 def create_professor():
     r = request.get_json(force=True)

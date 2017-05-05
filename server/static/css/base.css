@@ -141,7 +141,8 @@ p, a {
     -webkit-font-smoothing: antialiased;
     font-size: 14px;
     font-weight: 300;
-    line-height: 1.65; }
+    line-height: 1.65;
+    padding-top: 5px; }
     .card .description a.learnmore {
       color: #ad1b1b; }
   .card .more {
@@ -194,7 +195,9 @@ p, a {
       padding-left: 5px; }
   .card .post_date {
     font-weight: 400;
-    color: #444; }
+    color: #555;
+    padding-right: 1%;
+    letter-spacing: -0.5; }
 
 .inactive {
   background: #fafafa;
@@ -318,6 +321,11 @@ label {
 
 .spacer {
   height: 50px; }
+
+p.helper-text {
+  font-size: 11px;
+  letter-spacing: 1;
+  color: #888; }
 
 a.no-decoration {
   text-decoration: none !important; }
