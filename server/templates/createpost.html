@@ -24,7 +24,7 @@
                 <div class="form-group">
                     <label>Project Description*:</label>
                     <textarea name="post_description" class="form-control"
-                                                      rows="5">{{post['description']}}</textarea>
+                              id="post_description" rows="5">{{post['description']}}</textarea>
                 </div>
 
                 <div class="form-group">
@@ -65,9 +65,10 @@
         </div>
     </div>
     <script type="text/javascript">
+        var TAGS = {{ tags | safe }};
         $('.tags-input').tagsinput({
             typeahead: {
-                source: {{ tags | safe }}
+                source: TAGS
             },
             freeInput: false,
             // Typeahead fix
@@ -89,6 +90,30 @@
                 return false;
             }
         });
+
+        var typingTimer;                //timer identifier
+        var doneTypingInterval = 500;  //time in ms (5 seconds)
+
+        //on keyup, start the countdown
+        $('#post_description').keyup(function(){
+            clearTimeout(typingTimer);
+            if ($('#post_description').val()) {
+                typingTimer = setTimeout(doneTyping, doneTypingInterval);
+            }
+        });
+
+        //user is "finished typing," do something
+        function doneTyping () {
+            var found = []
+            var description = $('#post_description').val()
+            $.each(TAGS, function(i, value) {
+                if (description.includes(value) && value.length > 1) {
+                    $('.tags-input').tagsinput('add', value)
+                }
+            });
+            console.log(found.join())
+        }
+
     </script>
 
 {% endblock %}
