@@ -16,9 +16,8 @@
     <h1 class="title"><a href="{{base_url}}/posts/{{post['id']}}">{{ post["title"] }}</a></h1>
     <h2 class="professor">{{ post['professor_name'] }}, {{ "{:%b %d, %Y}".format(post['date_created']) }} </h2> 
     <p class="description">{{ post["description"] }}</p>
-    {% if isInIndex: %}
     <a class="more" href="{{base_url}}/posts/{{post['id']}}">Read more &rsaquo;</a>
-    {% elif post['project_link']: %}
+    {% if post['project_link']: %}
     <a href="{{post['project_link']}}" class="more">External project site &rsaquo;</a>
     {% endif %}
     <ul class="tags">

@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, request
-from server import app
+from server import app, db
 from .forms import LoginForm
 from flask_login import login_user, logout_user, login_required, current_user
 from models import Post, Student, Professor
@@ -33,14 +33,36 @@ def posts():
     )
     Professor.annotate_posts(posts)
 
+    """if (len(posts) == 0):
+        post = Post(
+            title="No results available",
+            description="",
+            tags="",
+            professor_id=current_user.net_id,
+            qualifications="",
+            desired_skills="",
+            stale_date=None,
+            contact_email="",
+            project_link="",
+            required_courses="",
+            is_active = True,
+            date_created = None,
+            date_modified = None
+        )
+        
+        posts = [post.serialize]
+
+        Professor.annotate_posts(posts)"""
+    
+
     return render_template(
         "index.html",
         title='Home',
-        user=current_user,
+        user=current_user, 
         base_url=BASE_URL,
         posts=posts,
         search=True,
-        isInIndex=True,
+        isInIndex=True, 
         tags=Post.TAGS,
         total_number_of_pages=total_number_of_pages,
         search_tags=search_tags or '',
@@ -93,9 +115,9 @@ def profile(net_id):
 
     favorited_projects = Student.get_student_favorited_projects(net_id)
     active_collection, _, _ = Post.get_posts(
-        professor_id=net_id, active_only=True)
+        professor_id=net_id, active_only=True, compressed=True)
     inactive_collection, _, _ = Post.get_posts(
-        professor_id=net_id, inactive_only=True)
+        professor_id=net_id, inactive_only=True, compressed=True)
 
     Professor.annotate_posts(active_collection)
     Professor.annotate_posts(inactive_collection)
@@ -142,6 +164,7 @@ def profile(net_id):
             title=current_user.name + "'s Profile",
             base_url=BASE_URL,
             profile=current_user,
+            isInIndex=True,
             favorited_projects=favorited_projects,
             active_collection=active_collection,
             inactive_collection=inactive_collection
@@ -286,6 +309,7 @@ def editpost(post_id):
 
     if request.method == 'POST':
         result = request.form
+        is_active = bool(request.form.getlist('post-activate'))
 
         month = None
         day = None
@@ -314,6 +338,7 @@ def editpost(post_id):
 
         Post.update_post(
             post_id,
+            is_active=is_active,
             description=result['post_description'],
             tags=result['tags'].split(','),
             title=result['post_title'],
