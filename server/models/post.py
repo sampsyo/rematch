@@ -101,15 +101,10 @@ class Post(db.Model):
 
     @classmethod
     def create_post(cls, title, description, professor_id, tags,
-                    qualifications, desired_skills, stale_days,
+                    qualifications, desired_skills, stale_date,
                     contact_email, project_link, required_courses):
         # if not (Professor.get_professor_by_netid(professor_id)):
         #    return None
-        stale_date = None
-        if stale_days:
-            stale_date = datetime.datetime.now() + datetime.timedelta(
-                days=stale_days
-            )
 
         post = Post(
             title=title,
@@ -134,7 +129,7 @@ class Post(db.Model):
                     description=None, desired_skills=None, is_active=None,
                     professor_id=None, qualifications=None, tags=None,
                     required_courses=None, title=None, project_link=None,
-                    contact_email=None):
+                    contact_email=None, stale_date=None):
         post = Post.get_post_by_id(post_id)
         if not post:
             return None
@@ -158,6 +153,8 @@ class Post(db.Model):
             post.contact_email = contact_email
         if required_courses is not None:
             post.required_courses = required_courses
+        if stale_date:
+            post.stale_date = stale_date
 
         db.session.commit()
         return post
