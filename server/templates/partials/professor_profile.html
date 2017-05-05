@@ -2,37 +2,33 @@
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#myprofile" aria-controls="myprofile" role="tab" data-toggle="tab">My Profile</a></li>
-    <li role="presentation"><a href="#starred" aria-controls="starred" role="tab" data-toggle="tab">My Posts</a></li>
+    <li role="presentation"><a href="#starred" aria-controls="starred" role="tab" data-toggle="tab">Active Posts</a></li>
+    <li role="presentation"><a href="#starred" aria-controls="starred" role="tab" data-toggle="tab">Inactive Posts</a></li>
     </ul>
 
       <!-- Tab panes -->
       <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="myprofile">
-
-        <form method="POST">    
-            <div class="profile">
-                <div class="header card">
-                    <div class="name">{{current_user.name}}</div>
-                    <br>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input class="form-control" type="text" name="user_email" value="{{current_user.email}}">
+            <form method="POST">    
+                <div class="profile">
+                    <div class="header card">
+                        <div class="name">{{current_user.name}}</div>
+                        <br>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input class="form-control" type="text" name="user_email" value="{{current_user.email}}">
+                        </div>
+                        <div class="form-group">
+                            <label>Website</label><br>
+                            <input class="form-control" type="text" name="user_email" value="{{current_user.website}}">
+                        </div>
+                        <div class="form-group">
+                            <label>Office Location</label><br>
+                            <input class="form-control" type="text" name="user_email" value="{{current_user.location}}">
+                        </div>
+                        <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary">
                     </div>
-
-                    <div class="form-group">
-                        <label>Bio &amp; Experience</label><br>
-                        <textarea name="user_description" rows="5" class="form-control">{{current_user.desc}}</textarea>
-                    </div>
-                    {% if current_user.interests %}
-                        {% set interests = current_user.interests %}
-                    {% endif %}
-                    <div class="form-group typeahead">
-                        <label>Research Interests</label><br>
-                        <input autocomplete="off" class="tags-input" type="text" value="{{ interests }}" data-role="tagsinput" name="profile_interests"/>
-                    </div>
-                    <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary">
                 </div>
-            </div>
             </form>
         </div>
         <div role="tabpanel" class="tab-pane" id="starred">
@@ -49,6 +45,9 @@
                     </div>
                 </div>
             {% endif %}
+        </div>
+        <div role="tabpanel" class="tab-pane" id="inactive-posts">
+
         </div>
     </div>
 </div>
