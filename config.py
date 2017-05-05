@@ -9,7 +9,7 @@ WTF_CSRF_ENABLED = True
 SECRET_KEY = 'Pr0f3ss0r-ArmS-Is-Br1T1sH'
 
 BASE_URL = 'http://localhost:5000'
-PAGINATION_PER_PAGE = 5
+PAGINATION_PER_PAGE = 2
 
 
 # TODO: For Searches through the DB, for example if you wanted to search for a specific professor. 
