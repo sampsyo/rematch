@@ -19,16 +19,16 @@ class Post(db.Model):
                               onupdate=db.func.current_timestamp())
     stale_date = db.Column(db.DateTime)
     contact_email = db.Column(db.String(10000))
-    project_link = db.Column(db.String(10000))
+    project_lin k= db.Column(db.String(10000))
 
     # unimplemented
     required_courses = db.Column(db.String(10000))
     grad_only = db.Column(db.Boolean, default=False)
     qualifications = db.Column(db.String(10000))
-    current_students = db.Column(db.String(10000))
+    #current_students = db.Column(db.String(10000)) #are not using it anywhere else 
     desired_skills = db.Column(db.String(10000))
-    capacity = db.Column(db.Integer)
-    current_number = db.Column(db.Integer)
+    #capacity = db.Column(db.Integer) #are not using it anywhere else
+    #current_number = db.Column(db.Integer) #are not using it anywhere else 
 
     def is_stale(self):
         return self.stale_date is not None and \
@@ -169,6 +169,7 @@ class Post(db.Model):
             post.grad_only = grad_only
         #if description is not None:
         #    update_tags_from_desc(post)
+        date_modified = db.func.current_timestamp()
         db.session.commit()
         return post
 
