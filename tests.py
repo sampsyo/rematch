@@ -695,55 +695,55 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123")        
         p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         b = p1.is_stale()
         assert not b 
 
-    def test_is_stale_with_inactive_post(self): 
-        Professor.create_professor(net_id = "abc",  name = "hello", 
-            email = "abc@cornell.edu", password = "123")        
-        p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "courses")
-        b = p1.is_stale()
-        assert not b 
-        Post.refresh(1, -1)
-        p2 = Post.get_post_by_id(1) 
-        b2 = p2.is_stale()
-        assert b2
+    # def test_is_stale_with_inactive_post(self): 
+    #     Professor.create_professor(net_id = "abc",  name = "hello", 
+    #         email = "abc@cornell.edu", password = "123")        
+    #     p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+    #         "desired_skills", 1, "contact_email", "project_link", 
+    #         "courses")
+    #     b = p1.is_stale()
+    #     assert not b 
+    #     Post.refresh(1, -1)
+    #     p2 = Post.get_post_by_id(1) 
+    #     b2 = p2.is_stale()
+    #     assert b2
 
-    def test_refresh_with_0_days(self): 
-        Professor.create_professor(net_id = "abc",  name = "hello", 
-            email = "abc@cornell.edu", password = "123")        
-        p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "courses")
-        Post.refresh(1, 0)
-        p2 = Post.get_post_by_id(1) 
-        assert p1.stale_date == p2.stale_date
+    # def test_refresh_with_0_days(self): 
+    #     Professor.create_professor(net_id = "abc",  name = "hello", 
+    #         email = "abc@cornell.edu", password = "123")        
+    #     p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+    #         "desired_skills", None, "contact_email", "project_link", 
+    #         "courses")
+    #     Post.refresh(1, 0)
+    #     p2 = Post.get_post_by_id(1) 
+    #     assert p1.stale_date == p2.stale_date
 
-    def test_refresh_with_positive_days(self): 
-        Professor.create_professor(net_id = "abc",  name = "hello", 
-            email = "abc@cornell.edu", password = "123")        
-        p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "courses")
-        t1 = p1.stale_date
-        Post.refresh(1, 5)
-        p2 = Post.get_post_by_id(1) 
-        assert t1 + datetime.timedelta(days=5) == p2.stale_date
+    # def test_refresh_with_positive_days(self): 
+    #     Professor.create_professor(net_id = "abc",  name = "hello", 
+    #         email = "abc@cornell.edu", password = "123")        
+    #     p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+    #         "desired_skills", None, "contact_email", "project_link", 
+    #         "courses")
+    #     t1 = p1.stale_date
+    #     Post.refresh(1, 5)
+    #     p2 = Post.get_post_by_id(1) 
+    #     assert t1 + datetime.timedelta(days=5) == p2.stale_date
 
-    def test_refresh_with_negative_days(self): 
-        Professor.create_professor(net_id = "abc",  name = "hello", 
-            email = "abc@cornell.edu", password = "123")        
-        p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "courses")
-        t1 = p1.stale_date
-        Post.refresh(1, -5)
-        p2 = Post.get_post_by_id(1) 
-        assert t1 == p2.stale_date + datetime.timedelta(days=5) 
+    # def test_refresh_with_negative_days(self): 
+    #     Professor.create_professor(net_id = "abc",  name = "hello", 
+    #         email = "abc@cornell.edu", password = "123")        
+    #     p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+    #         "desired_skills", None, "contact_email", "project_link", 
+    #         "courses")
+    #     t1 = p1.stale_date
+    #     Post.refresh(1, -5)
+    #     p2 = Post.get_post_by_id(1) 
+    #     assert t1 == p2.stale_date + datetime.timedelta(days=5) 
 
     def test_get_posts_with_zero_post(self): 
         l = Post.get_posts()
@@ -781,13 +781,13 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123")        
         p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         p2 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         p3 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         l = Post.get_posts()[0]
         assert len(l) == 3
@@ -799,10 +799,10 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123")        
         p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         p2 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         l1 = Post.get_posts(page = 1)[0]
         assert len(l1) == PAGINATION_PER_PAGE
@@ -811,13 +811,13 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123")        
         p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         p2 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         p3 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         l1 = Post.get_posts(page = 1)[0]
         assert len(l1) == 2
@@ -835,7 +835,7 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
@@ -862,13 +862,13 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         p2 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         p3 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         l = Post.get_posts(professor_id = "1")[0]
         assert len(l) == 3
@@ -880,13 +880,13 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title1", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         p2 = Post.create_post("title2", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         p3 = Post.create_post("title3", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         l = Post.get_posts(keywords = "title")[0]
         assert len(l) == 3
@@ -898,13 +898,13 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title1", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         p2 = Post.create_post("title2", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         p3 = Post.create_post("title3", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         l = Post.get_posts(keywords = "sfkjd")[0]
         assert l == []
@@ -913,13 +913,13 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title1", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         p2 = Post.create_post("title2", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         p3 = Post.create_post("title3", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         l = Post.get_posts(tags = 't,g')[0]
         assert len(l) == 3
@@ -931,13 +931,13 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title1", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         p2 = Post.create_post("title2", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         p3 = Post.create_post("title3", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         l = Post.get_posts(tags = 'e')[0]
         assert len(l) == 0 
@@ -975,7 +975,7 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
@@ -1002,7 +1002,7 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
@@ -1029,7 +1029,7 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
@@ -1056,7 +1056,7 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
@@ -1083,7 +1083,7 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
@@ -1110,7 +1110,7 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
@@ -1137,7 +1137,7 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
@@ -1164,8 +1164,7 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "courses")
+            "desired_skills", None, "contact_email", "project_link", "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
         t3 = p1.stale_date
@@ -1191,7 +1190,7 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
@@ -1218,7 +1217,7 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
@@ -1307,7 +1306,7 @@ class TestCase(unittest.TestCase):
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "machine learning algorithms java", 
             "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
@@ -1340,7 +1339,7 @@ class TestCase(unittest.TestCase):
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "machine learning algorithms java", 
             "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
+            "desired_skills", None, "contact_email", "project_link", 
             "courses")
         Post.delete_post(1)
         post = Post.get_post_by_id(1)
