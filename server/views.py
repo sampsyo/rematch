@@ -27,7 +27,7 @@ def posts():
         url_params.append('phrase=%s' % phrase)
     search_url = '&%s' % '&'.join(url_params)
 
-    posts, has_next = Post.get_posts(
+    posts, has_next, total_number_of_pages = Post.get_posts(
         page=page, compressed=True, tags=search_tags, keywords=phrase
     )
     Professor.annotate_posts(posts)
@@ -87,9 +87,9 @@ def allowed_file(filename):
 @login_required
 def profile(net_id):
     favorited_projects = Student.get_student_favorited_projects(net_id)
-    active_collection, _ = Post.get_posts(
+    active_collection, _, _ = Post.get_posts(
         professor_id=net_id, active_only=True)
-    inactive_collection, _ = Post.get_posts(
+    inactive_collection, _, _ = Post.get_posts(
         professor_id=net_id, inactive_only=True)
 
     Professor.annotate_posts(active_collection)
