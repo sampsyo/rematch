@@ -113,7 +113,7 @@ class Post(db.Model):
 
         post = Post(
             title=title,
-            description=description,
+            description=description.replace('<br>', '\n'),
             tags=",".join(tags),
             professor_id=professor_id,
             qualifications=qualifications,
@@ -123,7 +123,6 @@ class Post(db.Model):
             project_link=project_link,
             required_courses=required_courses,
         )
-        # update_tags_from_desc(post)
         db.session.add(post)
         db.session.commit()
         return post
@@ -141,7 +140,7 @@ class Post(db.Model):
         if title:
             post.title = title
         if description:
-            post.description = description
+            post.description = description.replace('<br>', '\n')
         if tags:
             post.tags = ",".join(tags)
         if qualifications:
@@ -219,9 +218,7 @@ class Post(db.Model):
             'id': self.id,
             'title': self.title,
             # only 60 words
-            'description': (
-                " ".join(self.description.split(" ")[:60]) + '...'
-                if len(self.description.split(" ")) > 60 else self.description),
+            'description': " ".join(self.description.split(" ")[:60]) + '...',
             # only 5 tags
             'tags': self.tags.split(',')[:5],
             'professor_id': self.professor_id,

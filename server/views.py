@@ -127,9 +127,9 @@ def profile(net_id):
             )
         else:
             new_email = result["user_email"] or (net_id + "@cornell.edu")
-            new_description = result["website"] 
+            new_description = result["website"]
             new_interests = result["office_loc"]
-            Professor.update_professor( 
+            Professor.update_professor(
                 net_id, name=None, email=new_email,
                 desc=new_description, interests=new_interests
             )
@@ -230,7 +230,7 @@ def createpost():
 def showpost(post_id):
     post = Post.get_post_by_id(post_id)
     if not post:
-        return redirect('/index')
+        return redirect('/')
 
     post = post.serialize
     post['professor_name'] = Professor.get_professor_by_netid(
@@ -247,7 +247,7 @@ def showpost(post_id):
 def editpost(post_id):
     post = Post.get_post_by_id(post_id)
     if not post:
-        return redirect('/index')
+        return redirect('/')
 
     if request.method == 'POST':
         result = request.form
@@ -255,8 +255,6 @@ def editpost(post_id):
             post_id,
             description=result['post_description'],
             tags=result['tags'].split(','),
-            all_tags=Post.TAGS,
-            all_courses=Post.COURSES,
             title=result['post_title'],
             contact_email=result['post_professor_email'],
             project_link=result['project-link']
@@ -269,6 +267,7 @@ def editpost(post_id):
             7, curr_sem, date.year, [curr_sem + " " + str(date.year)])
         post = post.serialize
         post['tags'] = ",".join(post['tags'])
+        post['courses'] = ",".join(post['courses'])
         return render_template(
             'createpost.html',
             base_url=BASE_URL,
