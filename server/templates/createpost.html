@@ -65,7 +65,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        var TAGS = {{ tags | safe }};
+        var TAGS = {{ all_tags | safe }};
         $('.tags-input').tagsinput({
             typeahead: {
                 source: TAGS
@@ -104,10 +104,11 @@
 
         //user is "finished typing," do something
         function doneTyping () {
-            var description = $('#post_description').val()
+            var description = $('#post_description').val();
             $.each(TAGS, function(i, value) {
-                if (description.includes(value) && value.length > 1) {
-                    $('.tags-input').tagsinput('add', value)
+                if (description.includes(value) && value.length > 1 &&
+                        value != 'other') {
+                    $('.tags-input').tagsinput('add', value);
                 }
             });
         }

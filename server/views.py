@@ -182,7 +182,7 @@ def createpost():
             'createpost.html',
             base_url=BASE_URL,
             title='Submit Research Listing',
-            tags=Post.TAGS,
+            all_tags=Post.TAGS,
             post=Post.empty
         )
 
@@ -217,6 +217,7 @@ def editpost(post_id):
             post_id,
             description=result['post_description'],
             tags=result['tags'].split(','),
+            all_tags=Post.TAGS,
             title=result['post_title'],
             contact_email=result['post_professor_email'],
             project_link=result['project-link']
@@ -229,6 +230,7 @@ def editpost(post_id):
             'createpost.html',
             base_url=BASE_URL,
             id='Sign In',
+            all_tags=Post.TAGS,
             post=post
         )
 
