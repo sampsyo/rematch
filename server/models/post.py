@@ -110,7 +110,7 @@ class Post(db.Model):
             tags=",".join(tags),
             professor_id=professor_id,
             qualifications=qualifications,
-            desired_skills="",
+            desired_skills=desired_skills,
             stale_date=stale_date,
             contact_email=contact_email,
             project_link=project_link,
@@ -132,24 +132,34 @@ class Post(db.Model):
             return None
         if title:
             post.title = title
+            post.date_modified = datetime.datetime.now()
         if description:
             post.description = description
+            post.date_modified = datetime.datetime.now()
         if tags:
             post.tags = ",".join(tags)
+            post.date_modified = datetime.datetime.now()
         if qualifications:
             post.qualifications = qualifications
+            post.date_modified = datetime.datetime.now()
         if professor_id:
             post.professor_id = professor_id
+            post.date_modified = datetime.datetime.now()
         if desired_skills:
             post.desired_skills = desired_skills
+            post.date_modified = datetime.datetime.now()
         if is_active is not None:
             post.is_active = is_active
+            post.date_modified = datetime.datetime.now()
         if project_link is not None:
             post.project_link = project_link
+            post.date_modified = datetime.datetime.now()
         if contact_email is not None:
             post.contact_email = contact_email
+            post.date_modified = datetime.datetime.now()
         if required_courses is not None:
             post.required_courses = required_courses
+            post.date_modified = datetime.datetime.now()
         #if grad_only is not None:
         #    post.grad_only = grad_only
         #if description is not None:
