@@ -153,6 +153,7 @@ p, a {
 		a.learnmore {
 			color: $primary-color;
 		}
+		padding-top: 5px;
 	}
 	.more {
 		color: #337ab7;
@@ -224,7 +225,9 @@ p, a {
 	}
 	.post_date {
 		font-weight: 400;
-		color: #444;
+		color: #555;
+		padding-right: 1%;
+		letter-spacing: -0.5;
 	}
 }
 
