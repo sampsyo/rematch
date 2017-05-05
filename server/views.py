@@ -6,26 +6,30 @@ from models import Post, Student, Professor
 from werkzeug import secure_filename
 from config import BASE_URL
 import os
+import datetime
 
 
 @app.route('/', methods=['GET'])
 @app.route('/posts', methods=['GET'])
 @login_required
 def posts():
-    keywords = request.args.get('keywords', None)
-    tags = request.args.get('tags', None)
+    phrase = request.args.get('phrase', None)
+    search_tags = request.args.get('search_tags', None)
     page = int(request.args.get('page', 1))
+    courses = request.args.get('courses')
 
     url_params = []
-    if tags:
-        url_params.append('tags=%s' % tags)
-    if keywords:
-        url_params.append('keywords=%s' % keywords)
+    if search_tags:
+        url_params.append('search_tags=%s' % search_tags)
+    if phrase:
+        url_params.append('phrase=%s' % phrase)
+    if courses:
+        url_params.append('courses=%s' % phrase)
     search_url = '&%s' % '&'.join(url_params)
 
-    posts, has_next = Post.get_posts(
-        page=page, compressed=True, tags=tags, keywords=keywords,
-        active_only=True
+    posts, has_next, total_number_of_pages = Post.get_posts(
+        page=page, compressed=True, tags=search_tags, keywords=phrase,
+        required_courses=courses
     )
     Professor.annotate_posts(posts)
 
@@ -37,8 +41,10 @@ def posts():
         posts=posts,
         search=True,
         isInIndex=True,
-        tags=Post.TAGS if tags is None else tags,
+        tags=Post.TAGS,
+        search_tags=search_tags or '',
         page=page,
+        phrase=phrase or '',
         has_next_page=has_next,
         search_url=search_url
     )
@@ -82,9 +88,9 @@ def allowed_file(filename):
 @login_required
 def profile(net_id):
     favorited_projects = Student.get_student_favorited_projects(net_id)
-    active_collection, _ = Post.get_posts(
+    active_collection, _, _ = Post.get_posts(
         professor_id=net_id, active_only=True)
-    inactive_collection, _ = Post.get_posts(
+    inactive_collection, _, _ = Post.get_posts(
         professor_id=net_id, inactive_only=True)
 
     Professor.annotate_posts(active_collection)
@@ -141,15 +147,45 @@ def profile(net_id):
         )
 
 
+def current_semester(date):
+    semester = None
+    if date.month == 1:
+        semester = "Winter" if date.day < 21 else "Spring"
+    elif date.month < 5:
+        semester = "Spring"
+    elif date.month == 5:
+        semester = "Spring" if date.day < 26 else "Summer"
+    elif date.month < 8:
+        semester = "Summer"
+    elif date.month == 8:
+        semester = "Summer" if date.day < 21 else "Fall"
+    elif date.month < 12:
+        semester = "Fall"
+    elif date.month == 12:
+        semester = "Fall" if date.day < 26 else "Winter"
+    return semester
+
+
+def semester_options(lookahead, curr_sem, year, options):
+    if lookahead == 0:
+        return options
+    else:
+        lookahead -= 1
+        semesters = ["Spring", "Summer", "Fall", "Winter"]
+        next_sem = semesters[(semesters.index(curr_sem) + 1) % 4]
+        year = year + 1 if next_sem == "Spring" else year
+        options.append(next_sem + " " + str(year))
+        return semester_options(lookahead, next_sem, year, options)
+
+
 @app.route('/posts/create', methods=['GET', 'POST'])
 @login_required
 def createpost():
     if current_user.is_student:
-        return redirect('/index')
+        return redirect('/')
 
     if request.method == 'POST':
         result = request.form
-        print(result)
         if (result.get("post_title") == ""):
             flash('Title Field is required.')
             return redirect("/posts/create")
@@ -159,6 +195,7 @@ def createpost():
         if result.get('tags') == "":
             flash('Project Topics/Tags are required')
             return redirect("/posts/create")
+
         Post.create_post(
             result["post_title"],
             result["post_description"],
@@ -166,20 +203,25 @@ def createpost():
             result['tags'].lower().strip().split(','),
             '',  # qualifications
             '',  # desired skills
-            None if result['stale-days'] == '-1' else int(result['stale-days']),
+            None,  # stale days
             result['post_professor_email'],
             result['project-link'],
-            '',  # required courses
-            #''  # grad_only
+            result['courses'],  # required courses
         )
-        return redirect("/posts", code=302)
+        return redirect("/posts", code=301)
     else:
+        date = datetime.date.today()
+        curr_sem = current_semester(date)
+        options = semester_options(
+            7, curr_sem, date.year, [curr_sem + " " + str(date.year)])
         return render_template(
             'createpost.html',
             base_url=BASE_URL,
             title='Submit Research Listing',
-            tags=Post.TAGS,
-            post=Post.empty
+            all_tags=Post.TAGS,
+            all_courses=Post.COURSES,
+            post=Post.empty,
+            options=options
         )
 
 
@@ -213,19 +255,28 @@ def editpost(post_id):
             post_id,
             description=result['post_description'],
             tags=result['tags'].split(','),
+            all_tags=Post.TAGS,
+            all_courses=Post.COURSES,
             title=result['post_title'],
             contact_email=result['post_professor_email'],
             project_link=result['project-link']
         )
         return redirect('/posts/%s' % post_id)
     else:
+        date = datetime.date.today()
+        curr_sem = current_semester(date)
+        options = semester_options(
+            7, curr_sem, date.year, [curr_sem + " " + str(date.year)])
         post = post.serialize
         post['tags'] = ",".join(post['tags'])
         return render_template(
             'createpost.html',
             base_url=BASE_URL,
             id='Sign In',
-            post=post
+            all_tags=Post.TAGS,
+            all_courses=Post.COURSES,
+            post=post,
+            options=options
         )
 
 

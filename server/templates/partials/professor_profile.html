@@ -34,14 +34,16 @@
         <div role="tabpanel" class="tab-pane" id="starred">
             {% if active_collection: %}
                 <div class="row">
-                    {% for post in active_collection %}
-                        {% include "partials/post.html" %}
-                    {% endfor %} 
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        {% for post in active_collection %}
+                            {% include "partials/post.html" %}
+                        {% endfor %}
+                    </div>
                 </div>
             {% else %}
                 <div class="profile">
                     <div class="card">
-                        <h2>You have no posts</h2>
+                        <h2>You have no active posts</h2>
                     </div>
                 </div>
             {% endif %}
@@ -49,14 +51,16 @@
         <div role="tabpanel" class="tab-pane" id="inactive-posts">
             {% if inactive_collection: %}
                 <div class="row">
-                    {% for post in inactive_collection %}
-                        {% include "partials/post.html" %}
-                    {% endfor %}
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        {% for post in inactive_collection %}
+                            {% include "partials/post.html" %}
+                        {% endfor %}
+                    </div>
                 </div>
             {% else %}
                 <div class="profile">
                     <div class="card">
-                        <h2>You have no posts</h2>
+                        <h2>You have no inactive posts</h2>
                     </div>
                 </div>
             {% endif %}

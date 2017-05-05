@@ -1,7 +1,7 @@
 import datetime
 from server import db
 from config import PAGINATION_PER_PAGE
-from sqlalchemy import desc, or_
+from sqlalchemy import desc, or_, and_
 # from server.models.professor import Professor
 
 
@@ -12,6 +12,7 @@ class Post(db.Model):
     description = db.Column(db.String(10000))
     professor_id = db.Column(db.String(64), db.ForeignKey('professors.net_id'))
     tags = db.Column(db.String(10000))
+    required_courses = db.Column(db.String(10000))
     is_active = db.Column(db.Boolean, default=True, nullable=False)
     date_created = db.Column(db.DateTime,
                              default=db.func.current_timestamp())
@@ -23,7 +24,6 @@ class Post(db.Model):
     project_link = db.Column(db.String(10000))
 
     # unimplemented
-    required_courses = db.Column(db.String(10000))
     qualifications = db.Column(db.String(10000))
     desired_skills = db.Column(db.String(10000))
 
@@ -40,7 +40,8 @@ class Post(db.Model):
     @classmethod
     def get_posts(cls, page=None, compressed=False, descend=True,
                   active_only=False, inactive_only=False,
-                  professor_id=None, keywords=None, tags=None):
+                  professor_id=None, keywords=None, tags=None,
+                  required_courses=None):
         """
             page: current page of pagination, else None to get all posts
             compressed: True to get the compressed serialization
@@ -49,7 +50,6 @@ class Post(db.Model):
             inactive_only: Only show inactive posts
             grad_only: True to only show listings for graduate listings
             professor_id: string, usually netid
-            id: int of post id to find
             keywords: a string of keywords, exact match searched in the
                 title and description of a post
             tags: a string of tags, separated by a comma; posts must have at
@@ -75,22 +75,29 @@ class Post(db.Model):
         if tags:
             tags = tags.strip().lower().split(',')
             query = query.filter(or_(Post.tags.contains(tag) for tag in tags))
+        if required_courses:
+            required_courses = required_courses.strip().lower().split(',')
+            query = query.filter(and_(Post.required_courses.contains(c) for c in
+                                      required_courses))
 
         if descend:
             query = query.order_by(desc(Post.id))
 
+        size = 0 
         if page is None:
             posts = query.all()
             has_next = None
+            size = len(posts)
         else:
             pagination = query.paginate(page=page, per_page=PAGINATION_PER_PAGE)
             has_next = pagination.has_next
             posts = pagination.items
+            size = pagination.total
 
         if compressed:
-            return ([p.serialize_compressed_post for p in posts], has_next)
+            return ([p.serialize_compressed_post for p in posts], has_next, size)
         else:
-            return ([p.serialize for p in posts], has_next)
+            return ([p.serialize for p in posts], has_next, size)
 
     @classmethod
     def create_post(cls, title, description, professor_id, tags,
@@ -125,8 +132,9 @@ class Post(db.Model):
     @classmethod
     def update_post(cls, post_id,
                     description=None, desired_skills=None, is_active=None,
-                    professor_id=None, qualifications=None, required_courses=None,
-                    tags=None, title=None, project_link=None, contact_email=None):
+                    professor_id=None, qualifications=None, tags=None,
+                    required_courses=None, title=None, project_link=None,
+                    contact_email=None):
         post = Post.get_post_by_id(post_id)
         if not post:
             return None
@@ -150,20 +158,9 @@ class Post(db.Model):
             post.contact_email = contact_email
         if required_courses is not None:
             post.required_courses = required_courses
-        #if grad_only is not None:
-        #    post.grad_only = grad_only
-        #if description is not None:
-        #    update_tags_from_desc(post)
+
         db.session.commit()
         return post
-
-    @classmethod
-    def update_tags_from_desc(cls, post):
-        new_tags = []
-        for tag in Post.TAGS:
-            if tag in post.description.lower() and tag not in post.tags:
-                new_tags.append(tag)
-        post.tags = post.tags + "," + ",".join(new_tags)
 
     @classmethod
     def get_post_by_id(cls, post_id):
@@ -187,18 +184,6 @@ class Post(db.Model):
             return False
 
     @classmethod
-    def mark_post_complete(cls, post_id):
-        post = Post.get_post_by_id(post_id)
-        if not post:
-            return False
-
-        cls.update_post(cls, post_id, is_active=False)
-        db.session.commit()
-        return True
-
-    # returns only the posts that all required courses part of
-    # the searched for course list
-    @classmethod
     def get_posts_by_courses(cls, courses):
         posts = []
         post_ids = set()
@@ -208,42 +193,6 @@ class Post(db.Model):
                     post_ids.add(p.id)
                     posts.append(p.serialize_compressed_post)
         return posts
-
-    @classmethod
-    def search(cls, taken_courses=None, tags=None, keywords=None):
-        search_list = Post.query.filter_by(is_active=True).all()
-        #print(is_grad)
-        print(taken_courses)
-        print(tags)
-        print(keywords)
-        for p in search_list:
-            if p.required_courses is None:
-                p.required_courses = " "
-        """if is_grad is not None:
-            for p in list(search_list):
-                if p.grad_only and not is_grad:
-                    search_list.remove(p)"""
-        if taken_courses is not None:
-            for p in list(search_list):
-                if not set(p.required_courses.lower()).issubset(set(taken_courses.lower())):
-                    search_list.remove(p)
-        if tags is not None:
-            for p in list(search_list):
-                if len(set(tags.lower()).intersection(set(p.tags.lower()))) == 0: #no overlap in searched tags vs post tags
-                    search_list.remove(p)
-        if keywords is not None:
-            for p in list(search_list):
-                if len(set(keywords.lower()).intersection(set(p.title.lower()))) == 0 \
-                    and len(set(keywords.lower()).intersection(set(p.description.lower()))) == 0 \
-                    and len(set(keywords.lower()).intersection(set(p.professor_id.lower()))) == 0 \
-                    and len(set(keywords.lower()).intersection(set(p.desired_skills.lower()))) == 0:
-                        search_list.remove(p)
-        posts = []
-        for p in search_list:
-            posts.append(p.serialize_compressed_post)
-        return posts
-
-
 
     @property
     def serialize(self):
@@ -261,8 +210,7 @@ class Post(db.Model):
             'stale_date': self.stale_date,
             'project_link': self.project_link,
             'contact_email': self.contact_email,
-            'required_courses': self.required_courses,
-            #'grad_only': self.grad_only
+            'courses': self.required_courses.split(','),
         }
 
     @property
@@ -299,7 +247,6 @@ class Post(db.Model):
             'project_link': '',
             'contact_email': '',
             'required_courses': '',
-            #'grad_only': ''
         }
 
     TAGS = [
@@ -336,4 +283,20 @@ class Post(db.Model):
         'javascript',
         'mongodb',
         'sql'
+    ]
+
+    COURSES = [
+        'CS 2110',
+        'CS 3110',
+        'CS 4410',
+        'CS 4411',
+        'CS 4670',
+        'CS 4700',
+        'CS 4710',
+        'CS 4780',
+        'CS 5150',
+        'CS 5152',
+        'CS 5414',
+        'INFO 3450',
+        'INFO 4300'
     ]

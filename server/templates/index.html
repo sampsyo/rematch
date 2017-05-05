@@ -14,14 +14,18 @@
 			    {% endfor %}	
 			</div>
 		</div>
+
+		<div class="pagination">
+	        <a href="{% if page > 1 %}
+	        			{{base_url}}/?page={{ page - 1 }}{{ search_url }}
+	        		{% else %}
+	        			javascript: void(0) 
+	        		{% endif %}" class="prev">&lsaquo; Prev</a><span>Page {{page}}</span><a href="
+	        		{% if has_next_page: %}
+	        			{{base_url}}/?page={{ page + 1 }}{{ search_url }}
+	        		{% else %}
+	        			javascript: void(0)
+	        		{% endif %}" class="next">Next &rsaquo;</a>
+	    </div>
 	</div>
-    <span class="pagination">
-        {% if page > 1: %}
-        <a href="{{base_url}}/?page={{ page - 1 }}{{ search_url }}">&laquo; Previous</a> | 
-        {% endif %}
-    Page {{page}}
-        {% if has_next_page: %}
-        | <a href="{{base_url}}/?page={{ page + 1 }}{{ search_url }}">Next &raquo;</a>
-        {% endif %}
-    </span>
 {% endblock %}
