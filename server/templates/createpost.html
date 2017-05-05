@@ -36,6 +36,17 @@
                                                                  value="{{post['tags']}}"/>
                 </div>
 
+                <div class="form-group">
+                    <label>Desired Courses:</label><br>
+                    <p class="helper text"> List the courses that you desire
+                    the applicants to have taken, if any.</p>
+                    <input autocomplete="off" class="courses-input" type="text"
+                                                                 data-role="coursesinput"
+                                                                 name="courses"
+                                                                 value="{{post['courses']}}"/>
+                </div>
+
+
 
                 {#
                 <div class="form-group">
@@ -91,6 +102,31 @@
             }
         });
 
+        $('.courses-input').tagsinput({
+            typeahead: {
+                source: {{ all_courses | safe }}
+            },
+            freeInput: false,
+            // Typeahead fix
+            onTagExists: function() {
+                setTimeout(function() {
+                    $(">input[type=text]",".bootstrap-tagsinput").val("");
+                }, 1);
+            }
+        });
+        $('.courses-input').on('itemAdded', function(event) {
+            setTimeout(function(){
+                $(">input[type=text]",".bootstrap-tagsinput").val("");
+            }, 1);
+        });
+        // No Enter button
+        $('.bootstrap-tagsinput').keydown(function(event){
+            if(event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+
         var typingTimer;                //timer identifier
         var doneTypingInterval = 500;  //time in ms (5 seconds)
 
@@ -104,7 +140,7 @@
 
         //user is "finished typing," do something
         function doneTyping () {
-            var description = $('#post_description').val();
+            var description = $('#post_description').val().toLowerCase();
             $.each(TAGS, function(i, value) {
                 if (description.includes(value) && value.length > 1 &&
                         value != 'other') {
