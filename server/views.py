@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, request
-from server import app
+from server import app, db
 from .forms import LoginForm
 from flask_login import login_user, logout_user, login_required, current_user
 from models import Post, Student, Professor
@@ -322,6 +322,7 @@ def editpost(post_id):
             is_active=is_active,
             description=result['post_description'].strip(),
             tags=result['tags'].split(','),
+            required_courses=result['courses'],
             title=result['post_title'].strip(),
             contact_email=result['post_professor_email'].strip(),
             project_link=result['project-link'].strip(),
