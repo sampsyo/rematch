@@ -16,7 +16,7 @@ def posts():
     phrase = request.args.get('phrase', None)
     search_tags = request.args.get('search_tags', None)
     page = int(request.args.get('page', 1))
-    courses = request.args.get('courses')
+    courses = current_user.is_student and request.args.get('courses', False)
 
     url_params = []
     if search_tags:
@@ -24,12 +24,12 @@ def posts():
     if phrase:
         url_params.append('phrase=%s' % phrase)
     if courses:
-        url_params.append('courses=%s' % phrase)
+        url_params.append('courses=%s' % courses.lower())
     search_url = '&%s' % '&'.join(url_params)
 
     posts, has_next, total_number_of_pages = Post.get_posts(
         page=page, compressed=True, tags=search_tags, keywords=phrase,
-        required_courses=courses
+        required_courses=current_user.courses if bool(courses) else None
     )
     Professor.annotate_posts(posts)
 
@@ -42,6 +42,7 @@ def posts():
         search=True,
         isInIndex=True,
         tags=Post.TAGS,
+        total_number_of_pages=total_number_of_pages,
         search_tags=search_tags or '',
         page=page,
         phrase=phrase or '',
@@ -96,6 +97,7 @@ def profile(net_id):
     Professor.annotate_posts(active_collection)
     Professor.annotate_posts(inactive_collection)
 
+
     if request.method == 'POST':
         result = request.form
         if current_user.is_student:
@@ -103,8 +105,7 @@ def profile(net_id):
             new_email = result["user_email"] or (net_id + "@cornell.edu")
             new_year = result["user_year"] or "Freshman"
             new_description = result["user_description"] or " "
-            interests = result["profile_interests"] or " "
-            skills = result["profile_skills"] or " "
+            courses = result["profile_courses"] or " "
             availability = ','.join(result.getlist("weekday"))
             f = request.files['resume']
             if f:
@@ -120,15 +121,14 @@ def profile(net_id):
                 filename = None
             Student.update_student(
                 net_id, email=new_email, name=None, major=user.major,
-                year=new_year,
-                skills=skills, resume=filename, description=new_description,
-                interests=interests, favorited_projects=None,
-                availability=availability
+                year=new_year, resume=filename, description=new_description,
+                favorited_projects=None,
+                availability=availability, courses=courses
             )
         else:
             new_email = result["user_email"] or (net_id + "@cornell.edu")
-            new_description = result["user_description"] or "no bio"
-            new_interests = result["profile_interests"] or " "
+            new_description = result["website"]
+            new_interests = result["office_loc"]
             Professor.update_professor(
                 net_id, name=None, email=new_email,
                 desc=new_description, interests=new_interests
@@ -256,11 +256,13 @@ def createpost():
 def showpost(post_id):
     post = Post.get_post_by_id(post_id)
     if not post:
-        return redirect('/index')
+        return redirect('/')
 
     post = post.serialize
     post['professor_name'] = Professor.get_professor_by_netid(
         post['professor_id']).name
+    print(post['courses'])
+
     return render_template(
         'full_post.html',
         base_url=BASE_URL,
@@ -273,7 +275,7 @@ def showpost(post_id):
 def editpost(post_id):
     post = Post.get_post_by_id(post_id)
     if not post:
-        return redirect('/index')
+        return redirect('/')
 
     date = datetime.date.today()
     curr_sem = current_semester(date)
@@ -312,8 +314,6 @@ def editpost(post_id):
             post_id,
             description=result['post_description'],
             tags=result['tags'].split(','),
-            all_tags=Post.TAGS,
-            all_courses=Post.COURSES,
             title=result['post_title'],
             contact_email=result['post_professor_email'],
             project_link=result['project-link'],
@@ -323,6 +323,7 @@ def editpost(post_id):
     else:
         post = post.serialize
         post['tags'] = ",".join(post['tags'])
+        post['courses'] = ",".join(post['courses'])
         return render_template(
             'createpost.html',
             base_url=BASE_URL,
