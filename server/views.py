@@ -16,7 +16,7 @@ def posts():
     phrase = request.args.get('phrase', None)
     search_tags = request.args.get('search_tags', None)
     page = int(request.args.get('page', 1))
-    courses = request.args.get('courses')
+    courses = request.args.get('courses', False)
 
     url_params = []
     if search_tags:
@@ -24,12 +24,12 @@ def posts():
     if phrase:
         url_params.append('phrase=%s' % phrase)
     if courses:
-        url_params.append('courses=%s' % phrase)
+        url_params.append('courses=%s' % courses.lower())
     search_url = '&%s' % '&'.join(url_params)
 
     posts, has_next, total_number_of_pages = Post.get_posts(
         page=page, compressed=True, tags=search_tags, keywords=phrase,
-        required_courses=courses
+        required_courses=current_user.courses if bool(courses) else None
     )
     Professor.annotate_posts(posts)
 
