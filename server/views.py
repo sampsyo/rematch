@@ -191,9 +191,15 @@ def get_styleguide():
 
 @app.route('/search', methods=['GET'])
 def search():
+    print("made it to search")
     if request.method == 'GET':
         result = request.form
         print(result)
+    return render_template(
+        'index.html'
+    )
+
+    
     # keywords = keywords.lower().split(',')
     # posts = Post.get_posts_by_keywords(keywords=keywords)
     # print(posts)
