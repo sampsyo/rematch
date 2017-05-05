@@ -14,14 +14,15 @@
 
         <h1 class="title">{{ post["title"] }}</h1>
         <h2 class="professor">{{ post['professor_name'] }}</h2>
-         {% if isInIndex: %}
+    
+         <p class="description">{{ post["description"] }}</p>
+        {% if isInIndex: %}
         <!--<a class="more" href="/posts/{{post['id']}}">Read more &rsaquo;</a>-->
         {% elif post['project_link']: %}
-        <a href="{{post['project_link']}}" class="more"> <i class="fa fa-external-link" aria-hidden="true"></i> External Project Site </a>
-        {% endif %}
-
-         <p class="description">{{ post["description"] }}</p>
-       
+        </br>
+        <label> Project Website </label> 
+        <p> <a href="{{post['project_link']}}" class="more"> <i class="fa fa-external-link" aria-hidden="true"></i> External Project Site </a> </p> 
+        {% endif %} 
          <br> 
 
         <label> Topics </label> 
