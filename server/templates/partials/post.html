@@ -15,7 +15,7 @@
     {% endif %}
     <h1 class="title"><a href="{{base_url}}/posts/{{post['id']}}">{{ post["title"] }}</a></h1>
     <h2 class="professor">{{ post['professor_name'] }}</h2>
-    <p class="description"><span class="post_date">Posted on {{ post['date_created'] }} </span> {{ post["description"] }}</p>
+    <p class="description"><span class="post_date">Posted on {{ "{:%d, %b %Y}".format(post['date_created']) }} </span> {{ post["description"] }}</p>
     {% if isInIndex: %}
     <a class="more" href="{{base_url}}/posts/{{post['id']}}">Read more &rsaquo;</a>
     {% elif post['project_link']: %}
