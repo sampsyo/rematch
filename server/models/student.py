@@ -17,7 +17,7 @@ class Student(db.Model):
     favorited_projects = db.Column(db.String(10000))
     #availability = db.Column(db.String(10000))
     courses = db.Column(db.String(10000))
-    is_grad = db.Column(db.Boolean, default = False)
+    #is_grad = db.Column(db.Boolean, default = False)
     is_student = True
     # This is for Login Stuff
     is_authenticated = True
@@ -51,7 +51,7 @@ class Student(db.Model):
     def update_student(cls, net_id, email=None, name=None, major=None,
                        year=None, skills=None, resume=None, description=None,
                        interests=None, favorited_projects=None,
-                       availability=None, courses=None, is_grad=None):
+                       availability=None, courses=None):
         student = Student.get_student_by_netid(net_id)
         if not student:
             return None
@@ -77,8 +77,8 @@ class Student(db.Model):
         #    student.availability = availability
         if courses is not None: 
             student.courses = courses
-        if is_grad is not None:
-            student.is_grad = is_grad
+        #if is_grad is not None:
+        #    student.is_grad = is_grad
         db.session.commit()
         return student
 
@@ -164,6 +164,6 @@ class Student(db.Model):
             'interests': self.interests,
             'favorited_projects': self.favorited_projects,
             #'availability': self.availability,
-            'courses': self.courses,
-            'is_grad': self.is_grad
+            'courses': self.courses
+            #'is_grad': self.is_grad
         }

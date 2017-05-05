@@ -24,7 +24,7 @@ class Post(db.Model):
 
     # unimplemented
     required_courses = db.Column(db.String(10000))
-    grad_only = db.Column(db.Boolean, default=False)
+    #grad_only = db.Column(db.Boolean, default=False)
     qualifications = db.Column(db.String(10000))
     #current_students = db.Column(db.String(10000)) #are not using it anywhere else 
     desired_skills = db.Column(db.String(10000))
@@ -43,7 +43,7 @@ class Post(db.Model):
 
     @classmethod
     def get_posts(cls, page=None, compressed=False, descend=True,
-                  active_only=True, inactive_only=False, grad_only=False,
+                  active_only=True, inactive_only=False, 
                   professor_id=None, keywords=None, tags=None):
         """
             page: current page of pagination, else None to get all posts
@@ -64,8 +64,8 @@ class Post(db.Model):
         query = Post.query
         if active_only:
             query = query.filter_by(is_active=True)
-        if grad_only:
-            query = query.filter_by(grad_only=True)
+        #if grad_only:
+        #    query = query.filter_by(grad_only=True)
         if professor_id:
             query = query.filter_by(professor_id=professor_id)
 
@@ -99,8 +99,7 @@ class Post(db.Model):
     @classmethod
     def create_post(cls, title, description, professor_id, tags,
                     qualifications, desired_skills, stale_days,
-                    contact_email, project_link, required_courses,
-                    grad_only):
+                    contact_email, project_link, required_courses):
         # if not (Professor.get_professor_by_netid(professor_id)):
         #    return None
         stale_date = None
@@ -120,7 +119,7 @@ class Post(db.Model):
             contact_email=contact_email,
             project_link=project_link,
             required_courses=required_courses,
-            grad_only=grad_only
+            #grad_only=grad_only
         )
         # update_tags_from_desc(post)
         db.session.add(post)
@@ -132,8 +131,7 @@ class Post(db.Model):
     def update_post(cls, post_id,
                     description=None, desired_skills=None, is_active=None,
                     professor_id=None, qualifications=None, required_courses=None,
-                    tags=None, title=None, project_link=None, contact_email=None,
-                    grad_only=None):
+                    tags=None, title=None, project_link=None, contact_email=None):
         post = Post.get_post_by_id(post_id)
         if not post:
             return None
@@ -157,8 +155,8 @@ class Post(db.Model):
             post.contact_email = contact_email
         if required_courses is not None:
             post.required_courses = required_courses
-        if grad_only is not None:
-            post.grad_only = grad_only
+        #if grad_only is not None:
+        #    post.grad_only = grad_only
         #if description is not None:
         #    update_tags_from_desc(post)
         date_modified = db.func.current_timestamp()
@@ -218,19 +216,19 @@ class Post(db.Model):
         return posts
 
     @classmethod
-    def search(cls, is_grad=None, taken_courses=None, tags=None, keywords=None):
+    def search(cls, taken_courses=None, tags=None, keywords=None):
         search_list = Post.query.filter_by(is_active=True).all()
-        print(is_grad)
+        #print(is_grad)
         print(taken_courses)
         print(tags)
         print(keywords)
         for p in search_list:
             if p.required_courses is None:
                 p.required_courses = " "
-        if is_grad is not None:
+        """if is_grad is not None:
             for p in list(search_list):
                 if p.grad_only and not is_grad:
-                    search_list.remove(p)
+                    search_list.remove(p)"""
         if taken_courses is not None:
             for p in list(search_list):
                 if not set(p.required_courses.lower()).issubset(set(taken_courses.lower())):
@@ -270,7 +268,7 @@ class Post(db.Model):
             'project_link': self.project_link,
             'contact_email': self.contact_email,
             'required_courses': self.required_courses,
-            'grad_only': self.grad_only
+            #'grad_only': self.grad_only
         }
 
     @property
@@ -307,7 +305,7 @@ class Post(db.Model):
             'project_link': '',
             'contact_email': '',
             'required_courses': '',
-            'grad_only': ''
+            #'grad_only': ''
         }
 
     TAGS = [

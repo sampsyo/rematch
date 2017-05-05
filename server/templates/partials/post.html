@@ -11,19 +11,19 @@
         {% endif %}
     {% endif %}
     {% if current_user.net_id == post['professor_id'] %}
-        <div class="edit"><a href="/posts/{{post['id']}}/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a></div>
+    <div class="edit"><a href="{{base_url}}/posts/{{post['id']}}/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a></div>
     {% endif %}
     <h1 class="title">{{ post["title"] }}</h1>
     <h2 class="professor">{{ post['professor_name'] }}</h2>
     <p class="description"><span class="post_date">Posted a day ago</span> {{ post["description"] }}</p>
     {% if isInIndex: %}
-    <a class="more" href="/posts/{{post['id']}}">Read more &rsaquo;</a>
+    <a class="more" href="{{base_url}}/posts/{{post['id']}}">Read more &rsaquo;</a>
     {% elif post['project_link']: %}
     <a href="{{post['project_link']}}" class="more">External project site &rsaquo;</a>
     {% endif %}
     <ul class="tags">
         {% for tag in post['tags'] %}
-        <a class="tag" href="/posts/tags={{tag}}">{{tag}}</a>
+        <a class="tag" href="{{base_url}}/?tags={{tag}}">{{tag}}</a>
         {% endfor %}
     </ul>
 </div>
