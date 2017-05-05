@@ -16,7 +16,7 @@ def posts():
     phrase = request.args.get('phrase', None)
     search_tags = request.args.get('search_tags', None)
     page = int(request.args.get('page', 1))
-    courses = request.args.get('courses', False)
+    courses = current_user.is_student and request.args.get('courses', False)
 
     url_params = []
     if search_tags:
