@@ -55,18 +55,22 @@ def login():
                 login_user(user)
                 flash('Welcome back %s!' % user.name)
                 next = request.args.get('next')
-                return redirect(next or '/index')
+                return redirect(next or BASE_URL)
             else:
                 flash('Username or Password Incorrect!')
                 return redirect('/login')
-    return render_template('login.html', form=form)
+    return render_template(
+        'login.html',
+        base_url=BASE_URL,
+        form=form
+    )
 
 
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect('/index')
+    return redirect(BASE_URL)
 
 
 def allowed_file(filename):
@@ -78,14 +82,13 @@ def allowed_file(filename):
 @login_required
 def profile(net_id):
     favorited_projects = Student.get_student_favorited_projects(net_id)
-    active_collection, _ = Post.get_posts(professor_id=net_id, active_only=True)
-    inactive_collection, _ = Post.get_posts(professor_id=net_id, inactive_only=True)
+    active_collection, _ = Post.get_posts(
+        professor_id=net_id, active_only=True)
+    inactive_collection, _ = Post.get_posts(
+        professor_id=net_id, inactive_only=True)
 
     Professor.annotate_posts(active_collection)
     Professor.annotate_posts(inactive_collection)
-
-    print(active_collection)
-    print(inactive_collection)
 
     if request.method == 'POST':
         result = request.form
@@ -129,6 +132,7 @@ def profile(net_id):
         return render_template(
             'profile.html',
             title=current_user.name + "'s Profile",
+            base_url=BASE_URL,
             profile=current_user,
             favorited_projects=favorited_projects,
             active_collection=active_collection,
@@ -163,6 +167,7 @@ def createpost():
     else:
         return render_template(
             'createpost.html',
+            base_url=BASE_URL,
             title='Submit Research Listing',
             tags=Post.TAGS,
             post=Post.empty
@@ -181,6 +186,7 @@ def showpost(post_id):
         post['professor_id']).name
     return render_template(
         'full_post.html',
+        base_url=BASE_URL,
         post=post
     )
 
@@ -208,6 +214,7 @@ def editpost(post_id):
         post['tags'] = ",".join(post['tags'])
         return render_template(
             'createpost.html',
+            base_url=BASE_URL,
             id='Sign In',
             post=post
         )
