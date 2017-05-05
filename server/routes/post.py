@@ -50,15 +50,6 @@ def get_post_by_id(post_id):
 def create_post():
     #import ipdb; ipdb.set_trace()
     r = request.get_json(force=True)
-    if r.get('title') == None:
-        flash('Title Field is required.')
-        return redirect("/api/posts")
-    if r.get('description') == None:
-        flash('Project Description is required')
-        return redirect("/api/posts")
-    if r.get('tags') == None:
-        flash('Project Topics/Tags are required')
-        return redirect("/api/posts")
     post = Post.create_post(
         title=r.get('title'),
         professor_id=r.get('professor_id'),

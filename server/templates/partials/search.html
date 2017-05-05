@@ -1,69 +1,47 @@
 <div class="search">
-	<div class="row">
-		<div class="form-group">
-			<label>Search by Keywords</label>
-			<input value="{{keywords}}" autofocus="autofocus" autocomplete="off" class="tags-input keywords" type="text" data-role="tagsinput" name="tags"/>
-		</div>
-		<div class="form-group">
-			<label>Search by Tags</label>
-			<input value="{{keywords}}" autofocus="autofocus" autocomplete="off" class="tags-input tags" type="text" data-role="tagsinput" name="tags"/>
-		</div>
-		<div class="form-group">
-			<div class="checkbox graduate_research">
-			  <label><input class="checkbox graduate_research" type="checkbox" value="graduate_research">Graduate Research</label>
+	<form method="GET">
+		<div class="row">
+			<div class="form-group">
+				<label>Search by Phrase</label>
+				<div class="bootstrap-tagsinput">
+				<input value="{{phrase}}" type="text" name="phrase"/>
+				</div>
 			</div>
+			<div class="form-group">
+				<label>Search by Tags</label>
+				<input value="{{search_tags}}" autofocus="autofocus" autocomplete="off" class="tags-input input_tags" type="text" data-role="tagsinput" name="search_tags"/>
+			</div>
+			<div class="checkbox">
+			  <label><input class="checkbox desired_courses" type="checkbox" value="desired_courses">Match on required courses</label>
+			</div>
+			<input type="submit" class="btn btn-primary" value="Search">
 		</div>
-		<div class="checkbox">
-		  <label><input class="checkbox desired_courses" type="checkbox" value="desired_courses">Desired Courses</label>
-		</div>
-	</div>
+    </form>
 </div>
 
 <script type="text/javascript">
-		$('.tags').tagsinput({
-	        typeahead: {
-	            source: {{ tags | safe }}
-	        },
-	        freeInput: false,
-	        // Typeahead fix
-	        onTagExists: function() {
-	            setTimeout(function() {
-	                $(">input[type=text]",".bootstrap-tagsinput").val("");
-	            }, 1);
-	        }
-	    });
-	    $('.tags-input, .checkbox').on('change', function(event) {
-	    	console.log($(".keywords").val());
-	    	console.log($(".tags").val());
-	    	console.log($(".graduate_research").is(":checked"));
-	    	console.log($(".desired_courses").is(":checked"));
-    		$.ajax({
-			    type: 'GET',
-			    url: "/search",
-			    contentType: 'application/json',
-			    dataType: "json",
-			    data: {
-			    	keywords: $(".keywords").val(),
-			    	tags: $(".tags").val(),
-			    	graduate_research: $(".graduate_research").is(":checked"),
-			    	desired_courses: $(".desired_courses").is(":checked")
-			    },
-			    success: function(response) {
-			    	console.log(response);
-			    	$(".posts").empty();
-			    	response.rendered_posts.forEach(function(post) {
-			    		$(".posts").append(post);
-			    	});
-			    },
-			    failure: function(response) {
-			        console.log(response);
-			    }
-			});	
-	        setTimeout(function(){
-	            $(">input[type=text]",".bootstrap-tagsinput").val("");
-	        }, 1);
-	    });
-		$(document).ready(function() {
-			$('.bootstrap-tagsinput').click();
-		});
+	$('.input_tags').tagsinput({
+        typeahead: {
+            source: {{ tags | safe }}
+        },
+        freeInput: false,
+        // Typeahead fix
+        onTagExists: function() {
+            setTimeout(function() {
+                $(">input[type=text]",".bootstrap-tagsinput").val("");
+            }, 1);
+        }
+    });
+    $('.input_tags').on('itemAdded', function(event) {
+        setTimeout(function(){
+            $(">input[type=text]",".bootstrap-tagsinput").val("");
+        }, 1);
+    });
+    // No Enter button
+    $('.bootstrap-tagsinput').keydown(function(event){
+        if(event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
 </script>

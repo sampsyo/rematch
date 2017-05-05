@@ -110,7 +110,7 @@ class Post(db.Model):
             tags=",".join(tags),
             professor_id=professor_id,
             qualifications=qualifications,
-            desired_skills="",
+            desired_skills=desired_skills,
             stale_date=stale_date,
             contact_email=contact_email,
             project_link=project_link,
@@ -151,16 +151,9 @@ class Post(db.Model):
             post.contact_email = contact_email
         if required_courses is not None:
             post.required_courses = required_courses
+
         db.session.commit()
         return post
-
-    @classmethod
-    def update_tags_from_desc(cls, post):
-        new_tags = []
-        for tag in Post.TAGS:
-            if tag in post.description.lower() and tag not in post.tags:
-                new_tags.append(tag)
-        post.tags = post.tags + "," + ",".join(new_tags)
 
     @classmethod
     def get_post_by_id(cls, post_id):
