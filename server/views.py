@@ -29,31 +29,10 @@ def posts():
 
     posts, has_next, total_number_of_pages = Post.get_posts(
         page=page, compressed=True, tags=search_tags, keywords=phrase,
+        active_only=True,
         required_courses=current_user.courses if bool(courses) else None
     )
     Professor.annotate_posts(posts)
-
-    """if (len(posts) == 0):
-        post = Post(
-            title="No results available",
-            description="",
-            tags="",
-            professor_id=current_user.net_id,
-            qualifications="",
-            desired_skills="",
-            stale_date=None,
-            contact_email="",
-            project_link="",
-            required_courses="",
-            is_active = True,
-            date_created = None,
-            date_modified = None
-        )
-        
-        posts = [post.serialize]
-
-        Professor.annotate_posts(posts)"""
-    
 
     return render_template(
         "index.html",
@@ -252,15 +231,15 @@ def createpost():
                 day = 20
 
         Post.create_post(
-            result["post_title"],
-            result["post_description"],
+            result["post_title"].strip(),
+            result["post_description"].strip(),
             current_user.net_id,
             result['tags'].lower().strip().split(','),
             '',  # qualifications
             '',  # desired skills
             datetime.date(year=year, day=day, month=month),
-            result['post_professor_email'],
-            result['project-link'],
+            result['post_professor_email'].strip(),
+            result['project-link'].strip(),
             result['courses'],  # required courses
         )
         return redirect("/posts", code=301)
@@ -339,11 +318,11 @@ def editpost(post_id):
         Post.update_post(
             post_id,
             is_active=is_active,
-            description=result['post_description'],
+            description=result['post_description'].strip(),
             tags=result['tags'].split(','),
-            title=result['post_title'],
-            contact_email=result['post_professor_email'],
-            project_link=result['project-link'],
+            title=result['post_title'].strip(),
+            contact_email=result['post_professor_email'].strip(),
+            project_link=result['project-link'].strip(),
             stale_date=datetime.date(year=year, day=day, month=month)
         )
         return redirect('/posts/%s' % post_id)
