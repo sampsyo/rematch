@@ -359,7 +359,7 @@ a.no-decoration {
   .pagination a {
     background: #ad1b1b;
     color: white;
-    padding: 5px 25px 5px 35px;
+    padding: 5px 25px 5px 25px;
     border: none; }
   .pagination .prev {
     border-top-left-radius: 20px;
