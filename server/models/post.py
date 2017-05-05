@@ -1,7 +1,7 @@
 import datetime
 from server import db
 from config import PAGINATION_PER_PAGE
-from sqlalchemy import desc, or_, and_
+from sqlalchemy import desc, or_, not_
 # from server.models.professor import Professor
 
 
@@ -77,13 +77,18 @@ class Post(db.Model):
             query = query.filter(or_(Post.tags.contains(tag) for tag in tags))
         if required_courses:
             required_courses = required_courses.strip().lower().split(',')
-            query = query.filter(and_(Post.required_courses.contains(c) for c in
-                                      required_courses))
+            unsat_courses = set(
+                [x.lower() for x in Post.COURSES]
+            ).difference(set(required_courses))
+
+            query = query.filter(not_(
+                or_(Post.required_courses.contains(x) for x in unsat_courses)
+            ))
 
         if descend:
             query = query.order_by(desc(Post.id))
 
-        number_pages = 1 
+        number_pages = 1
         if page is None:
             posts = query.all()
             has_next = None
@@ -94,7 +99,8 @@ class Post(db.Model):
             number_pages = pagination.pages
 
         if compressed:
-            return ([p.serialize_compressed_post for p in posts], has_next, number_pages)
+            return ([p.serialize_compressed_post for p in posts],
+                    has_next, number_pages)
         else:
             return ([p.serialize for p in posts], has_next, number_pages)
 

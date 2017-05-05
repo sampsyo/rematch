@@ -8,14 +8,19 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label>Search by Tags</label>
+				<label>Search by Topic</label>
 				<input value="{{search_tags}}" autofocus="autofocus" autocomplete="off" class="tags-input input_tags" type="text" data-role="tagsinput" name="search_tags"/>
 			</div>
+            {% if current_user.is_student: %}
 			<div class="checkbox">
 			  <label><input class="checkbox desired_courses" type="checkbox"
-                                                    value="true" name="courses"
-                                                                 {{checked}}>Match on required courses</label>
+                                                    value="true" name="courses" {{checked}}>Only
+                                                                 show listings
+                                                                 where I meet
+                                                                 course
+                                                                 requirements.</label>
 			</div>
+              {% endif %}
 			<input type="submit" class="btn btn-primary" value="Search">
 		</div>
     </form>
