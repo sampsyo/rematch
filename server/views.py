@@ -16,20 +16,20 @@ def posts():
     phrase = request.args.get('phrase', None)
     search_tags = request.args.get('search_tags', None)
     page = int(request.args.get('page', 1))
-    desired_courses = request.args.get('desired_courses')
-
-    print(desired_courses)
+    courses = request.args.get('courses')
 
     url_params = []
     if search_tags:
         url_params.append('search_tags=%s' % search_tags)
     if phrase:
         url_params.append('phrase=%s' % phrase)
+    if courses:
+        url_params.append('courses=%s' % phrase)
     search_url = '&%s' % '&'.join(url_params)
 
-    posts, has_next = Post.get_posts(
+    posts, has_next, total_number_of_pages = Post.get_posts(
         page=page, compressed=True, tags=search_tags, keywords=phrase,
-        active_only=True
+        required_courses=courses
     )
     Professor.annotate_posts(posts)
 
@@ -88,9 +88,9 @@ def allowed_file(filename):
 @login_required
 def profile(net_id):
     favorited_projects = Student.get_student_favorited_projects(net_id)
-    active_collection, _ = Post.get_posts(
+    active_collection, _, _ = Post.get_posts(
         professor_id=net_id, active_only=True)
-    inactive_collection, _ = Post.get_posts(
+    inactive_collection, _, _ = Post.get_posts(
         professor_id=net_id, inactive_only=True)
 
     Professor.annotate_posts(active_collection)
@@ -182,11 +182,10 @@ def semester_options(lookahead, curr_sem, year, options):
 @login_required
 def createpost():
     if current_user.is_student:
-        return redirect('/index')
+        return redirect('/')
 
     if request.method == 'POST':
         result = request.form
-        print(result)
         if (result.get("post_title") == ""):
             flash('Title Field is required.')
             return redirect("/posts/create")
@@ -196,6 +195,7 @@ def createpost():
         if result.get('tags') == "":
             flash('Project Topics/Tags are required')
             return redirect("/posts/create")
+
         Post.create_post(
             result["post_title"],
             result["post_description"],
@@ -203,12 +203,12 @@ def createpost():
             result['tags'].lower().strip().split(','),
             '',  # qualifications
             '',  # desired skills
-            None if result['stale-days'] == '-1' else int(result['stale-days']),
+            None,  # stale days
             result['post_professor_email'],
             result['project-link'],
-            '',  # required courses
+            result['courses'],  # required courses
         )
-        return redirect("/posts", code=302)
+        return redirect("/posts", code=301)
     else:
         date = datetime.date.today()
         curr_sem = current_semester(date)
@@ -219,6 +219,7 @@ def createpost():
             base_url=BASE_URL,
             title='Submit Research Listing',
             all_tags=Post.TAGS,
+            all_courses=Post.COURSES,
             post=Post.empty,
             options=options
         )
@@ -255,6 +256,7 @@ def editpost(post_id):
             description=result['post_description'],
             tags=result['tags'].split(','),
             all_tags=Post.TAGS,
+            all_courses=Post.COURSES,
             title=result['post_title'],
             contact_email=result['post_professor_email'],
             project_link=result['project-link']
@@ -272,6 +274,7 @@ def editpost(post_id):
             base_url=BASE_URL,
             id='Sign In',
             all_tags=Post.TAGS,
+            all_courses=Post.COURSES,
             post=post,
             options=options
         )
