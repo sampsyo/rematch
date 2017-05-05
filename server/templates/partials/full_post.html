@@ -7,24 +7,43 @@
                 <div class="post_star ion-ios-star-outline star-outline" data-id="{{post['id']}}"></div>
             {% endif %}
         {% endif %}
+
         {% if current_user.net_id == post['professor_id']: %}
             <p class="edit more"><a href="/posts/{{post['id']}}/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a><p>
         {% endif %}
+
         <h1 class="title">{{ post["title"] }}</h1>
         <h2 class="professor">{{ post['professor_name'] }}</h2>
-        {% if post['contact_email']: %} 
-            <div class="contact">Contact: <a href='mailto:{{ post["contact_email"] }}'>{{ post["contact_email"] }}</a></div>
-        {% endif %}
-        <p class="description">{{ post["description"] }}</p>
-        {% if isInIndex: %}
-        <a class="more" href="/posts/{{post['id']}}">Read more &rsaquo;</a>
+         {% if isInIndex: %}
+        <!--<a class="more" href="/posts/{{post['id']}}">Read more &rsaquo;</a>-->
         {% elif post['project_link']: %}
-        <a href="{{post['project_link']}}" class="more">External project site &rsaquo;</a>
+        <a href="{{post['project_link']}}" class="more"> <i class="fa fa-external-link" aria-hidden="true"></i> External Project Site </a>
         {% endif %}
+
+         <p class="description">{{ post["description"] }}</p>
+       
+         <br> 
+
+        <label> Topics </label> 
         <ul class="tags">
             {% for tag in post['tags'] %}
-            <a class="tag" href="/?tags={{tag}}">{{tag}}</a>
+            <a class="tag fullpost-tags" href="/?tags={{tag}}">{{tag}}</a>
             {% endfor %}
         </ul>
+        <br>
+        <label> Required Courses </label> 
+             <ul class="tags fullpost-tags">
+                {% for tag in post['tags'] %}
+                <a class="tag" href="/?tags={{tag}}">{{tag}}</a>
+                {% endfor %}
+             </ul>
+
+        <br> 
+        <br> 
+         {% if post['contact_email']: %} 
+             <label> Contact Information </label> 
+            <div class="contact">If interested, email <a href='mailto:{{ post["contact_email"] }}'>{{ post["contact_email"] }}. </a></div>
+        {% endif %}
+       
     </div>
 </div>
