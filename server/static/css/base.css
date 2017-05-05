@@ -112,6 +112,11 @@ p, a {
       text-decoration: none; }
   .full-post .card .edit .content {
     padding-left: 5px; }
+.full-post .card .tags {
+  margin-top: 0px; }
+
+.fullpost-tags {
+  margin: 0px; }
 
 .card {
   border-radius: 3px;
@@ -213,7 +218,7 @@ p, a {
   border-radius: 2px;
   text-transform: lowercase; }
   .tag:hover {
-    color: #888888; }
+    color: #AD1B1B; }
 
 .tags {
   margin-top: 10px;
