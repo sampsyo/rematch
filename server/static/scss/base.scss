@@ -120,8 +120,13 @@ p, a {
 	}
 }
 
-.fullpost-tags{
+.fullpost-tags {
 	margin: 0px;
+	.course-tag {
+		&:hover {
+			color: #888888;
+		}
+	}
 }
 .card {
 	border-radius: $border-radius;
@@ -453,4 +458,15 @@ a.no-decoration {
 	    	text-decoration: none;
 	    }
 	}
+}
+.btn-primary {
+	border-radius: 3px;
+    color: #ad1b1b;
+    background: white;
+    padding: 5px 25px;
+    transition: .2s;
+    &:hover {
+    	color: #FFFFFF;
+    	background: #ad1b1b;
+    }
 }

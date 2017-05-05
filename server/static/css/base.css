@@ -117,6 +117,8 @@ p, a {
 
 .fullpost-tags {
   margin: 0px; }
+  .fullpost-tags .course-tag:hover {
+    color: #888888; }
 
 .card {
   border-radius: 3px;
@@ -374,5 +376,15 @@ a.no-decoration {
     border-bottom-right-radius: 20px; }
     .pagination .next:hover {
       text-decoration: none; }
+
+.btn-primary {
+  border-radius: 3px;
+  color: #ad1b1b;
+  background: white;
+  padding: 5px 25px;
+  transition: .2s; }
+  .btn-primary:hover {
+    color: #FFFFFF;
+    background: #ad1b1b; }
 
 /*# sourceMappingURL=base.css.map */
