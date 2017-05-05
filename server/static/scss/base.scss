@@ -125,14 +125,17 @@ p, a {
 	box-shadow: 0px 2px 2px rgba(0,0,0,.1);
 	font-weight: 300 !important;
 	.title {
-		margin-bottom: 20px;
-		margin-top: 5px;
-		font-size: 22px;
+		font-size: 18px;
+	    margin-top: 0px;
+	    font-weight: 400;
+	    margin-bottom: 5px;
 	}
 	.professor {
-		font-weight: 500;
-		color: #333;
-		font-size: 15px;
+		margin-top: 10px;
+	    margin-bottom: 5px;
+	    font-weight: 500;
+	    color: #555;
+	    font-size: 14px;
 	}
 	.description {
 		// Would like to move this out of here to apply to all text.
@@ -140,7 +143,6 @@ p, a {
 		font-size: 14px;
 		font-weight: 300;
 		line-height: 1.65;
-		padding-bottom: 10px;
 		a.learnmore {
 			color: $primary-color;
 		}
@@ -148,6 +150,7 @@ p, a {
 	.more {
 		color: #337ab7;
 		display: block;
+		font-size: 14px; 
 		&:hover {
 			text-decoration: none;
 		}
@@ -202,7 +205,6 @@ p, a {
 	.edit {
 		position: absolute;
 		right: 40;
-		top: 20;
 		a {
 			color: $color-blue;
 			&:hover {
@@ -212,6 +214,10 @@ p, a {
 		.content {
 			padding-left: 5px;
 		}
+	}
+	.post_date {
+		font-weight: 400;
+		color: #444;
 	}
 }
 

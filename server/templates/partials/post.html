@@ -1,33 +1,29 @@
-<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-    {% if not post['is_active'] %}
-    <div class="card inactive">
-    {% else %}
-    <div class="card">
+{% if not post['is_active'] %}
+<div class="card inactive">
+{% else %}
+<div class="card">
+{% endif %}
+    {% if current_user.is_student %}
+        {% if current_user.favorited_projects and post['id']|string in current_user.favorited_projects.split(",") %}
+            <div class="post_star ion-ios-star star" data-id="{{post['id']}}"></div>
+        {% else %}
+            <div class="post_star ion-ios-star-outline star-outline" data-id="{{post['id']}}"></div>
+        {% endif %}
     {% endif %}
-        {% if current_user.is_student %}
-            {% if current_user.favorited_projects and post['id']|string in current_user.favorited_projects.split(",") %}
-                <div class="post_star ion-ios-star star" data-id="{{post['id']}}"></div>
-            {% else %}
-                <div class="post_star ion-ios-star-outline star-outline" data-id="{{post['id']}}"></div>
-            {% endif %}
-        {% endif %}
-        {% if current_user.net_id == post['professor_id']: %}
-            <p class="edit more"><a href="/posts/{{post['id']}}/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a><p>
-        {% endif %}
-        <h1 class="title">{{ post["title"] }}</h1>
-        <h2 class="professor">{{ post['professor_name'] }}{% if post['contact_email']: %}, Email: <a href='mailto:{{ post["contact_email"] }}'>{{ post["contact_email"] }}</a>
-            {% endif %}</h2>
-        <p class="date posted"> Posted a day ago </p> 
-        <p class="description">{{ post["description"] }}</p>
-        {% if isInIndex: %}
-        <a class="more" href="/posts/{{post['id']}}">Read more &rsaquo;</a>
-        {% elif post['project_link']: %}
-        <a href="{{post['project_link']}}" class="more">External project site &rsaquo;</a>
-        {% endif %}
-        <ul class="tags">
-            {% for tag in post['tags'] %}
-            <a class="tag" href="/posts/tags={{tag}}">{{tag}}</a>
-            {% endfor %}
-        </ul>
-    </div>
+    {% if current_user.net_id == post['professor_id'] %}
+        <div class="edit"><a href="/posts/{{post['id']}}/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a></div>
+    {% endif %}
+    <h1 class="title">{{ post["title"] }}</h1>
+    <h2 class="professor">{{ post['professor_name'] }}</h2>
+    <p class="description"><span class="post_date">Posted a day ago</span> {{ post["description"] }}</p>
+    {% if isInIndex: %}
+    <a class="more" href="/posts/{{post['id']}}">Read more &rsaquo;</a>
+    {% elif post['project_link']: %}
+    <a href="{{post['project_link']}}" class="more">External project site &rsaquo;</a>
+    {% endif %}
+    <ul class="tags">
+        {% for tag in post['tags'] %}
+        <a class="tag" href="/posts/tags={{tag}}">{{tag}}</a>
+        {% endfor %}
+    </ul>
 </div>
