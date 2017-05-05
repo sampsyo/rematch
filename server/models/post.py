@@ -1,7 +1,7 @@
 import datetime
 from server import db
 from config import PAGINATION_PER_PAGE
-from sqlalchemy import desc, or_
+from sqlalchemy import desc, or_, and_
 # from server.models.professor import Professor
 
 
@@ -12,6 +12,7 @@ class Post(db.Model):
     description = db.Column(db.String(10000))
     professor_id = db.Column(db.String(64), db.ForeignKey('professors.net_id'))
     tags = db.Column(db.String(10000))
+    required_courses = db.Column(db.String(10000))
     is_active = db.Column(db.Boolean, default=True, nullable=False)
     date_created = db.Column(db.DateTime,
                              default=db.func.current_timestamp())
@@ -23,7 +24,6 @@ class Post(db.Model):
     project_link = db.Column(db.String(10000))
 
     # unimplemented
-    required_courses = db.Column(db.String(10000))
     qualifications = db.Column(db.String(10000))
     desired_skills = db.Column(db.String(10000))
 
@@ -40,7 +40,8 @@ class Post(db.Model):
     @classmethod
     def get_posts(cls, page=None, compressed=False, descend=True,
                   active_only=False, inactive_only=False,
-                  professor_id=None, keywords=None, tags=None):
+                  professor_id=None, keywords=None, tags=None,
+                  required_courses=None):
         """
             page: current page of pagination, else None to get all posts
             compressed: True to get the compressed serialization
@@ -74,6 +75,10 @@ class Post(db.Model):
         if tags:
             tags = tags.strip().lower().split(',')
             query = query.filter(or_(Post.tags.contains(tag) for tag in tags))
+        if required_courses:
+            required_courses = required_courses.strip().lower().split(',')
+            query = query.filter(and_(Post.required_courses.contains(c) for c in
+                                      required_courses))
 
         if descend:
             query = query.order_by(desc(Post.id))
@@ -205,7 +210,7 @@ class Post(db.Model):
             'stale_date': self.stale_date,
             'project_link': self.project_link,
             'contact_email': self.contact_email,
-            'required_courses': self.required_courses,
+            'courses': self.required_courses.split(','),
         }
 
     @property
@@ -278,4 +283,20 @@ class Post(db.Model):
         'javascript',
         'mongodb',
         'sql'
+    ]
+
+    COURSES = [
+        'CS 2110',
+        'CS 3110',
+        'CS 4410',
+        'CS 4411',
+        'CS 4670',
+        'CS 4700',
+        'CS 4710',
+        'CS 4780',
+        'CS 5150',
+        'CS 5152',
+        'CS 5414',
+        'INFO 3450',
+        'INFO 4300'
     ]
