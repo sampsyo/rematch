@@ -33,6 +33,26 @@ def posts():
     )
     Professor.annotate_posts(posts)
 
+    """if (len(posts) == 0):
+        Post.create_post(
+            "No results available",
+            '',
+            '',
+            '',
+            '',  # qualifications
+            '',  # desired skills
+            None,  # stale days
+            '',
+            '',
+            '',  # required courses
+        )
+
+        posts, has_next, total_number_of_pages = Post.get_posts(
+        page=page, compressed=True, tags=search_tags, keywords=phrase,
+        required_courses=current_user.courses if bool(courses) else None
+        )
+        """
+
     return render_template(
         "index.html",
         title='Home',
