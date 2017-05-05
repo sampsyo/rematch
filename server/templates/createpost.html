@@ -44,12 +44,14 @@
                 </div>
                 #}
 
-                <div class="form-group">
-                <label>How long would you like to keep this listing live?:</label><br>
-                    <input type="radio" name="stale-days" value="30"> 30 Days &nbsp;
-                    <input type="radio" name="stale-days" value="60"> 60 Days &nbsp;
-                    <input type="radio" name="stale-days" value="90"> 90 Days &nbsp;
-                    <input type="radio" name="stale-days" value="-1"> Continuously &nbsp;
+                <div class="form-group">    
+                    <label>Through which semester would you like to keep this listing live? </label> <br>
+                    <select class="form-control" name="stale-days">
+                         {% for i in range(options|length) %}
+                             <option value={{i}}> {{ options[i] }}</option>
+                          {% endfor %}
+                            <option value="-1"> Continously </option> 
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -65,7 +67,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        var TAGS = {{ tags | safe }};
+        var TAGS = {{ all_tags | safe }};
         $('.tags-input').tagsinput({
             typeahead: {
                 source: TAGS
@@ -104,10 +106,11 @@
 
         //user is "finished typing," do something
         function doneTyping () {
-            var description = $('#post_description').val()
+            var description = $('#post_description').val();
             $.each(TAGS, function(i, value) {
-                if (description.includes(value) && value.length > 1) {
-                    $('.tags-input').tagsinput('add', value)
+                if (description.includes(value) && value.length > 1 &&
+                        value != 'other') {
+                    $('.tags-input').tagsinput('add', value);
                 }
             });
         }
