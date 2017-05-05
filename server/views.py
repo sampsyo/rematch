@@ -26,10 +26,8 @@ def posts():
     posts, has_next = Post.get_posts(
         page=page, compressed=True, tags=tags, keywords=keywords
     )
-
     Professor.annotate_posts(posts)
 
-    posts.sort(key=lambda x: x['date_created'], reverse=True)
     return render_template(
         "index.html",
         title='Home',
