@@ -35,7 +35,6 @@ class Student(db.Model):
         cls, net_id=net_id, name=name, email=email, password=password
     ):
         if Student.get_student_by_netid(net_id):
-            print("Student already exists with net_id %s" % net_id)
             return None
 
         student = Student(
@@ -118,7 +117,7 @@ class Student(db.Model):
                     post_obj = Post.get_post_by_id(p)
                     if post_obj:
                         posts.append(post_obj.serialize_compressed_post)
-                return posts
+            return posts
 
         else:
             return None
@@ -149,6 +148,8 @@ class Student(db.Model):
                 )
                 Student.update_student(net_id, favorited_projects=new_favorites)
                 return True
+            else: 
+                return False 
 
     @property
     def serialize(self):
