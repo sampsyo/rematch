@@ -32,7 +32,7 @@
             </form>
         </div>
         <div role="tabpanel" class="tab-pane" id="starred">
-            {% if post_collection %}
+            {% if active_collection: %}
                 <div class="row">
                     {% for post in active_collection %}
                         {% include "partials/post.html" %}
@@ -47,7 +47,7 @@
             {% endif %}
         </div>
         <div role="tabpanel" class="tab-pane" id="inactive-posts">
-            {% if post_collection %}
+            {% if inactive_collection: %}
                 <div class="row">
                     {% for post in inactive_collection %}
                         {% include "partials/post.html" %}

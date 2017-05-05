@@ -24,12 +24,11 @@ def posts():
     search_url = '&%s' % '&'.join(url_params)
 
     posts, has_next = Post.get_posts(
-        page=page, compressed=True, tags=tags, keywords=keywords
+        page=page, compressed=True, tags=tags, keywords=keywords,
+        active_only=True
     )
-
     Professor.annotate_posts(posts)
 
-    posts.sort(key=lambda x: x['date_created'], reverse=True)
     return render_template(
         "index.html",
         title='Home',
@@ -79,18 +78,15 @@ def allowed_file(filename):
 @login_required
 def profile(net_id):
     favorited_projects = Student.get_student_favorited_projects(net_id)
-    post_collection = Post.get_posts_by_professor_id(net_id)
-    active_collection = []
-    inactive_collection = []
-    for p in post_collection:
-        if p['is_active']:
-            active_collection.append(p)
-        else:
-            inactive_collection.append(p)
+    active_collection, _ = Post.get_posts(professor_id=net_id, active_only=True)
+    inactive_collection, _ = Post.get_posts(professor_id=net_id, inactive_only=True)
 
-    for post in post_collection:
-        post['professor_name'] = Professor.get_professor_by_netid(
-            post['professor_id']).name
+    Professor.annotate_posts(active_collection)
+    Professor.annotate_posts(inactive_collection)
+
+    print(active_collection)
+    print(inactive_collection)
+
     if request.method == 'POST':
         result = request.form
         if current_user.is_student:
@@ -135,7 +131,6 @@ def profile(net_id):
             title=current_user.name + "'s Profile",
             profile=current_user,
             favorited_projects=favorited_projects,
-            post_collection=post_collection,
             active_collection=active_collection,
             inactive_collection=inactive_collection
 
@@ -252,7 +247,6 @@ def search():
         return jsonify({
             "rendered_posts": rendered_posts
         })
-
 
 @app.errorhandler(413)
 def page_not_found(e):

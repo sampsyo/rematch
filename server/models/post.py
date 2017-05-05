@@ -43,7 +43,7 @@ class Post(db.Model):
 
     @classmethod
     def get_posts(cls, page=None, compressed=False, descend=True,
-                  active_only=True, inactive_only=False, 
+                  active_only=False, inactive_only=False, 
                   professor_id=None, keywords=None, tags=None):
         """
             page: current page of pagination, else None to get all posts
@@ -64,6 +64,8 @@ class Post(db.Model):
         query = Post.query
         if active_only:
             query = query.filter_by(is_active=True)
+        if inactive_only:
+            query = query.filter_by(is_active=False)
         #if grad_only:
         #    query = query.filter_by(grad_only=True)
         if professor_id:
