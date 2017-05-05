@@ -50,7 +50,7 @@ class TestCase(unittest.TestCase):
         assert s3.description is None 
         assert s3.interests is None 
         assert s3.favorited_projects is None 
-        assert s3.availability is None 
+        # assert s3.availability is None 
         assert s3.courses is None 
         assert s3.is_grad == False 
         assert s3.is_student == True 
@@ -91,7 +91,7 @@ class TestCase(unittest.TestCase):
         assert s3.description is None 
         assert s3.interests is None 
         assert s3.favorited_projects is None 
-        assert s3.availability is None 
+        # assert s3.availability is None 
         assert s3.courses is None 
         assert s3.is_grad == False 
         assert s3.is_student == True 
@@ -115,7 +115,7 @@ class TestCase(unittest.TestCase):
         assert s3.description is None 
         assert s3.interests is None 
         assert s3.favorited_projects is None 
-        assert s3.availability is None 
+        # assert s3.availability is None 
         assert s3.courses is None 
         assert s3.is_grad == False 
         assert s3.is_student == True 
@@ -139,7 +139,7 @@ class TestCase(unittest.TestCase):
         assert s3.description is None 
         assert s3.interests is None 
         assert s3.favorited_projects is None 
-        assert s3.availability is None 
+        # assert s3.availability is None 
         assert s3.courses is None 
         assert s3.is_grad == False 
         assert s3.is_student == True 
@@ -163,7 +163,7 @@ class TestCase(unittest.TestCase):
         assert s3.description is None 
         assert s3.interests is None 
         assert s3.favorited_projects is None 
-        assert s3.availability is None 
+        # assert s3.availability is None 
         assert s3.courses is None 
         assert s3.is_grad == False 
         assert s3.is_student == True 
@@ -187,7 +187,7 @@ class TestCase(unittest.TestCase):
         assert s3.description is None 
         assert s3.interests is None 
         assert s3.favorited_projects is None 
-        assert s3.availability is None 
+        # assert s3.availability is None 
         assert s3.courses is None 
         assert s3.is_grad == False 
         assert s3.is_student == True 
@@ -211,7 +211,7 @@ class TestCase(unittest.TestCase):
         assert s3.description is None 
         assert s3.interests is None 
         assert s3.favorited_projects is None 
-        assert s3.availability is None 
+        # assert s3.availability is None 
         assert s3.courses is None 
         assert s3.is_grad == False 
         assert s3.is_student == True 
@@ -235,7 +235,7 @@ class TestCase(unittest.TestCase):
         assert s3.description == "description"
         assert s3.interests is None 
         assert s3.favorited_projects is None 
-        assert s3.availability is None 
+        # assert s3.availability is None 
         assert s3.courses is None 
         assert s3.is_grad == False 
         assert s3.is_student == True 
@@ -259,7 +259,7 @@ class TestCase(unittest.TestCase):
         assert s3.description is None
         assert s3.interests == "machine learning" 
         assert s3.favorited_projects is None 
-        assert s3.availability is None 
+        # assert s3.availability is None 
         assert s3.courses is None 
         assert s3.is_grad == False 
         assert s3.is_student == True 
@@ -267,29 +267,29 @@ class TestCase(unittest.TestCase):
         assert s3.is_active == True 
         assert s3.is_anonymous == True   
 
-    def test_update_student_availability(self): 
-        Student.create_student(net_id = "abc",  name = "hello", 
-            email = "abc@cornell.edu", password = "123") 
-        assert len(Student.get_all_students()) == 1 
-        s3 = Student.update_student("abc", availability = "2018") 
-        s3 = Student.get_student_by_netid("abc") 
-        assert s3.net_id == "abc"
-        assert s3.email == "abc@cornell.edu"
-        assert s3.name == "hello"
-        assert s3.major is None 
-        assert s3.year is None 
-        assert s3.skills is None 
-        assert s3.resume is None 
-        assert s3.description is None
-        assert s3.interests is None 
-        assert s3.favorited_projects is None 
-        assert s3.availability == "2018" 
-        assert s3.courses is None 
-        assert s3.is_grad == False 
-        assert s3.is_student == True 
-        assert s3.is_authenticated == True 
-        assert s3.is_active == True 
-        assert s3.is_anonymous == True   
+    # def test_update_student_availability(self): 
+    #     Student.create_student(net_id = "abc",  name = "hello", 
+    #         email = "abc@cornell.edu", password = "123") 
+    #     assert len(Student.get_all_students()) == 1 
+    #     s3 = Student.update_student("abc", availability = "2018") 
+    #     s3 = Student.get_student_by_netid("abc") 
+    #     assert s3.net_id == "abc"
+    #     assert s3.email == "abc@cornell.edu"
+    #     assert s3.name == "hello"
+    #     assert s3.major is None 
+    #     assert s3.year is None 
+    #     assert s3.skills is None 
+    #     assert s3.resume is None 
+    #     assert s3.description is None
+    #     assert s3.interests is None 
+    #     assert s3.favorited_projects is None 
+    #     assert s3.availability == "2018" 
+    #     assert s3.courses is None 
+    #     assert s3.is_grad == False 
+    #     assert s3.is_student == True 
+    #     assert s3.is_authenticated == True 
+    #     assert s3.is_active == True 
+    #     assert s3.is_anonymous == True   
 
     def test_update_student_courses(self): 
         Student.create_student(net_id = "abc",  name = "hello", 
@@ -307,7 +307,7 @@ class TestCase(unittest.TestCase):
         assert s3.description is None
         assert s3.interests is None 
         assert s3.favorited_projects is None 
-        assert s3.availability is None 
+        # assert s3.availability is None 
         assert s3.courses == "CS 5150" 
         assert s3.is_grad == False 
         assert s3.is_student == True 
@@ -331,7 +331,7 @@ class TestCase(unittest.TestCase):
         assert s3.description is None
         assert s3.interests is None 
         assert s3.favorited_projects is None 
-        assert s3.availability is None 
+        # assert s3.availability is None 
         assert s3.courses is None 
         assert s3.is_grad == True 
         assert s3.is_student == True 
@@ -358,7 +358,7 @@ class TestCase(unittest.TestCase):
         assert s3.description is None
         assert s3.interests is None 
         assert s3.favorited_projects is None 
-        assert s3.availability is None 
+        # assert s3.availability is None 
         assert s3.courses is None 
         assert s3.is_grad == False 
         assert s3.is_student == True 
@@ -415,7 +415,7 @@ class TestCase(unittest.TestCase):
         assert s3.description is None 
         assert s3.interests is None 
         assert s3.favorited_projects is None 
-        assert s3.availability is None 
+        # assert s3.availability is None 
         assert s3.courses is None 
         assert s3.is_grad == False 
         assert s3.is_student == True 
