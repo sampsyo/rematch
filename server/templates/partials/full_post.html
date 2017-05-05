@@ -25,11 +25,10 @@
         <!--<a class="more" href="/posts/{{post['id']}}">Read more &rsaquo;</a>-->
         {% elif post['project_link']: %}
         </br>
-        <label> Project Website </label> 
-        <p> <a href="{{post['project_link']}}" class="more"> <i class="fa fa-external-link" aria-hidden="true"></i> External Project Site </a> </p> 
+        <label>Project Website</label> 
+        <p><a href="{{post['project_link']}}" class="more"> <i class="fa fa-external-link" aria-hidden="true"></i> External Project Site</a></p> 
         {% endif %} 
-         <br> 
-
+        <br> 
         <label> Topics </label> 
         <ul class="tags">
             {% for tag in post['tags'] %}
@@ -48,9 +47,8 @@
         <br> 
         <br> 
          {% if post['contact_email']: %} 
-             <label> Contact Information </label> 
+            <label> Contact Information </label> 
             <div class="contact">If interested, email {{ post['professor_name'] }} at <a href='mailto:{{ post["contact_email"] }}'>{{ post["contact_email"] }}. </a></div>
         {% endif %}
-       <br>
     </div>
 </div>
