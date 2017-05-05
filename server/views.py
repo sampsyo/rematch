@@ -6,6 +6,7 @@ from models import Post, Student, Professor
 from werkzeug import secure_filename
 from config import BASE_URL
 import os
+import datetime
 
 
 @app.route('/', methods=['GET'])
@@ -145,6 +146,37 @@ def profile(net_id):
         )
 
 
+def current_semester(date):
+    semester = None
+    if date.month == 1:
+        semester = "Winter" if date.day < 21 else "Spring"
+    elif date.month < 5:
+        semester = "Spring"
+    elif date.month == 5:
+        semester = "Spring" if date.day < 26 else "Summer"
+    elif date.month < 8:
+        semester = "Summer"
+    elif date.month == 8:
+        semester = "Summer" if date.day < 21 else "Fall"
+    elif date.month < 12:
+        semester = "Fall"
+    elif date.month == 12:
+        semester = "Fall" if date.day < 26 else "Winter"
+    return semester
+
+
+def semester_options(lookahead, curr_sem, year, options):
+    if lookahead == 0:
+        return options
+    else:
+        lookahead -= 1
+        semesters = ["Spring", "Summer", "Fall", "Winter"]
+        next_sem = semesters[(semesters.index(curr_sem) + 1) % 4]
+        year = year + 1 if next_sem == "Spring" else year
+        options.append(next_sem + " " + str(year))
+        return semester_options(lookahead, next_sem, year, options)
+
+
 @app.route('/posts/create', methods=['GET', 'POST'])
 @login_required
 def createpost():
@@ -174,16 +206,20 @@ def createpost():
             result['post_professor_email'],
             result['project-link'],
             '',  # required courses
-            #''  # grad_only
         )
         return redirect("/posts", code=302)
     else:
+        date = datetime.date.today()
+        curr_sem = current_semester(date)
+        options = semester_options(
+            7, curr_sem, date.year, [curr_sem + " " + str(date.year)])
         return render_template(
             'createpost.html',
             base_url=BASE_URL,
             title='Submit Research Listing',
             all_tags=Post.TAGS,
-            post=Post.empty
+            post=Post.empty,
+            options=options
         )
 
 
@@ -224,6 +260,10 @@ def editpost(post_id):
         )
         return redirect('/posts/%s' % post_id)
     else:
+        date = datetime.date.today()
+        curr_sem = current_semester(date)
+        options = semester_options(
+            7, curr_sem, date.year, [curr_sem + " " + str(date.year)])
         post = post.serialize
         post['tags'] = ",".join(post['tags'])
         return render_template(
@@ -231,7 +271,8 @@ def editpost(post_id):
             base_url=BASE_URL,
             id='Sign In',
             all_tags=Post.TAGS,
-            post=post
+            post=post,
+            options=options
         )
 
 
