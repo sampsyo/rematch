@@ -39,8 +39,8 @@ class Professor(db.Model):
         return professor 
 
     @classmethod
-    def update_professor(cls, net_id, name=None, email=None, desc=None,
-                         interests=None):
+    def update_professor(cls, net_id, name=None, email=None, website=None,
+                         office=None):
         professor = Professor.get_professor_by_netid(net_id)
         if not professor:
             return None
@@ -48,10 +48,10 @@ class Professor(db.Model):
             professor.name = name
         if email:
             professor.email = email
-        if desc:
-            professor.desc = desc
-        if interests:
-            professor.interests = interests
+        if website:
+            professor.desc = website
+        if office:
+            professor.interests = office
         db.session.commit()
         return professor
 

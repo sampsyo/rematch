@@ -110,15 +110,17 @@ def allowed_file(filename):
 @app.route('/profile/<net_id>', methods=['GET', 'POST'])
 @login_required
 def profile(net_id):
+    if not current_user.net_id == net_id:
+        return redirect("/", code=301)
+
     favorited_projects = Student.get_student_favorited_projects(net_id)
     active_collection, _, _ = Post.get_posts(
-        professor_id=net_id, active_only=True)
+        professor_id=net_id, active_only=True, compressed=True)
     inactive_collection, _, _ = Post.get_posts(
-        professor_id=net_id, inactive_only=True)
+        professor_id=net_id, inactive_only=True, compressed=True)
 
     Professor.annotate_posts(active_collection)
     Professor.annotate_posts(inactive_collection)
-
 
     if request.method == 'POST':
         result = request.form
@@ -148,12 +150,12 @@ def profile(net_id):
                 availability=availability, courses=courses
             )
         else:
-            new_email = result["user_email"] or (net_id + "@cornell.edu")
-            new_description = result["website"]
-            new_interests = result["office_loc"]
             Professor.update_professor(
-                net_id, name=None, email=new_email,
-                desc=new_description, interests=new_interests
+                net_id,
+                name=None,
+                email=result.get('user_email', None),
+                website=result.get('website', None),
+                office=result.get('office_loc', None)   
             )
         return redirect("/profile/" + net_id, code=302)
     else:
@@ -162,6 +164,7 @@ def profile(net_id):
             title=current_user.name + "'s Profile",
             base_url=BASE_URL,
             profile=current_user,
+            isInIndex=True,
             favorited_projects=favorited_projects,
             active_collection=active_collection,
             inactive_collection=inactive_collection
@@ -206,6 +209,11 @@ def createpost():
     if current_user.is_student:
         return redirect('/')
 
+    date = datetime.date.today()
+    curr_sem = current_semester(date)
+    options = semester_options(
+        7, curr_sem, date.year, [curr_sem + " " + str(date.year)])
+
     if request.method == 'POST':
         result = request.form
         if (result.get("post_title") == ""):
@@ -218,6 +226,31 @@ def createpost():
             flash('Project Topics/Tags are required')
             return redirect("/posts/create")
 
+        month = None
+        day = None
+        year = None
+        if int(result['stale-days']) == -1:
+            year = 2200
+            day = 1
+            month = 1
+        else:
+            stale_date = options[int(result['stale-days'])]
+            semester = stale_date[:stale_date.find(" ")]
+            year = int(stale_date[stale_date.find(" ") + 1:])
+
+            if semester == "Fall":
+                month = 12
+                day = 25
+            elif semester == "Winter":
+                month = 1
+                day = 20
+            elif semester == "Spring":
+                month = 5
+                day = 25
+            elif semester == "Summer":
+                month = 8
+                day = 20
+
         Post.create_post(
             result["post_title"],
             result["post_description"],
@@ -225,17 +258,13 @@ def createpost():
             result['tags'].lower().strip().split(','),
             '',  # qualifications
             '',  # desired skills
-            None,  # stale days
+            datetime.date(year=year, day=day, month=month),
             result['post_professor_email'],
             result['project-link'],
             result['courses'],  # required courses
         )
         return redirect("/posts", code=301)
     else:
-        date = datetime.date.today()
-        curr_sem = current_semester(date)
-        options = semester_options(
-            7, curr_sem, date.year, [curr_sem + " " + str(date.year)])
         return render_template(
             'createpost.html',
             base_url=BASE_URL,
@@ -273,22 +302,52 @@ def editpost(post_id):
     if not post:
         return redirect('/')
 
+    date = datetime.date.today()
+    curr_sem = current_semester(date)
+    options = semester_options(
+        7, curr_sem, date.year, [curr_sem + " " + str(date.year)])
+
     if request.method == 'POST':
         result = request.form
+        is_active = bool(request.form.getlist('post-activate'))
+
+        month = None
+        day = None
+        year = None
+        if int(result['stale-days']) == -1:
+            year = 2200
+            day = 1
+            month = 1
+        else:
+            stale_date = options[int(result['stale-days'])]
+            semester = stale_date[:stale_date.find(" ")]
+            year = int(stale_date[stale_date.find(" ") + 1:])
+
+            if semester == "Fall":
+                month = 12
+                day = 25
+            elif semester == "Winter":
+                month = 1
+                day = 20
+            elif semester == "Spring":
+                month = 5
+                day = 25
+            elif semester == "Summer":
+                month = 8
+                day = 20
+
         Post.update_post(
             post_id,
+            is_active=is_active,
             description=result['post_description'],
             tags=result['tags'].split(','),
             title=result['post_title'],
             contact_email=result['post_professor_email'],
-            project_link=result['project-link']
+            project_link=result['project-link'],
+            stale_date=datetime.date(year=year, day=day, month=month)
         )
         return redirect('/posts/%s' % post_id)
     else:
-        date = datetime.date.today()
-        curr_sem = current_semester(date)
-        options = semester_options(
-            7, curr_sem, date.year, [curr_sem + " " + str(date.year)])
         post = post.serialize
         post['tags'] = ",".join(post['tags'])
         post['courses'] = ",".join(post['courses'])
