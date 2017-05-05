@@ -12,8 +12,13 @@
             <form method="POST">    
                 <div class="profile">
                     <div class="header card">
-                        <div class="name">{{current_user.name}}</div>
-                        <br>
+                          <div id="name-editable" class="name">
+                            {{current_user.name}}
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"
+                            style="margin-left: 5px" height="50%" width="50%"></i> 
+                          </div>
+                          <br>
+
                         <div class="form-group">
                             <label>Contact Email</label>
                          <div id="email-editable">
@@ -80,6 +85,18 @@
     </div>
 </div>
 <script type="text/javascript">
+
+$('#name-editable').click(function(event){
+    {% if current_user.name == 'None': %}
+    var innertext = ''
+    {% else: %}
+    var innertext = '{{current_user.name}}'
+    {% endif %}
+    $('#name-editable').html('<input class="form-control" type="text" name="name" value="'+innertext+'">');
+    $(this).attr('id', 'name-editing');
+});
+
+
 $('#email-editable').click(function(event){
     {% if current_user.email == 'None': %}
     var innertext = ''

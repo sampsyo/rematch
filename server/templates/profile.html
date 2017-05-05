@@ -25,6 +25,10 @@
                 $('.file-selected').html(fileName); 
             });
             $('.typeahead input').tagsinput({
+                typeahead: {
+                    source: {{ all_courses | safe }}
+                },
+                freeInput: true,
                 // Typeahead fix
                 onTagExists: function() {
                     setTimeout(function() {
