@@ -162,7 +162,7 @@ def createpost():
             result['post_professor_email'],
             result['project-link'],
             '',  # required courses
-            ''  # grad_only
+            #''  # grad_only
         )
         return redirect("/posts", code=302)
     else:
@@ -231,7 +231,7 @@ def search():
     if request.method == 'GET':
         result = request.args
         posts = Post.search(
-            is_grad=result['graduate_research'],
+            #is_grad=result['graduate_research'],
             taken_courses=result['desired_courses'],
             tags=result['tags'] or None,
             keywords=result['keywords'] or None
