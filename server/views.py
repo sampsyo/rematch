@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, request
-from server import app
+from server import app, db
 from .forms import LoginForm
 from flask_login import login_user, logout_user, login_required, current_user
 from models import Post, Student, Professor
@@ -34,33 +34,35 @@ def posts():
     Professor.annotate_posts(posts)
 
     """if (len(posts) == 0):
-        Post.create_post(
-            "No results available",
-            '',
-            '',
-            '',
-            '',  # qualifications
-            '',  # desired skills
-            None,  # stale days
-            '',
-            '',
-            '',  # required courses
+        post = Post(
+            title="No results available",
+            description="",
+            tags="",
+            professor_id=current_user.net_id,
+            qualifications="",
+            desired_skills="",
+            stale_date=None,
+            contact_email="",
+            project_link="",
+            required_courses="",
+            is_active = True,
+            date_created = None,
+            date_modified = None
         )
+        
+        posts = [post.serialize]
 
-        posts, has_next, total_number_of_pages = Post.get_posts(
-        page=page, compressed=True, tags=search_tags, keywords=phrase,
-        required_courses=current_user.courses if bool(courses) else None
-        )
-        """
+        Professor.annotate_posts(posts)"""
+    
 
     return render_template(
         "index.html",
         title='Home',
-        user=current_user,
+        user=current_user, 
         base_url=BASE_URL,
         posts=posts,
         search=True,
-        isInIndex=True,
+        isInIndex=True, 
         tags=Post.TAGS,
         total_number_of_pages=total_number_of_pages,
         search_tags=search_tags or '',
