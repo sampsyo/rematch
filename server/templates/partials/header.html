@@ -8,18 +8,18 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/index"><img class="crs-logo" src="{{url_for('static', filename='images/CRS-logo.svg')}}"/></a>
+      <a class="navbar-brand" href="{{base_url}}"><img class="crs-logo" src="{{url_for('static', filename='images/CRS-logo.svg')}}"/></a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
         {% if current_user.is_authenticated and not current_user.is_student: %}
-        <li><a href="../posts/create"><i class="fa fa-pencil-square-o"
+        <li><a href="{{base_url}}/posts/create"><i class="fa fa-pencil-square-o"
                                          aria-hidden="true"></i> Submit Listing</a></li>
         {% endif %}
-        <li><a href="../posts"><i class="fa fa-globe" aria-hidden="true"></i> All Posts</a></li>
+        <li><a href="{{base_url}}/posts"><i class="fa fa-globe" aria-hidden="true"></i> All Posts</a></li>
         {% if current_user.is_authenticated: %}
-        <li><a href="../profile/{{current_user.net_id}}"><i class="fa fa-user-circle-o" aria-hidden="true"></i> My Profile</a></li>
-        <li><a href="../logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign Out </a></li>
+        <li><a href="{{base_url}}/profile/{{current_user.net_id}}"><i class="fa fa-user-circle-o" aria-hidden="true"></i> My Profile</a></li>
+        <li><a href="{{base_url}}/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign Out </a></li>
         {% endif %}
       </ul>
     </div><!--/.nav-collapse -->
