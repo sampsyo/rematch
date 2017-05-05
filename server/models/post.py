@@ -1,5 +1,6 @@
 import datetime
 from server import db
+from config import PAGINATION_PER_PAGE
 # from server.models.professor import Professor
 
 
@@ -40,12 +41,22 @@ class Post(db.Model):
             post.stale_date += datetime.timedelta(days=days_added)
 
     @classmethod
-    def get_posts(cls, tags=None, exclusive=False):
+    def get_posts_raw(cls):
+        return Post.query.all()
+
+    @classmethod
+    def get_posts(cls, page=None, tags=None, exclusive=False):
         """ Gets posts in the database.  If a list of tags is supplied, filters
         based on those tags.  If exclusive is set True, then post must have
         all tags applied, else post must have at least one tag applied. """
+        # TODO: figure out how to paginate and filter
+        if page is None and tags is None:
+            posts = Post.query.all()
+        else:
+            posts = Post.query.paginate(page=page, per_page=PAGINATION_PER_PAGE)
+
         if not tags:
-            return [p.serialize for p in Post.query.all()]
+            return [p.serialize for p in posts]
 
         # TODO inefficiency: currently must pull all posts, then filter,
         # because tags cannot be searched through SQLLite
@@ -61,12 +72,22 @@ class Post(db.Model):
             ]
 
     @classmethod
-    def get_compressed_posts(cls, tags=None, exclusive=False):
+    def get_compressed_posts(cls, page=None, tags=None, exclusive=False):
         """ Gets posts in the database.  If a list of tags is supplied, filters
         based on those tags.  If exclusive is set True, then post must have
         all tags applied, else post must have at least one tag applied. """
+        print page, PAGINATION_PER_PAGE
+        # TODO: figure out how to paginate and filter
+        has_next = None
+        if page is None and tags is None:
+            posts = Post.query.all()
+        else:
+            page = Post.query.paginate(page=page, per_page=PAGINATION_PER_PAGE)
+            posts = page.items
+            has_next = page.has_next
+
         if not tags:
-            return [p.serialize_compressed_post for p in Post.query.all()]
+            return [p.serialize_compressed_post for p in posts], has_next
 
         # TODO inefficiency: currently must pull all posts, then filter,
         # because tags cannot be searched through SQLLite
@@ -109,7 +130,7 @@ class Post(db.Model):
             required_courses=required_courses,
             grad_only=grad_only
         )
-        #update_tags_from_desc(post)
+        # update_tags_from_desc(post)
         db.session.add(post)
         db.session.commit()
         return post

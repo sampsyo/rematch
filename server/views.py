@@ -4,7 +4,7 @@ from .forms import LoginForm
 from flask_login import login_user, logout_user, login_required, current_user
 from models import Post, Student, Professor
 from werkzeug import secure_filename
-from werkzeug.exceptions import RequestEntityTooLarge
+from config import BASE_URL
 import os
 
 
@@ -12,16 +12,19 @@ import os
 @app.route('/index')
 @app.route('/posts')
 @app.route('/posts/')
+@app.route('/page/<int:page>')
 @app.route('/posts/tags=<tags>')
 @app.route('/posts/tags=<tags>/<all>')
 @login_required
-def index(tags=None, all=None, posts=None):
+def index(tags=None, all=None, posts=None, page=None):
+    page = page if page else 1
+
     if tags:
         tags = tags.lower().strip().split(',')
-    else:
-        tags = Post.TAGS
+
     if posts is None:
-        posts = Post.get_compressed_posts(
+        posts, has_next = Post.get_compressed_posts(
+            page=page,
             tags=tags, exclusive=True if all == 'all' else False)
     for post in posts:
         post['professor_name'] = Professor.get_professor_by_netid(
@@ -31,11 +34,14 @@ def index(tags=None, all=None, posts=None):
     return render_template(
         "index.html",
         title='Home',
+        url=BASE_URL,
         user=current_user,
         posts=posts,
         search=True,
         isInIndex=True,
-        tags=Post.TAGS if tags is None else tags
+        tags=Post.TAGS if tags is None else tags,
+        page=page,
+        has_next_page=has_next
     )
 
 

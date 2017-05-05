@@ -1,7 +1,6 @@
-from flask import jsonify, request, redirect, url_for
+from flask import jsonify, request
 from server import app
 from server.models.post import Post
-import datetime
 
 
 @app.route('/api/posts', methods=['GET'])
@@ -92,4 +91,3 @@ def get_professor_posts_raw(professor_id):
 @app.route('/raw/post-tags.json', methods=['GET'])
 def get_post_tags_raw():
     return jsonify(tags=list(Post.TAGS))
-
