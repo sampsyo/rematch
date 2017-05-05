@@ -95,7 +95,7 @@ class Post(db.Model):
 
         if compressed:
             return ([p.serialize_compressed_post for p in posts], has_next)
-        else:
+        else: 
             return ([p.serialize for p in posts], has_next)
 
     @classmethod
