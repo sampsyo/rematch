@@ -13,10 +13,14 @@
         {% endif %}
 
         <h1 class="title">{{ post["title"] }}</h1>
-        <h2 class="professor">{{ post['professor_name'] }}</h2>
+        <h2 class="professor">{{ post['professor_name'] }}, {{ "{:%b %d, %Y}".format(post['date_created']) }} </h2> 
         <br> 
         <label> Description </label> 
-         <p class="description">{{ post["description"] }}</p>
+         <p class="description">
+         {% for line in post['description'].split('\n') %}
+             {{line}}<br>
+         {% endfor %}
+         </p>
         {% if isInIndex: %}
         <!--<a class="more" href="/posts/{{post['id']}}">Read more &rsaquo;</a>-->
         {% elif post['project_link']: %}
@@ -47,7 +51,6 @@
              <label> Contact Information </label> 
             <div class="contact">If interested, email {{ post['professor_name'] }} at <a href='mailto:{{ post["contact_email"] }}'>{{ post["contact_email"] }}. </a></div>
         {% endif %}
-       
        <br>
     </div>
 </div>
