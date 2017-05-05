@@ -90,9 +90,9 @@ def allowed_file(filename):
 def profile(net_id):
     favorited_projects = Student.get_student_favorited_projects(net_id)
     active_collection, _, _ = Post.get_posts(
-        professor_id=net_id, active_only=True)
+        professor_id=net_id, active_only=True, compressed=True)
     inactive_collection, _, _ = Post.get_posts(
-        professor_id=net_id, inactive_only=True)
+        professor_id=net_id, inactive_only=True, compressed=True)
 
     Professor.annotate_posts(active_collection)
     Professor.annotate_posts(inactive_collection)
@@ -140,6 +140,7 @@ def profile(net_id):
             title=current_user.name + "'s Profile",
             base_url=BASE_URL,
             profile=current_user,
+            isInIndex=True,
             favorited_projects=favorited_projects,
             active_collection=active_collection,
             inactive_collection=inactive_collection
@@ -253,8 +254,11 @@ def editpost(post_id):
 
     if request.method == 'POST':
         result = request.form
+        is_active = bool(request.form.getlist('post-activate'))
+        print(is_active)
         Post.update_post(
             post_id,
+            is_active=is_active,
             description=result['post_description'],
             tags=result['tags'].split(','),
             title=result['post_title'],
