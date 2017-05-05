@@ -130,7 +130,7 @@ def profile(net_id):
         else:
             Professor.update_professor(
                 net_id,
-                name=None,
+                name=result.get('name', None),
                 email=result.get('user_email', None),
                 website=result.get('website', None),
                 office=result.get('office_loc', None)   
