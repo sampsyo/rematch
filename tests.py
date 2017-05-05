@@ -990,5 +990,289 @@ class TestCase(unittest.TestCase):
         assert post["qualifications"] == "qualifications"
         assert post["desired_skills"] == "desired_skills"
 
+    def test_update_post_with_non_existing_post(self): 
+        p = Post.update_post(1)
+        assert p is None 
+
+    def test_update_post_description(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        t1 = p1.date_created
+        t2 = p1.date_modified
+        t3 = p1.stale_date
+        Post.update_post(1, description = "new description")
+        l = Post.get_posts()
+        assert len(l[0]) == 1
+        post = l[0][0]
+        assert post["id"] == 1 
+        assert post["title"] == "title"
+        assert post["description"] == "new description"
+        assert post["professor_id"] == "1"
+        assert post["tags"] == ["tags"]
+        assert post["is_active"]
+        assert post["date_created"] == t1 
+        assert post["date_modified"] != t2 
+        assert post["stale_date"] == t3 
+        assert post["contact_email"] == "contact_email"
+        assert post["project_link"] == "project_link"
+        assert post["required_courses"] == "required_courses"
+        assert post["qualifications"] == "qualifications"
+        assert post["desired_skills"] == "desired_skills"
+
+    def test_update_post_desired_skills(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        t1 = p1.date_created
+        t2 = p1.date_modified
+        t3 = p1.stale_date
+        Post.update_post(1, desired_skills = "new desired_skills")
+        l = Post.get_posts()
+        assert len(l[0]) == 1
+        post = l[0][0]
+        assert post["id"] == 1 
+        assert post["title"] == "title"
+        assert post["description"] == "description"
+        assert post["professor_id"] == "1"
+        assert post["tags"] == ["tags"]
+        assert post["is_active"]
+        assert post["date_created"] == t1 
+        assert post["date_modified"] != t2 
+        assert post["stale_date"] == t3 
+        assert post["contact_email"] == "contact_email"
+        assert post["project_link"] == "project_link"
+        assert post["required_courses"] == "required_courses"
+        assert post["qualifications"] == "qualifications"
+        assert post["desired_skills"] == "new desired_skills"
+
+    def test_update_post_is_active(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        t1 = p1.date_created
+        t2 = p1.date_modified
+        t3 = p1.stale_date
+        Post.update_post(1, is_active = False)
+        l = Post.get_posts()
+        assert len(l[0]) == 1
+        post = l[0][0]
+        assert post["id"] == 1 
+        assert post["title"] == "title"
+        assert post["description"] == "description"
+        assert post["professor_id"] == "1"
+        assert post["tags"] == ["tags"]
+        assert not post["is_active"]
+        assert post["date_created"] == t1 
+        assert post["date_modified"] != t2 
+        assert post["stale_date"] == t3 
+        assert post["contact_email"] == "contact_email"
+        assert post["project_link"] == "project_link"
+        assert post["required_courses"] == "required_courses"
+        assert post["qualifications"] == "qualifications"
+        assert post["desired_skills"] == "desired_skills"
+
+    def test_update_post_professor_id(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        t1 = p1.date_created
+        t2 = p1.date_modified
+        t3 = p1.stale_date
+        Post.update_post(1, professor_id = "2")
+        l = Post.get_posts()
+        assert len(l[0]) == 1
+        post = l[0][0]
+        assert post["id"] == 1 
+        assert post["title"] == "title"
+        assert post["description"] == "description"
+        assert post["professor_id"] == "2"
+        assert post["tags"] == ["tags"]
+        assert post["is_active"]
+        assert post["date_created"] == t1 
+        assert post["date_modified"] != t2 
+        assert post["stale_date"] == t3 
+        assert post["contact_email"] == "contact_email"
+        assert post["project_link"] == "project_link"
+        assert post["required_courses"] == "required_courses"
+        assert post["qualifications"] == "qualifications"
+        assert post["desired_skills"] == "desired_skills"
+
+    def test_update_post_qualifications(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        t1 = p1.date_created
+        t2 = p1.date_modified
+        t3 = p1.stale_date
+        Post.update_post(1, qualifications = "new qualifications")
+        l = Post.get_posts()
+        assert len(l[0]) == 1
+        post = l[0][0]
+        assert post["id"] == 1 
+        assert post["title"] == "title"
+        assert post["description"] == "description"
+        assert post["professor_id"] == "1"
+        assert post["tags"] == ["tags"]
+        assert post["is_active"]
+        assert post["date_created"] == t1 
+        assert post["date_modified"] != t2 
+        assert post["stale_date"] == t3 
+        assert post["contact_email"] == "contact_email"
+        assert post["project_link"] == "project_link"
+        assert post["required_courses"] == "required_courses"
+        assert post["qualifications"] == "new qualifications"
+        assert post["desired_skills"] == "desired_skills"
+
+    def test_update_post_required_courses(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        t1 = p1.date_created
+        t2 = p1.date_modified
+        t3 = p1.stale_date
+        Post.update_post(1, required_courses = "new required courses")
+        l = Post.get_posts()
+        assert len(l[0]) == 1
+        post = l[0][0]
+        assert post["id"] == 1 
+        assert post["title"] == "title"
+        assert post["description"] == "description"
+        assert post["professor_id"] == "1"
+        assert post["tags"] == ["tags"]
+        assert post["is_active"]
+        assert post["date_created"] == t1 
+        assert post["date_modified"] != t2 
+        assert post["stale_date"] == t3 
+        assert post["contact_email"] == "contact_email"
+        assert post["project_link"] == "project_link"
+        assert post["required_courses"] == "new required courses"
+        assert post["qualifications"] == "qualifications"
+        assert post["desired_skills"] == "desired_skills"
+
+    def test_update_post_tags(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        t1 = p1.date_created
+        t2 = p1.date_modified
+        t3 = p1.stale_date
+        Post.update_post(1, tags = ["tag1", "tag2"])
+        l = Post.get_posts()
+        assert len(l[0]) == 1
+        post = l[0][0]
+        assert post["id"] == 1 
+        assert post["title"] == "title"
+        assert post["description"] == "description"
+        assert post["professor_id"] == "1"
+        assert post["tags"] == ["tag1", "tag2"]
+        assert post["is_active"]
+        assert post["date_created"] == t1 
+        assert post["date_modified"] != t2 
+        assert post["stale_date"] == t3 
+        assert post["contact_email"] == "contact_email"
+        assert post["project_link"] == "project_link"
+        assert post["required_courses"] == "required_courses"
+        assert post["qualifications"] == "qualifications"
+        assert post["desired_skills"] == "desired_skills"
+
+    def test_update_post_title(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        t1 = p1.date_created
+        t2 = p1.date_modified
+        t3 = p1.stale_date
+        Post.update_post(1, title = "new title")
+        l = Post.get_posts()
+        assert len(l[0]) == 1
+        post = l[0][0]
+        assert post["id"] == 1 
+        assert post["title"] == "new title"
+        assert post["description"] == "description"
+        assert post["professor_id"] == "1"
+        assert post["tags"] == ["tags"]
+        assert post["is_active"]
+        assert post["date_created"] == t1 
+        assert post["date_modified"] != t2 
+        assert post["stale_date"] == t3 
+        assert post["contact_email"] == "contact_email"
+        assert post["project_link"] == "project_link"
+        assert post["required_courses"] == "required_courses"
+        assert post["qualifications"] == "qualifications"
+        assert post["desired_skills"] == "desired_skills"
+
+    def test_update_post_project_link(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        t1 = p1.date_created
+        t2 = p1.date_modified
+        t3 = p1.stale_date
+        Post.update_post(1, project_link = "new project_link")
+        l = Post.get_posts()
+        assert len(l[0]) == 1
+        post = l[0][0]
+        assert post["id"] == 1 
+        assert post["title"] == "title"
+        assert post["description"] == "description"
+        assert post["professor_id"] == "1"
+        assert post["tags"] == ["tags"]
+        assert post["is_active"]
+        assert post["date_created"] == t1 
+        assert post["date_modified"] != t2 
+        assert post["stale_date"] == t3 
+        assert post["contact_email"] == "contact_email"
+        assert post["project_link"] == "new project_link"
+        assert post["required_courses"] == "required_courses"
+        assert post["qualifications"] == "qualifications"
+        assert post["desired_skills"] == "desired_skills"
+
+    def test_update_post_contact_email(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        t1 = p1.date_created
+        t2 = p1.date_modified
+        t3 = p1.stale_date
+        Post.update_post(1, contact_email = "new contact_email")
+        l = Post.get_posts()
+        assert len(l[0]) == 1
+        post = l[0][0]
+        assert post["id"] == 1 
+        assert post["title"] == "title"
+        assert post["description"] == "description"
+        assert post["professor_id"] == "1"
+        assert post["tags"] == ["tags"]
+        assert post["is_active"]
+        assert post["date_created"] == t1 
+        assert post["date_modified"] != t2 
+        assert post["stale_date"] == t3 
+        assert post["contact_email"] == "new contact_email"
+        assert post["project_link"] == "project_link"
+        assert post["required_courses"] == "required_courses"
+        assert post["qualifications"] == "qualifications"
+        assert post["desired_skills"] == "desired_skills"
+
 if __name__ == '__main__':
     unittest.main()
