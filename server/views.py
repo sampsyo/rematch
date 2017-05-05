@@ -88,6 +88,9 @@ def allowed_file(filename):
 @app.route('/profile/<net_id>', methods=['GET', 'POST'])
 @login_required
 def profile(net_id):
+    if not current_user.net_id == net_id:
+        return redirect("/", code=301)
+
     favorited_projects = Student.get_student_favorited_projects(net_id)
     active_collection, _, _ = Post.get_posts(
         professor_id=net_id, active_only=True)
@@ -96,7 +99,6 @@ def profile(net_id):
 
     Professor.annotate_posts(active_collection)
     Professor.annotate_posts(inactive_collection)
-
 
     if request.method == 'POST':
         result = request.form
@@ -126,12 +128,12 @@ def profile(net_id):
                 availability=availability, courses=courses
             )
         else:
-            new_email = result["user_email"] or (net_id + "@cornell.edu")
-            new_description = result["website"]
-            new_interests = result["office_loc"]
             Professor.update_professor(
-                net_id, name=None, email=new_email,
-                desc=new_description, interests=new_interests
+                net_id,
+                name=None,
+                email=result.get('user_email', None),
+                website=result.get('website', None),
+                office=result.get('office_loc', None)   
             )
         return redirect("/profile/" + net_id, code=302)
     else:
