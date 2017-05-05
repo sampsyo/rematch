@@ -25,10 +25,6 @@
                 $('.file-selected').html(fileName); 
             });
             $('.typeahead input').tagsinput({
-                typeahead: {
-                    source: ['C++', 'Java', 'Test', 'Something', 'OK']
-                },
-                freeInput: false,
                 // Typeahead fix
                 onTagExists: function() {
                     setTimeout(function() {
@@ -41,14 +37,6 @@
                 setTimeout(function(){
                     $(">input[type=text]",".bootstrap-tagsinput").val("");
                 }, 1);
-            });
-            
-            // No Enter button
-            $('.typeahead input').keydown(function(event){
-                if(event.keyCode == 13) {
-                    event.preventDefault();
-                    return false;
-                }
             });
         
     </script>

@@ -96,6 +96,7 @@ def profile(net_id):
     Professor.annotate_posts(active_collection)
     Professor.annotate_posts(inactive_collection)
 
+
     if request.method == 'POST':
         result = request.form
         if current_user.is_student:
@@ -103,8 +104,7 @@ def profile(net_id):
             new_email = result["user_email"] or (net_id + "@cornell.edu")
             new_year = result["user_year"] or "Freshman"
             new_description = result["user_description"] or " "
-            interests = result["profile_interests"] or " "
-            skills = result["profile_skills"] or " "
+            courses = result["profile_courses"] or " "
             availability = ','.join(result.getlist("weekday"))
             f = request.files['resume']
             if f:
@@ -120,10 +120,9 @@ def profile(net_id):
                 filename = None
             Student.update_student(
                 net_id, email=new_email, name=None, major=user.major,
-                year=new_year,
-                skills=skills, resume=filename, description=new_description,
-                interests=interests, favorited_projects=None,
-                availability=availability
+                year=new_year, resume=filename, description=new_description,
+                favorited_projects=None,
+                availability=availability, courses=courses
             )
         else:
             new_email = result["user_email"] or (net_id + "@cornell.edu")
