@@ -154,14 +154,13 @@ class Post(db.Model):
         #    post.grad_only = grad_only
         #if description is not None:
         #    update_tags_from_desc(post)
-        date_modified = db.func.current_timestamp()
         db.session.commit()
         return post
 
     @classmethod
     def update_tags_from_desc(cls, post):
         new_tags = []
-        for tag in TAGS:
+        for tag in Post.TAGS:
             if tag in post.description.lower() and tag not in post.tags:
                 new_tags.append(tag)
         post.tags = post.tags + "," + ",".join(new_tags)
