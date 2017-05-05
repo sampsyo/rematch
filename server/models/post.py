@@ -125,55 +125,35 @@ class Post(db.Model):
     @classmethod
     def update_post(cls, post_id,
                     description=None, desired_skills=None, is_active=None,
-                    professor_id=None, qualifications=None, required_courses=None,
-                    tags=None, title=None, project_link=None, contact_email=None):
+                    professor_id=None, qualifications=None, tags=None,
+                    required_courses=None, title=None, project_link=None,
+                    contact_email=None):
         post = Post.get_post_by_id(post_id)
         if not post:
             return None
         if title:
             post.title = title
-            post.date_modified = datetime.datetime.now()
         if description:
             post.description = description
-            post.date_modified = datetime.datetime.now()
         if tags:
             post.tags = ",".join(tags)
-            post.date_modified = datetime.datetime.now()
         if qualifications:
             post.qualifications = qualifications
-            post.date_modified = datetime.datetime.now()
         if professor_id:
             post.professor_id = professor_id
-            post.date_modified = datetime.datetime.now()
         if desired_skills:
             post.desired_skills = desired_skills
-            post.date_modified = datetime.datetime.now()
         if is_active is not None:
             post.is_active = is_active
-            post.date_modified = datetime.datetime.now()
         if project_link is not None:
             post.project_link = project_link
-            post.date_modified = datetime.datetime.now()
         if contact_email is not None:
             post.contact_email = contact_email
-            post.date_modified = datetime.datetime.now()
         if required_courses is not None:
             post.required_courses = required_courses
-            post.date_modified = datetime.datetime.now()
-        #if grad_only is not None:
-        #    post.grad_only = grad_only
-        #if description is not None:
-        #    update_tags_from_desc(post)
+
         db.session.commit()
         return post
-
-    @classmethod
-    def update_tags_from_desc(cls, post):
-        new_tags = []
-        for tag in Post.TAGS:
-            if tag in post.description.lower() and tag not in post.tags:
-                new_tags.append(tag)
-        post.tags = post.tags + "," + ",".join(new_tags)
 
     @classmethod
     def get_post_by_id(cls, post_id):
@@ -197,18 +177,6 @@ class Post(db.Model):
             return False
 
     @classmethod
-    def mark_post_complete(cls, post_id):
-        post = Post.get_post_by_id(post_id)
-        if not post:
-            return False
-
-        cls.update_post(cls, post_id, is_active=False)
-        db.session.commit()
-        return True
-
-    # returns only the posts that all required courses part of
-    # the searched for course list
-    @classmethod
     def get_posts_by_courses(cls, courses):
         posts = []
         post_ids = set()
@@ -218,42 +186,6 @@ class Post(db.Model):
                     post_ids.add(p.id)
                     posts.append(p.serialize_compressed_post)
         return posts
-
-    @classmethod
-    def search(cls, taken_courses=None, tags=None, keywords=None):
-        search_list = Post.query.filter_by(is_active=True).all()
-        #print(is_grad)
-        print(taken_courses)
-        print(tags)
-        print(keywords)
-        for p in search_list:
-            if p.required_courses is None:
-                p.required_courses = " "
-        """if is_grad is not None:
-            for p in list(search_list):
-                if p.grad_only and not is_grad:
-                    search_list.remove(p)"""
-        if taken_courses is not None:
-            for p in list(search_list):
-                if not set(p.required_courses.lower()).issubset(set(taken_courses.lower())):
-                    search_list.remove(p)
-        if tags is not None:
-            for p in list(search_list):
-                if len(set(tags.lower()).intersection(set(p.tags.lower()))) == 0: #no overlap in searched tags vs post tags
-                    search_list.remove(p)
-        if keywords is not None:
-            for p in list(search_list):
-                if len(set(keywords.lower()).intersection(set(p.title.lower()))) == 0 \
-                    and len(set(keywords.lower()).intersection(set(p.description.lower()))) == 0 \
-                    and len(set(keywords.lower()).intersection(set(p.professor_id.lower()))) == 0 \
-                    and len(set(keywords.lower()).intersection(set(p.desired_skills.lower()))) == 0:
-                        search_list.remove(p)
-        posts = []
-        for p in search_list:
-            posts.append(p.serialize_compressed_post)
-        return posts
-
-
 
     @property
     def serialize(self):
@@ -272,7 +204,6 @@ class Post(db.Model):
             'project_link': self.project_link,
             'contact_email': self.contact_email,
             'required_courses': self.required_courses,
-            #'grad_only': self.grad_only
         }
 
     @property
@@ -309,7 +240,6 @@ class Post(db.Model):
             'project_link': '',
             'contact_email': '',
             'required_courses': '',
-            #'grad_only': ''
         }
 
     TAGS = [
