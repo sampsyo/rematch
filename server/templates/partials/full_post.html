@@ -53,7 +53,7 @@
        
        <br> 
        <label> Date Created </label> 
-       <p> {{ post[date_created] }} </p> 
+       <p> {{ "{:%d, %b %Y}".format(post['date_created']) }} </p> 
 
     </div>
 </div>

@@ -36,7 +36,7 @@ class Professor(db.Model):
         )
         db.session.add(professor)
         db.session.commit()
-        return professor
+        return professor 
 
     @classmethod
     def update_professor(cls, net_id, name=None, email=None, desc=None,

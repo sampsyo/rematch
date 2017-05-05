@@ -17,19 +17,21 @@
 
                 <div class="form-group">
                     <label>Project Link:</label>
+                     <p class="helper-text"> Please include http:// at the start of your url. </p> 
                     <input type="text" name="project-link" class="form-control"
                                                            value="{{post['project_link']}}">
                 </div>
 
                 <div class="form-group">
                     <label>Project Description*:</label>
+                     <p class="helper-text"> Provide information about research topic, qualifications, time committment, and number of students you are seeking.  </p> 
                     <textarea name="post_description" class="form-control"
                               id="post_description" rows="5">{{post['description']}}</textarea>
                 </div>
 
                 <div class="form-group">
                     <label>Topics*:</label><br>
-                    <p class="helper text"> Search and select research topics relevant to this listing. </p> 
+                    <p class="helper-text"> Search and select research topics relevant to this listing. </p> 
                     <input autocomplete="off" class="tags-input" type="text"
                                                                  data-role="tagsinput"
                                                                  name="tags"
@@ -57,6 +59,7 @@
 
                 <div class="form-group">    
                     <label>Through which semester would you like to keep this listing live? </label> <br>
+                     <p class="helper-text"> Postings can be reactivated under your Profile page. </p> 
                     <select class="form-control" name="stale-days">
                          {% for i in range(options|length) %}
                              <option value={{i}}> {{ options[i] }}</option>
