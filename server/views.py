@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, request
-from server import app, db
+from server import app
 from .forms import LoginForm
 from flask_login import login_user, logout_user, login_required, current_user
 from models import Post, Student, Professor
@@ -37,14 +37,15 @@ def posts():
     return render_template(
         "index.html",
         title='Home',
-        user=current_user, 
+        user=current_user,
         base_url=BASE_URL,
         posts=posts,
         search=True,
-        isInIndex=True, 
+        isInIndex=True,
         tags=Post.TAGS,
         total_number_of_pages=total_number_of_pages,
         search_tags=search_tags or '',
+        checked='checked' if bool(courses) else '',
         page=page,
         phrase=phrase or '',
         has_next_page=has_next,
@@ -144,6 +145,7 @@ def profile(net_id):
             base_url=BASE_URL,
             profile=current_user,
             isInIndex=True,
+            all_courses=Post.COURSES,
             favorited_projects=favorited_projects,
             active_collection=active_collection,
             inactive_collection=inactive_collection
