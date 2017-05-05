@@ -219,35 +219,6 @@ def get_styleguide():
         'styleguide.html'
     )
 
-# move to apis
-@app.route('/search', methods=['GET'])
-def search():
-    print("ok")
-    if request.method == 'GET':
-        result = request.args
-        posts = Post.search(
-            is_grad=result['graduate_research'],
-            taken_courses=result['desired_courses'],
-            tags=result['tags'] or None,
-            keywords=result['keywords'] or None
-        )
-        for post in posts:
-            post['professor_name'] = Professor.get_professor_by_netid(
-                post['professor_id']).name
-        print(posts)
-        posts.sort(key=lambda x: x['id'], reverse=True)
-
-        from flask import jsonify
-        rendered_posts = []
-        for p in posts:
-            rendered_posts.append(render_template("partials/post.html", 
-                post=p,
-                isInIndex=True,
-                user=current_user))
-        return jsonify({
-            "rendered_posts": rendered_posts
-        })
-
 
 @app.errorhandler(413)
 def page_not_found(e):

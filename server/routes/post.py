@@ -108,3 +108,32 @@ def get_professor_posts_raw(professor_id):
 @app.route('/raw/post-tags.json', methods=['GET'])
 def get_post_tags_raw():
     return jsonify(tags=list(Post.TAGS))
+
+
+@app.route('/search', methods=['GET'])
+def search():
+    print("ok")
+    if request.method == 'GET':
+        result = request.args
+        posts = Post.get_posts(
+            page=1,
+            compressed=True,
+            # taken_courses=result['desired_courses'],
+            tags=result['tags'] or None,
+            keywords=result['keywords'] or None
+        )
+        for post in posts:
+            post['professor_name'] = Professor.get_professor_by_netid(
+                post['professor_id']).name
+        print(posts)
+
+        from flask import jsonify
+        rendered_posts = []
+        for p in posts:
+            rendered_posts.append(render_template("partials/post.html", 
+                post=p,
+                isInIndex=True,
+                user=current_user))
+        return jsonify({
+            "rendered_posts": rendered_posts
+        })
