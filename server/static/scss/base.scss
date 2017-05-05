@@ -459,3 +459,14 @@ a.no-decoration {
 	    }
 	}
 }
+.btn-primary {
+	border-radius: 3px;
+    color: #ad1b1b;
+    background: white;
+    padding: 5px 25px;
+    transition: .2s;
+    &:hover {
+    	color: #FFFFFF;
+    	background: #ad1b1b;
+    }
+}
