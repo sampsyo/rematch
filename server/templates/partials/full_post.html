@@ -14,7 +14,8 @@
 
         <h1 class="title">{{ post["title"] }}</h1>
         <h2 class="professor">{{ post['professor_name'] }}</h2>
-    
+        <br> 
+        <label> Description </label> 
          <p class="description">{{ post["description"] }}</p>
         {% if isInIndex: %}
         <!--<a class="more" href="/posts/{{post['id']}}">Read more &rsaquo;</a>-->
@@ -43,8 +44,12 @@
         <br> 
          {% if post['contact_email']: %} 
              <label> Contact Information </label> 
-            <div class="contact">If interested, email <a href='mailto:{{ post["contact_email"] }}'>{{ post["contact_email"] }}. </a></div>
+            <div class="contact">If interested, email {{ post['professor_name'] }} at <a href='mailto:{{ post["contact_email"] }}'>{{ post["contact_email"] }}. </a></div>
         {% endif %}
        
+       <br> 
+       <label> Date Created </label> 
+       <p> {{ post[date_created] }} </p> 
+
     </div>
 </div>
