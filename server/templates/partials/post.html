@@ -13,6 +13,7 @@
         <h1 class="title">{{ post["title"] }}</h1>
         <h2 class="professor">{{ post['professor_name'] }}{% if post['contact_email']: %}, Email: <a href='mailto:{{ post["contact_email"] }}'>{{ post["contact_email"] }}</a>
             {% endif %}</h2>
+        <p class="date posted"> Posted a day ago </p> 
         <p class="description">{{ post["description"] }}</p>
         {% if isInIndex: %}
         <a class="more" href="/posts/{{post['id']}}">Read more &rsaquo;</a>

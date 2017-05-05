@@ -27,7 +27,7 @@ def index(tags=None, all=None, posts=None):
         post['professor_name'] = Professor.get_professor_by_netid(
             post['professor_id']).name
 
-    posts.sort(key=lambda x: x['id'], reverse=True)
+    posts.sort(key=lambda x: x['date_created'], reverse=True)
     return render_template(
         "index.html",
         title='Home',
@@ -212,6 +212,7 @@ def get_styleguide():
 def search():
     print("ok")
     if request.method == 'GET':
+<<<<<<< HEAD
         result = request.args
         posts = Post.search(
             is_grad=result['graduate_research'],
@@ -232,6 +233,28 @@ def search():
         return jsonify({
             "rendered_posts": rendered_posts
         })
+=======
+        result = request.form
+        print(result)
+    # keywords = keywords.lower().split(',')
+    # posts = Post.get_posts_by_keywords(keywords=keywords)
+    # print(posts)
+    # for post in posts:
+    #     post['professor_name'] = Professor.get_professor_by_netid(
+    #         post['professor_id']).name
+
+    # posts.sort(key=lambda x: x['date_created'], reverse=True)
+    # return render_template(
+    #     "index.html",
+    #     title='Home',
+    #     user=current_user,
+    #     posts=posts,
+    #     search=True,
+    #     isInIndex=True,
+    #     tags=Post.TAGS,
+    #     keywords = ','.join(keywords)
+    # )
+>>>>>>> 1fd9d1079ea9e4daf30524412bbb82ba44c5f772
 
 
 @app.errorhandler(413)
