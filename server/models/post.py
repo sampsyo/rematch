@@ -49,7 +49,6 @@ class Post(db.Model):
             inactive_only: Only show inactive posts
             grad_only: True to only show listings for graduate listings
             professor_id: string, usually netid
-            id: int of post id to find
             keywords: a string of keywords, exact match searched in the
                 title and description of a post
             tags: a string of tags, separated by a comma; posts must have at

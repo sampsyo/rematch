@@ -206,7 +206,6 @@ def createpost():
             result['post_professor_email'],
             result['project-link'],
             '',  # required courses
-            #''  # grad_only
         )
         return redirect("/posts", code=302)
     else:
@@ -218,7 +217,7 @@ def createpost():
             'createpost.html',
             base_url=BASE_URL,
             title='Submit Research Listing',
-            tags=Post.TAGS,
+            all_tags=Post.TAGS,
             post=Post.empty,
             options=options
         )
@@ -254,6 +253,7 @@ def editpost(post_id):
             post_id,
             description=result['post_description'],
             tags=result['tags'].split(','),
+            all_tags=Post.TAGS,
             title=result['post_title'],
             contact_email=result['post_professor_email'],
             project_link=result['project-link']
@@ -270,6 +270,7 @@ def editpost(post_id):
             'createpost.html',
             base_url=BASE_URL,
             id='Sign In',
+            all_tags=Post.TAGS,
             post=post,
             options=options
         )
