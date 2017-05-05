@@ -63,9 +63,11 @@
         <div role="tabpanel" class="tab-pane" id="starred">
             {% if favorited_projects %}
                 <div class="row">
-                    {% for post in favorited_projects %}        
-                        {% include "partials/post.html" %}
-                    {% endfor %}
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        {% for post in favorited_projects %}        
+                            {% include "partials/post.html" %}
+                        {% endfor %}
+                    </div>
                 </div>
             {% else %}
                 <div class="profile">

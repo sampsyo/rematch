@@ -388,7 +388,6 @@ a.no-decoration {
     background: #ad1b1b; }
 
 .toggle {
-  height: 25px !important;
   text-transform: lowercase;
   position: relative;
   display: block;
@@ -396,19 +395,8 @@ a.no-decoration {
   .toggle .btn-primary {
     background-color: #ad1b1b;
     color: white; }
-  .toggle .toggle-handle {
-    border-radius: 0px; }
-
-.toggle.btn {
-  height: 25px !important; }
 
 .activate-post-toggle {
-  display: block; }
-
-.toggle.ios, .toggle-on.ios, .toggle-off.ios {
-  border-radius: 20px; }
-
-.toggle.ios .toggle-handle {
-  border-radius: 20px; }
+  display: inline; }
 
 /*# sourceMappingURL=base.css.map */
