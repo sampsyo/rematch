@@ -110,7 +110,7 @@ class Post(db.Model):
             tags=",".join(tags),
             professor_id=professor_id,
             qualifications=qualifications,
-            desired_skills="",
+            desired_skills=desired_skills,
             stale_date=stale_date,
             contact_email=contact_email,
             project_link=project_link,
