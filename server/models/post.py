@@ -83,18 +83,21 @@ class Post(db.Model):
         if descend:
             query = query.order_by(desc(Post.id))
 
+        size = 0 
         if page is None:
             posts = query.all()
             has_next = None
+            size = len(posts)
         else:
             pagination = query.paginate(page=page, per_page=PAGINATION_PER_PAGE)
             has_next = pagination.has_next
             posts = pagination.items
+            size = pagination.total
 
         if compressed:
-            return ([p.serialize_compressed_post for p in posts], has_next)
+            return ([p.serialize_compressed_post for p in posts], has_next, size)
         else:
-            return ([p.serialize for p in posts], has_next)
+            return ([p.serialize for p in posts], has_next, size)
 
     @classmethod
     def create_post(cls, title, description, professor_id, tags,
