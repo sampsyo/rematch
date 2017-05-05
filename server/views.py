@@ -28,12 +28,8 @@ def posts():
     search_url = '&%s' % '&'.join(url_params)
 
     posts, has_next = Post.get_posts(
-<<<<<<< HEAD
         page=page, compressed=True, tags=search_tags, keywords=phrase,
         active_only=True
-=======
-        page=page, compressed=True, tags=search_tags, keywords=phrase
->>>>>>> eda44fbac34706bfd0b6b949346eed0b3ac4fe4d
     )
     Professor.annotate_posts(posts)
 
