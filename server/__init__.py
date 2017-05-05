@@ -13,7 +13,7 @@ db = SQLAlchemy(app)
 
 app.config['UPLOAD_FOLDER'] = 'uploads/'
 app.config['ALLOWED_EXTENSIONS'] = set(
-    ['txt', 'pdf', 'png', 'jpg', 'jpeg', 'doc'])
+    ['txt', 'pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx'])
 app.config['MAX_CONTENT_LENGTH'] = 1000000
 
 if not os.path.isdir('uploads/'):
