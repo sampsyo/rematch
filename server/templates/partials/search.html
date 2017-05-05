@@ -37,26 +37,27 @@
 	    	console.log($(".tags").val());
 	    	console.log($(".graduate_research").is(":checked"));
 	    	console.log($(".desired_courses").is(":checked"));
-	    	if($(".tags-input").val() == "") {
-	    		window.location = "/";
-	    	} else {
-	    		$.ajax({
-				    type: 'GET',
-				    url: "/search",
-				    data: {
-				    	keywords: $(".keywords").val(),
-				    	tags: $(".tags").val(),
-				    	graduate_research: $(".graduate_research").is(":checked"),
-				    	desired_courses: $(".desired_courses").is(":checked")
-				    },
-				    success: function(response) {
-				    	console.log(response);
-				    },
-				    failure: function(response) {
-				        console.log(response);
-				    }
-				});	
-	    	}
+    		$.ajax({
+			    type: 'GET',
+			    url: "/search",
+			    contentType: 'application/json',
+			    dataType: "json",
+			    data: {
+			    	keywords: $(".keywords").val(),
+			    	tags: $(".tags").val(),
+			    	graduate_research: $(".graduate_research").is(":checked"),
+			    	desired_courses: $(".desired_courses").is(":checked")
+			    },
+			    success: function(response) {
+			    	$(".posts").empty();
+			    	response.rendered_posts.forEach(function(post) {
+			    		$(".posts").append(post);
+			    	});
+			    },
+			    failure: function(response) {
+			        console.log(response);
+			    }
+			});	
 	        setTimeout(function(){
 	            $(">input[type=text]",".bootstrap-tagsinput").val("");
 	        }, 1);

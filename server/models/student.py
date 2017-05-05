@@ -15,7 +15,7 @@ class Student(db.Model):
     description = db.Column(db.String(10000))
     interests = db.Column(db.String(10000))
     favorited_projects = db.Column(db.String(10000))
-    availability = db.Column(db.String(10000))
+    #availability = db.Column(db.String(10000))
     courses = db.Column(db.String(10000))
     is_grad = db.Column(db.Boolean, default = False)
     is_student = True
@@ -73,8 +73,8 @@ class Student(db.Model):
             student.interests = interests
         if favorited_projects is not None:
             student.favorited_projects = favorited_projects
-        if availability:
-            student.availability = availability
+        #if availability:
+        #    student.availability = availability
         if courses is not None: 
             student.courses = courses
         if is_grad is not None:
@@ -163,7 +163,7 @@ class Student(db.Model):
             'description': self.description,
             'interests': self.interests,
             'favorited_projects': self.favorited_projects,
-            'availability': self.availability,
+            #'availability': self.availability,
             'courses': self.courses,
             'is_grad': self.is_grad
         }
