@@ -207,30 +207,31 @@ def get_styleguide():
         'styleguide.html'
     )
 
-
+# move to apis
 @app.route('/search', methods=['GET'])
 def search():
+    print("ok")
     if request.method == 'GET':
-        result = request.form
-        print(result)
-    # keywords = keywords.lower().split(',')
-    # posts = Post.get_posts_by_keywords(keywords=keywords)
-    # print(posts)
-    # for post in posts:
-    #     post['professor_name'] = Professor.get_professor_by_netid(
-    #         post['professor_id']).name
+        result = request.args
+        posts = Post.search(
+            is_grad=result['graduate_research'],
+            taken_courses=result['desired_courses'],
+            tags=result['tags'] or None,
+            keywords=result['keywords'] or None
+        )
+        for post in posts:
+            post['professor_name'] = Professor.get_professor_by_netid(
+                post['professor_id']).name
+        print(posts)
+        posts.sort(key=lambda x: x['id'], reverse=True)
 
-    # posts.sort(key=lambda x: x['id'], reverse=True)
-    # return render_template(
-    #     "index.html",
-    #     title='Home',
-    #     user=current_user,
-    #     posts=posts,
-    #     search=True,
-    #     isInIndex=True,
-    #     tags=Post.TAGS,
-    #     keywords = ','.join(keywords)
-    # )
+        from flask import jsonify
+        rendered_posts = []
+        for p in posts:
+            rendered_posts.append(render_template("partials/post.html", post=p))
+        return jsonify({
+            "rendered_posts": rendered_posts
+        })
 
 
 @app.errorhandler(413)

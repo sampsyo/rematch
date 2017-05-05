@@ -251,6 +251,13 @@ class Post(db.Model):
     @classmethod
     def search(cls, is_grad=None, taken_courses=None, tags=None, keywords=None):
         search_list = Post.query.filter_by(is_active=True).all()
+        print(is_grad)
+        print(taken_courses)
+        print(tags)
+        print(keywords)
+        for p in search_list:
+            if p.required_courses is None:
+                p.required_courses = " "
         if is_grad is not None:
             for p in list(search_list):
                 if p.grad_only and not is_grad:
@@ -302,7 +309,7 @@ class Post(db.Model):
         return {
             'id': self.id,
             'title': self.title,
-            # only 150 words
+            # only 60 words
             'description': (
                 " ".join(self.description.split(" ")[:60]) + '...'
                 if len(self.description.split(" ")) > 60 else self.description),
