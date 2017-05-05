@@ -11,18 +11,18 @@ class Post(db.Model):
     professor_id = db.Column(db.String(64), db.ForeignKey('professors.net_id'))
     tags = db.Column(db.String(10000))
     is_active = db.Column(db.Boolean, default=True, nullable=False)
-
-    # date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
-    # date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(),
-    #                           onupdate=db.func.current_timestamp())
-
+    date_created = db.Column(db.DateTime,
+                            default=db.func.current_timestamp())
+    date_modified = db.Column(db.DateTime,
+                            default=db.func.current_timestamp(),
+                              onupdate=db.func.current_timestamp())
     stale_date = db.Column(db.DateTime)
     contact_email = db.Column(db.String(10000))
     project_link = db.Column(db.String(10000))
 
     # unimplemented
     required_courses = db.Column(db.String(10000))
-    grad_only = db.Column(db.Boolean, default = False) #['grad'],['grad','undergrad'],['undergrad']
+    grad_only = db.Column(db.Boolean, default=False)
     qualifications = db.Column(db.String(10000))
     current_students = db.Column(db.String(10000))
     desired_skills = db.Column(db.String(10000))
@@ -31,7 +31,7 @@ class Post(db.Model):
 
     def is_stale(self):
         return self.stale_date is not None and \
-                self.stale_date < datetime.datetime.now()
+            self.stale_date < datetime.datetime.now()
 
     @classmethod
     def refresh(cls, post_id, days_added):
@@ -109,6 +109,7 @@ class Post(db.Model):
             required_courses=required_courses,
             grad_only=grad_only
         )
+        #update_tags_from_desc(post)
         db.session.add(post)
         db.session.commit()
         return post
@@ -145,8 +146,18 @@ class Post(db.Model):
             post.required_courses = required_courses
         if grad_only is not None:
             post.grad_only = grad_only
+        #if description is not None:
+        #    update_tags_from_desc(post)
         db.session.commit()
         return post
+
+    @classmethod
+    def update_tags_from_desc(cls, post):
+        new_tags = []
+        for tag in TAGS:
+            if tag in post.description.lower() and tag not in post.tags:
+                new_tags.append(tag)
+        post.tags = post.tags + "," + ",".join(new_tags)
 
     @classmethod
     def get_post_by_id(cls, post_id):
@@ -196,15 +207,15 @@ class Post(db.Model):
             s.serialize for s in Post.query.filter_by(is_active=False).all()
         ]
 
-    #considering combining these following two functions 
-    #def search_posts(cls, courses=None, keywords=None):
-    #it will filter out not searched for courses then search that 
-    #filtered list for the keywords.
-    #For now, I just have separate functions 
+    # considering combining these following two functions
+    # def search_posts(cls, courses=None, keywords=None):
+    # it will filter out not searched for courses then search that
+    # filtered list for the keywords.
+    # For now, I just have separate functions
 
-    #first filter by courses if checked
-    #then filter by tag section
-    #then filter by descrit
+    # first filter by courses if checked
+    # then filter by tag section
+    # then filter by descrit
     @classmethod
     def get_posts_by_keywords(cls, keywords):
         posts = []
@@ -222,9 +233,9 @@ class Post(db.Model):
                         posts.append(p.serialize_compressed_post)
         return posts
 
-    #returns only the posts that all required courses part of 
-    #the searched for course list
-    @classmethod 
+    # returns only the posts that all required courses part of
+    # the searched for course list
+    @classmethod
     def get_posts_by_courses(cls, courses):
         posts = []
         post_ids = set()
@@ -235,9 +246,16 @@ class Post(db.Model):
                     posts.append(p.serialize_compressed_post)
         return posts
 
-    @classmethod 
+    @classmethod
     def search(cls, is_grad=None, taken_courses=None, tags=None, keywords=None):
         search_list = Post.query.filter_by(is_active=True).all()
+        print(is_grad)
+        print(taken_courses)
+        print(tags)
+        print(keywords)
+        for p in search_list:
+            if p.required_courses is None:
+                p.required_courses = " "
         if is_grad is not None:
             for p in list(search_list):
                 if p.grad_only and not is_grad:
@@ -275,8 +293,8 @@ class Post(db.Model):
             'professor_id': self.professor_id,
             'desired_skills': self.desired_skills,
             'is_active': self.is_active,
-            # 'date_created': self.date_created,
-            # 'date_modified': self.date_modified,
+            'date_created': self.date_created,
+            'date_modified': self.date_modified,
             'stale_date': self.stale_date,
             'project_link': self.project_link,
             'contact_email': self.contact_email,
@@ -289,16 +307,16 @@ class Post(db.Model):
         return {
             'id': self.id,
             'title': self.title,
-            # only 150 words
+            # only 60 words
             'description': (
                 " ".join(self.description.split(" ")[:60]) + '...'
                 if len(self.description.split(" ")) > 60 else self.description),
             # only 5 tags
             'tags': self.tags.split(',')[:5],
             'professor_id': self.professor_id,
-            'is_active': self.is_active
-            # 'date_created': self.date_created,
-            # 'date_modified': self.date_modified
+            'is_active': self.is_active,
+            'date_created': self.date_created,
+            'date_modified': self.date_modified
         }
 
     @classmethod
@@ -312,8 +330,8 @@ class Post(db.Model):
             'professor_id': '',
             'desired_skills': '',
             'is_active': '',
-            # 'date_created': '',
-            # 'date_modified': '',
+            'date_created': '',
+            'date_modified': '',
             'stale_date': '',
             'project_link': '',
             'contact_email': '',

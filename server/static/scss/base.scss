@@ -80,10 +80,38 @@ p, a {
 .full-post {
 	.card {
 		.title {
-			font-size: 24px;
+			font-size: 26px;
 		}
 		.description {
 			font-size: 15px;
+		}
+		.professor {
+			font-size: 16px;
+			margin-bottom: 10px;
+		}
+		.contact {
+			font-weight: 400;
+		    padding-bottom: 5px;
+		    -webkit-font-smoothing: antialiased;
+		    color: #444;
+		    font-size: 14px;
+			a {
+				color: $color-blue;
+			}
+		}
+		.edit {
+			position: absolute;
+			right: 40;
+			top: 20;
+			a {
+				color: $color-blue;
+				&:hover {
+					text-decoration: none;
+				}
+			}
+			.content {
+				padding-left: 5px;
+			}
 		}
 	}
 }
@@ -171,6 +199,20 @@ p, a {
 		margin-left: auto;
 		margin-right: auto;
 	}
+	.edit {
+		position: absolute;
+		right: 40;
+		top: 20;
+		a {
+			color: $color-blue;
+			&:hover {
+				text-decoration: none;
+			}
+		}
+		.content {
+			padding-left: 5px;
+		}
+	}
 }
 
 .shadowed {
@@ -179,6 +221,7 @@ p, a {
 
 
 .tag {
+	margin-top: 10px;
 	text-decoration: none !important;
 	-webkit-font-smoothing: antialiased;
 	font-size: 12px;
@@ -189,12 +232,14 @@ p, a {
 	padding: 6px 16px;
     margin-right: 8px;
     border-radius: 2px;
-	// border-radius: $border-radius;
 	text-transform: lowercase;
+	&:hover {
+		color: #888888;
+	}
 
 }
 .tags {
-	margin-top: 20px;
+	margin-top: 10px;
 	padding-left: 0;
 }
 

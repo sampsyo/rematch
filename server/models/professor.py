@@ -26,7 +26,6 @@ class Professor(db.Model):
         cls, net_id=net_id, name=name, email=email, password=password
     ):
         if Professor.get_professor_by_netid(net_id):
-            print("Professor already exists with net_id %s" % net_id)
             return None
 
         professor = Professor(
