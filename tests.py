@@ -1014,7 +1014,6 @@ class TestCase(unittest.TestCase):
         assert post["tags"] == ["tags"]
         assert post["is_active"]
         assert post["date_created"] == t1 
-        assert post["date_modified"] != t2 
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
@@ -1042,7 +1041,6 @@ class TestCase(unittest.TestCase):
         assert post["tags"] == ["tags"]
         assert post["is_active"]
         assert post["date_created"] == t1 
-        assert post["date_modified"] != t2 
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
@@ -1070,7 +1068,6 @@ class TestCase(unittest.TestCase):
         assert post["tags"] == ["tags"]
         assert not post["is_active"]
         assert post["date_created"] == t1 
-        assert post["date_modified"] != t2 
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
@@ -1098,7 +1095,6 @@ class TestCase(unittest.TestCase):
         assert post["tags"] == ["tags"]
         assert post["is_active"]
         assert post["date_created"] == t1 
-        assert post["date_modified"] != t2 
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
@@ -1126,7 +1122,6 @@ class TestCase(unittest.TestCase):
         assert post["tags"] == ["tags"]
         assert post["is_active"]
         assert post["date_created"] == t1 
-        assert post["date_modified"] != t2 
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
@@ -1154,7 +1149,6 @@ class TestCase(unittest.TestCase):
         assert post["tags"] == ["tags"]
         assert post["is_active"]
         assert post["date_created"] == t1 
-        assert post["date_modified"] != t2 
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
@@ -1182,7 +1176,6 @@ class TestCase(unittest.TestCase):
         assert post["tags"] == ["tag1", "tag2"]
         assert post["is_active"]
         assert post["date_created"] == t1 
-        assert post["date_modified"] != t2 
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
@@ -1210,7 +1203,6 @@ class TestCase(unittest.TestCase):
         assert post["tags"] == ["tags"]
         assert post["is_active"]
         assert post["date_created"] == t1 
-        assert post["date_modified"] != t2 
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
@@ -1238,7 +1230,6 @@ class TestCase(unittest.TestCase):
         assert post["tags"] == ["tags"]
         assert post["is_active"]
         assert post["date_created"] == t1 
-        assert post["date_modified"] != t2 
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "new project_link"
@@ -1266,13 +1257,150 @@ class TestCase(unittest.TestCase):
         assert post["tags"] == ["tags"]
         assert post["is_active"]
         assert post["date_created"] == t1 
-        assert post["date_modified"] != t2 
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "new contact_email"
         assert post["project_link"] == "project_link"
         assert post["required_courses"] == "required_courses"
         assert post["qualifications"] == "qualifications"
         assert post["desired_skills"] == "desired_skills"
+
+    # def test_update_tags_from_desc_with_no_keyword(self): 
+    #     Professor.create_professor(net_id = "abc",  name = "hello", 
+    #         email = "abc@cornell.edu", password = "123") 
+    #     p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
+    #         "desired_skills", 1, "contact_email", "project_link", 
+    #         "required_courses")
+    #     t1 = p1.date_created
+    #     t2 = p1.date_modified
+    #     t3 = p1.stale_date
+    #     Post.update_tags_from_desc(p1)
+    #     l = Post.get_posts()
+    #     assert len(l[0]) == 1
+    #     post = l[0][0]
+    #     assert post["id"] == 1 
+    #     assert post["title"] == "title"
+    #     assert post["description"] == "description"
+    #     assert post["professor_id"] == "1"
+    #     assert post["tags"] == ["tags", "c"]
+    #     assert post["is_active"]
+    #     assert post["date_created"] == t1 
+    #     assert post["date_modified"] == t2 
+    #     assert post["stale_date"] == t3 
+    #     assert post["contact_email"] == "contact_email"
+    #     assert post["project_link"] == "project_link"
+    #     assert post["required_courses"] == "required_courses"
+    #     assert post["qualifications"] == "qualifications"
+    #     assert post["desired_skills"] == "desired_skills"
+
+    # def test_update_tags_from_desc_with_keywords(self): 
+    #     Professor.create_professor(net_id = "abc",  name = "hello", 
+    #         email = "abc@cornell.edu", password = "123") 
+    #     p1 = Post.create_post("title", "machine learning algorithms java", 
+    #         "1", ["tags"], "qualifications", 
+    #         "desired_skills", 1, "contact_email", "project_link", 
+    #         "required_courses")
+    #     t1 = p1.date_created
+    #     t2 = p1.date_modified
+    #     t3 = p1.stale_date
+    #     Post.update_tags_from_desc(p1)
+    #     l = Post.get_posts()
+    #     assert len(l[0]) == 1
+    #     post = l[0][0]
+    #     assert post["id"] == 1 
+    #     assert post["title"] == "title"
+    #     assert post["description"] == "machine learning algorithms java"
+    #     assert post["professor_id"] == "1"
+    #     assert post["tags"] == ["tags", "algorithms", "machine learning", "java", "c"]
+    #     assert post["is_active"]
+    #     assert post["date_created"] == t1 
+    #     assert post["date_modified"] == t2 
+    #     assert post["stale_date"] == t3 
+    #     assert post["contact_email"] == "contact_email"
+    #     assert post["project_link"] == "project_link"
+    #     assert post["required_courses"] == "required_courses"
+    #     assert post["qualifications"] == "qualifications"
+    #     assert post["desired_skills"] == "desired_skills"
+
+    def test_get_post_by_id_with_invalid_id(self): 
+        p = Post.get_post_by_id(1)
+        assert p is None 
+
+    def test_get_post_by_id_with_valid_id(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        p1 = Post.create_post("title", "machine learning algorithms java", 
+            "1", ["tags"], "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        t1 = p1.date_created
+        t2 = p1.date_modified
+        t3 = p1.stale_date
+        Post.get_post_by_id(1)
+        l = Post.get_posts()
+        assert len(l[0]) == 1
+        post = l[0][0]
+        assert post["id"] == 1 
+        assert post["title"] == "title"
+        assert post["description"] == "machine learning algorithms java"
+        assert post["professor_id"] == "1"
+        assert post["tags"] == ["tags"]
+        assert post["is_active"]
+        assert post["date_created"] == t1 
+        assert post["date_modified"] == t2 
+        assert post["stale_date"] == t3 
+        assert post["contact_email"] == "contact_email"
+        assert post["project_link"] == "project_link"
+        assert post["required_courses"] == "required_courses"
+        assert post["qualifications"] == "qualifications"
+        assert post["desired_skills"] == "desired_skills"
+
+    def test_delete_post_with_invalid_post_id(self): 
+        post = Post.delete_post(1)
+        assert not post
+
+    def test_delete_post_with_valid_post_id(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        p1 = Post.create_post("title", "machine learning algorithms java", 
+            "1", ["tags"], "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        Post.delete_post(1)
+        post = Post.get_post_by_id(1)
+        assert not post 
+
+    # def test_mark_post_complete_with_invalid_post_id(self): 
+    #     post = Post.mark_post_complete(1)
+    #     assert not post 
+
+    # def test_mark_post_complete_with_valid_post_id(self): 
+    #     Professor.create_professor(net_id = "abc",  name = "hello", 
+    #         email = "abc@cornell.edu", password = "123") 
+    #     p1 = Post.create_post("title", "machine learning algorithms java", 
+    #         "1", ["tags"], "qualifications", 
+    #         "desired_skills", 1, "contact_email", "project_link", 
+    #         "required_courses")
+    #     t1 = p1.date_created
+    #     t2 = p1.date_modified
+    #     t3 = p1.stale_date
+    #     b = Post.mark_post_complete(1)
+    #     assert b 
+    #     l = Post.get_posts()
+    #     assert len(l[0]) == 1
+    #     post = l[0][0]
+    #     assert post["id"] == 1 
+    #     assert post["title"] == "title"
+    #     assert post["description"] == "machine learning algorithms java"
+    #     assert post["professor_id"] == "1"
+    #     assert post["tags"] == ["tags"]
+    #     assert not post["is_active"]
+    #     assert post["date_created"] == t1 
+    #     assert post["stale_date"] == t3 
+    #     assert post["contact_email"] == "contact_email"
+    #     assert post["project_link"] == "project_link"
+    #     assert post["required_courses"] == "required_courses"
+    #     assert post["qualifications"] == "qualifications"
+    #     assert post["desired_skills"] == "desired_skills"
 
 if __name__ == '__main__':
     unittest.main()
