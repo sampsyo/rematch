@@ -33,17 +33,14 @@
             {% endfor %}
         </ul>
         <br>
-        <label> Required Courses </label> 
-            {% if post['courses']: %}
-             <ul class="tags fullpost-tags">
+        {% if post['courses'] %}
+            <label> Required Courses </label> 
+            <ul class="tags fullpost-tags">
                 {% for course in post['courses'] %}
-                <span class="tag">{{course}}</span>
+                    <span class="tag course-tag">{{course}}</span>
                 {% endfor %}
-             </ul>
-             {% else: %}
-             <p>None specified.</p>
-            {% endif %}
-
+            </ul>
+        {% endif %}
         <br> 
         <br> 
          {% if post['contact_email']: %} 
@@ -51,9 +48,6 @@
             <div class="contact">If interested, email {{ post['professor_name'] }} at <a href='mailto:{{ post["contact_email"] }}'>{{ post["contact_email"] }}. </a></div>
         {% endif %}
        
-       <br> 
-       <label> Date Created </label> 
-       <p> {{ "{:%d, %b %Y}".format(post['date_created']) }} </p> 
-
+       <br>
     </div>
 </div>
