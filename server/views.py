@@ -12,20 +12,27 @@ import os
 @app.route('/posts', methods=['GET'])
 @login_required
 def posts():
-    keywords = request.args.get('keywords', None)
-    tags = request.args.get('tags', None)
+    phrase = request.args.get('phrase', None)
+    search_tags = request.args.get('search_tags', None)
     page = int(request.args.get('page', 1))
+    desired_courses = request.args.get('desired_courses')
+
+    print(desired_courses)
 
     url_params = []
-    if tags:
-        url_params.append('tags=%s' % tags)
-    if keywords:
-        url_params.append('keywords=%s' % keywords)
+    if search_tags:
+        url_params.append('search_tags=%s' % search_tags)
+    if phrase:
+        url_params.append('phrase=%s' % phrase)
     search_url = '&%s' % '&'.join(url_params)
 
     posts, has_next = Post.get_posts(
+<<<<<<< HEAD
+        page=page, compressed=True, tags=search_tags, keywords=phrase
+=======
         page=page, compressed=True, tags=tags, keywords=keywords,
         active_only=True
+>>>>>>> d02694e3cf31fee1afd43b9dac37b299f335394e
     )
     Professor.annotate_posts(posts)
 
@@ -37,8 +44,10 @@ def posts():
         posts=posts,
         search=True,
         isInIndex=True,
-        tags=Post.TAGS if tags is None else tags,
+        tags=Post.TAGS,
+        search_tags=search_tags or '',
         page=page,
+        phrase=phrase or '',
         has_next_page=has_next,
         search_url=search_url
     )
