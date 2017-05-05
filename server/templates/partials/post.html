@@ -13,7 +13,7 @@
     {% if current_user.net_id == post['professor_id'] %}
     <div class="edit"><a href="{{base_url}}/posts/{{post['id']}}/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a></div>
     {% endif %}
-    <h1 class="title">{{ post["title"] }}</h1>
+    <h1 class="title"><a href="{{base_url}}/posts/{{post['id']}}">{{ post["title"] }}</a></h1>
     <h2 class="professor">{{ post['professor_name'] }}</h2>
     <p class="description"><span class="post_date">Posted a day ago</span> {{ post["description"] }}</p>
     {% if isInIndex: %}

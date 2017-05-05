@@ -28,9 +28,7 @@ def setpostinactive(post_id):
             post_id,
             description=None, desired_skills=None, is_active=False,
                     professor_id=None, qualifications=None, required_courses=None,
-                    tags=None, title=None, project_link=None, contact_email=None,
-                    grad_only=None
-        )
+                    tags=None, title=None, project_link=None, contact_email=None)
         return jsonify(post=post.serialize)
     else:
         return jsonify({
@@ -50,6 +48,7 @@ def get_post_by_id(post_id):
 
 @app.route('/api/posts', methods=['POST'])
 def create_post():
+    #import ipdb; ipdb.set_trace()
     r = request.get_json(force=True)
     post = Post.create_post(
         title=r.get('title'),
@@ -59,7 +58,7 @@ def create_post():
         qualifications='',
         desired_skills="",
         stale_days=10,
-        grad_only=False,
+        #grad_only=False,
         required_courses="",
         project_link="",
         contact_email=""

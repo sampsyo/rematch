@@ -27,7 +27,12 @@ def posts():
     search_url = '&%s' % '&'.join(url_params)
 
     posts, has_next = Post.get_posts(
+<<<<<<< HEAD
         page=page, compressed=True, tags=search_tags, keywords=phrase
+=======
+        page=page, compressed=True, tags=tags, keywords=keywords,
+        active_only=True
+>>>>>>> d02694e3cf31fee1afd43b9dac37b299f335394e
     )
     Professor.annotate_posts(posts)
 
@@ -59,18 +64,22 @@ def login():
                 login_user(user)
                 flash('Welcome back %s!' % user.name)
                 next = request.args.get('next')
-                return redirect(next or '/index')
+                return redirect(next or BASE_URL)
             else:
                 flash('Username or Password Incorrect!')
                 return redirect('/login')
-    return render_template('login.html', form=form)
+    return render_template(
+        'login.html',
+        base_url=BASE_URL,
+        form=form
+    )
 
 
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect('/index')
+    return redirect(BASE_URL)
 
 
 def allowed_file(filename):
@@ -82,18 +91,14 @@ def allowed_file(filename):
 @login_required
 def profile(net_id):
     favorited_projects = Student.get_student_favorited_projects(net_id)
-    post_collection = Post.get_posts_by_professor_id(net_id)
-    active_collection = []
-    inactive_collection = []
-    for p in post_collection:
-        if p['is_active']:
-            active_collection.append(p)
-        else:
-            inactive_collection.append(p)
+    active_collection, _ = Post.get_posts(
+        professor_id=net_id, active_only=True)
+    inactive_collection, _ = Post.get_posts(
+        professor_id=net_id, inactive_only=True)
 
-    for post in post_collection:
-        post['professor_name'] = Professor.get_professor_by_netid(
-            post['professor_id']).name
+    Professor.annotate_posts(active_collection)
+    Professor.annotate_posts(inactive_collection)
+
     if request.method == 'POST':
         result = request.form
         if current_user.is_student:
@@ -136,9 +141,9 @@ def profile(net_id):
         return render_template(
             'profile.html',
             title=current_user.name + "'s Profile",
+            base_url=BASE_URL,
             profile=current_user,
             favorited_projects=favorited_projects,
-            post_collection=post_collection,
             active_collection=active_collection,
             inactive_collection=inactive_collection
 
@@ -154,6 +159,15 @@ def createpost():
     if request.method == 'POST':
         result = request.form
         print(result)
+        if (result.get("post_title") == ""):
+            flash('Title Field is required.')
+            return redirect("/posts/create")
+        if result.get("post_description") == "":
+            flash('Project Description is required')
+            return redirect("/posts/create")
+        if result.get('tags') == "":
+            flash('Project Topics/Tags are required')
+            return redirect("/posts/create")
         Post.create_post(
             result["post_title"],
             result["post_description"],
@@ -165,12 +179,13 @@ def createpost():
             result['post_professor_email'],
             result['project-link'],
             '',  # required courses
-            ''  # grad_only
+            #''  # grad_only
         )
         return redirect("/posts", code=302)
     else:
         return render_template(
             'createpost.html',
+            base_url=BASE_URL,
             title='Submit Research Listing',
             tags=Post.TAGS,
             post=Post.empty
@@ -189,6 +204,7 @@ def showpost(post_id):
         post['professor_id']).name
     return render_template(
         'full_post.html',
+        base_url=BASE_URL,
         post=post
     )
 
@@ -216,6 +232,7 @@ def editpost(post_id):
         post['tags'] = ",".join(post['tags'])
         return render_template(
             'createpost.html',
+            base_url=BASE_URL,
             id='Sign In',
             post=post
         )

@@ -6,6 +6,7 @@ import datetime
 from config import basedir
 from server import *
 from server.models.professor import Professor
+from config import PAGINATION_PER_PAGE
 
 class TestCase(unittest.TestCase):
     def setUp(self):
@@ -52,7 +53,6 @@ class TestCase(unittest.TestCase):
         assert s3.favorited_projects is None 
         # assert s3.availability is None 
         assert s3.courses is None 
-        assert s3.is_grad == False 
         assert s3.is_student == True 
         assert s3.is_authenticated == True 
         assert s3.is_active == True 
@@ -93,7 +93,6 @@ class TestCase(unittest.TestCase):
         assert s3.favorited_projects is None 
         # assert s3.availability is None 
         assert s3.courses is None 
-        assert s3.is_grad == False 
         assert s3.is_student == True 
         assert s3.is_authenticated == True 
         assert s3.is_active == True 
@@ -117,7 +116,6 @@ class TestCase(unittest.TestCase):
         assert s3.favorited_projects is None 
         # assert s3.availability is None 
         assert s3.courses is None 
-        assert s3.is_grad == False 
         assert s3.is_student == True 
         assert s3.is_authenticated == True 
         assert s3.is_active == True 
@@ -141,7 +139,6 @@ class TestCase(unittest.TestCase):
         assert s3.favorited_projects is None 
         # assert s3.availability is None 
         assert s3.courses is None 
-        assert s3.is_grad == False 
         assert s3.is_student == True 
         assert s3.is_authenticated == True 
         assert s3.is_active == True 
@@ -165,7 +162,6 @@ class TestCase(unittest.TestCase):
         assert s3.favorited_projects is None 
         # assert s3.availability is None 
         assert s3.courses is None 
-        assert s3.is_grad == False 
         assert s3.is_student == True 
         assert s3.is_authenticated == True 
         assert s3.is_active == True 
@@ -189,7 +185,6 @@ class TestCase(unittest.TestCase):
         assert s3.favorited_projects is None 
         # assert s3.availability is None 
         assert s3.courses is None 
-        assert s3.is_grad == False 
         assert s3.is_student == True 
         assert s3.is_authenticated == True 
         assert s3.is_active == True 
@@ -213,7 +208,6 @@ class TestCase(unittest.TestCase):
         assert s3.favorited_projects is None 
         # assert s3.availability is None 
         assert s3.courses is None 
-        assert s3.is_grad == False 
         assert s3.is_student == True 
         assert s3.is_authenticated == True 
         assert s3.is_active == True 
@@ -237,7 +231,6 @@ class TestCase(unittest.TestCase):
         assert s3.favorited_projects is None 
         # assert s3.availability is None 
         assert s3.courses is None 
-        assert s3.is_grad == False 
         assert s3.is_student == True 
         assert s3.is_authenticated == True 
         assert s3.is_active == True 
@@ -261,7 +254,6 @@ class TestCase(unittest.TestCase):
         assert s3.favorited_projects is None 
         # assert s3.availability is None 
         assert s3.courses is None 
-        assert s3.is_grad == False 
         assert s3.is_student == True 
         assert s3.is_authenticated == True 
         assert s3.is_active == True 
@@ -285,7 +277,7 @@ class TestCase(unittest.TestCase):
     #     assert s3.favorited_projects is None 
     #     assert s3.availability == "2018" 
     #     assert s3.courses is None 
-    #     assert s3.is_grad == False 
+    #     assert s3.grad_only == False 
     #     assert s3.is_student == True 
     #     assert s3.is_authenticated == True 
     #     assert s3.is_active == True 
@@ -309,35 +301,34 @@ class TestCase(unittest.TestCase):
         assert s3.favorited_projects is None 
         # assert s3.availability is None 
         assert s3.courses == "CS 5150" 
-        assert s3.is_grad == False 
         assert s3.is_student == True 
         assert s3.is_authenticated == True 
         assert s3.is_active == True 
         assert s3.is_anonymous == True     
 
-    def test_update_student_is_grad(self): 
-        Student.create_student(net_id = "abc",  name = "hello", 
-            email = "abc@cornell.edu", password = "123") 
-        assert len(Student.get_all_students()) == 1 
-        s3 = Student.update_student("abc", is_grad = True) 
-        s3 = Student.get_student_by_netid("abc") 
-        assert s3.net_id == "abc"
-        assert s3.email == "abc@cornell.edu"
-        assert s3.name == "hello"
-        assert s3.major is None 
-        assert s3.year is None 
-        assert s3.skills is None 
-        assert s3.resume is None 
-        assert s3.description is None
-        assert s3.interests is None 
-        assert s3.favorited_projects is None 
-        # assert s3.availability is None 
-        assert s3.courses is None 
-        assert s3.is_grad == True 
-        assert s3.is_student == True 
-        assert s3.is_authenticated == True 
-        assert s3.is_active == True 
-        assert s3.is_anonymous == True     
+    # def test_update_student_grad_only(self): 
+    #     Student.create_student(net_id = "abc",  name = "hello", 
+    #         email = "abc@cornell.edu", password = "123") 
+    #     assert len(Student.get_all_students()) == 1 
+    #     s3 = Student.update_student("abc", grad_only = True) 
+    #     s3 = Student.get_student_by_netid("abc") 
+    #     assert s3.net_id == "abc"
+    #     assert s3.email == "abc@cornell.edu"
+    #     assert s3.name == "hello"
+    #     assert s3.major is None 
+    #     assert s3.year is None 
+    #     assert s3.skills is None 
+    #     assert s3.resume is None 
+    #     assert s3.description is None
+    #     assert s3.interests is None 
+    #     assert s3.favorited_projects is None 
+        # # assert s3.availability is None 
+        # assert s3.courses is None 
+        # assert s3.grad_only == True 
+        # assert s3.is_student == True 
+        # assert s3.is_authenticated == True 
+        # assert s3.is_active == True 
+        # assert s3.is_anonymous == True     
 
     def test_get_student_with_invalid_netid(self): 
         s2 = Student.get_student_by_netid("def")
@@ -360,7 +351,7 @@ class TestCase(unittest.TestCase):
         assert s3.favorited_projects is None 
         # assert s3.availability is None 
         assert s3.courses is None 
-        assert s3.is_grad == False 
+        # assert s3.grad_only == False 
         assert s3.is_student == True 
         assert s3.is_authenticated == True 
         assert s3.is_active == True 
@@ -417,7 +408,7 @@ class TestCase(unittest.TestCase):
         assert s3.favorited_projects is None 
         # assert s3.availability is None 
         assert s3.courses is None 
-        assert s3.is_grad == False 
+        # assert s3.grad_only == False 
         assert s3.is_student == True 
         assert s3.is_authenticated == True 
         assert s3.is_active == True 
@@ -445,7 +436,7 @@ class TestCase(unittest.TestCase):
         assert len(Student.get_all_students()) == 1 
         p1 = Post.create_post("title", "description", "def", "tags", 
             "qualifications", "desired_skills", None, "contact_email", 
-            "project_link", "required_courses", False)
+            "project_link", "required_courses")
         assert p1.id == 1
         Student.update_student("abc", favorited_projects = "1")
         l1 = Student.get_student_favorited_projects("abc") 
@@ -460,13 +451,13 @@ class TestCase(unittest.TestCase):
         assert len(Student.get_all_students()) == 1 
         p1 = Post.create_post("title", "description", "def", "tags", 
             "qualifications", "desired_skills", None, "contact_email", 
-            "project_link", "required_courses", False)
+            "project_link", "required_courses")
         p2 = Post.create_post("title", "description", "def", "tags", 
             "qualifications", "desired_skills", None, "contact_email", 
-            "project_link", "required_courses", False)
+            "project_link", "required_courses")
         p3 = Post.create_post("title", "description", "def", "tags", 
             "qualifications", "desired_skills", None, "contact_email", 
-            "project_link", "required_courses", False)
+            "project_link", "required_courses")
         assert p1.id == 1
         assert p2.id == 2
         assert p3.id == 3
@@ -496,7 +487,7 @@ class TestCase(unittest.TestCase):
         assert len(Student.get_all_students()) == 1 
         p1 = Post.create_post("title", "description", "def", "tags", 
             "qualifications", "desired_skills", None, "contact_email", 
-            "project_link", "required_courses", False)
+            "project_link", "required_courses")
         assert p1.id == 1
         Student.update_student("abc", favorited_projects = "1")
         l1 = Student.delete_favorited_project("abc", "1") 
@@ -511,7 +502,7 @@ class TestCase(unittest.TestCase):
         assert len(Student.get_all_students()) == 1 
         p1 = Post.create_post("title", "description", "def", "tags", 
             "qualifications", "desired_skills", None, "contact_email", 
-            "project_link", "required_courses", False)
+            "project_link", "required_courses")
         assert p1.id == 1
         Student.update_student("abc", favorited_projects = "1")
         l1 = Student.delete_favorited_project("abc", "2") 
@@ -526,13 +517,13 @@ class TestCase(unittest.TestCase):
         assert len(Student.get_all_students()) == 1 
         p1 = Post.create_post("title", "description", "def", "tags", 
             "qualifications", "desired_skills", None, "contact_email", 
-            "project_link", "required_courses", False)
+            "project_link", "required_courses")
         p2 = Post.create_post("title", "description", "def", "tags", 
             "qualifications", "desired_skills", None, "contact_email", 
-            "project_link", "required_courses", False)
+            "project_link", "required_courses")
         p3 = Post.create_post("title", "description", "def", "tags", 
             "qualifications", "desired_skills", None, "contact_email", 
-            "project_link", "required_courses", False)
+            "project_link", "required_courses")
         assert p1.id == 1
         assert p2.id == 2
         assert p3.id == 3
@@ -699,6 +690,305 @@ class TestCase(unittest.TestCase):
         assert s[0]["net_id"] == "abc"
         assert s[1]["net_id"] == "def"
         assert s[2]["net_id"] == "ghi"
+
+    def test_is_stale_with_active_post(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123")        
+        p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        b = p1.is_stale()
+        assert not b 
+
+    def test_is_stale_with_inactive_post(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123")        
+        p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        b = p1.is_stale()
+        assert not b 
+        Post.refresh(1, -1)
+        p2 = Post.get_post_by_id(1) 
+        b2 = p2.is_stale()
+        assert b2
+
+    def test_refresh_with_0_days(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123")        
+        p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        Post.refresh(1, 0)
+        p2 = Post.get_post_by_id(1) 
+        assert p1.stale_date == p2.stale_date
+
+    def test_refresh_with_positive_days(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123")        
+        p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        t1 = p1.stale_date
+        Post.refresh(1, 5)
+        p2 = Post.get_post_by_id(1) 
+        assert t1 + datetime.timedelta(days=5) == p2.stale_date
+
+    def test_refresh_with_negative_days(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123")        
+        p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        t1 = p1.stale_date
+        Post.refresh(1, -5)
+        p2 = Post.get_post_by_id(1) 
+        assert t1 == p2.stale_date + datetime.timedelta(days=5) 
+
+    def test_get_posts_with_zero_post(self): 
+        l = Post.get_posts()
+        assert l[0] == []
+        assert l[1] is None  
+
+    def test_get_posts_with_one_post(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123")        
+        p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
+            "desired_skills", None, "contact_email", "project_link", 
+            "required_courses")
+        t1 = p1.date_created 
+        t2 = p1.date_modified 
+        t3 = p1.stale_date
+        l = Post.get_posts()
+        assert len(l[0]) == 1
+        post = l[0][0]
+        assert post["id"] == 1 
+        assert post["title"] == "title"
+        assert post["description"] == "description"
+        assert post["professor_id"] == "1"
+        assert post["tags"] == ["tags"]
+        assert post["is_active"]
+        assert post["date_created"] == t1 
+        assert post["date_modified"] == t2 
+        assert post["stale_date"] is None 
+        assert post["contact_email"] == "contact_email"
+        assert post["project_link"] == "project_link"
+        assert post["required_courses"] == "required_courses"
+        assert post["qualifications"] == "qualifications"
+        assert post["desired_skills"] == "desired_skills"
+
+    def test_get_posts_with_multiple_posts(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123")        
+        p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p2 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p3 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        l = Post.get_posts()[0]
+        assert len(l) == 3
+        assert l[0]["id"] == 3
+        assert l[1]["id"] == 2
+        assert l[2]["id"] == 1
+
+    def test_get_posts_with_pagination_one_page(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123")        
+        p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p2 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p3 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p4 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p5 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        l1 = Post.get_posts(page = 1)[0]
+        assert len(l1) == 5
+        for i in range(0, 5): 
+            assert l1[i]["id"] == 5 - i 
+
+    def test_get_posts_with_pagination_two_pages(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123")        
+        p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p2 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p3 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p4 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p5 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p6 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        l1 = Post.get_posts(page = 1)[0]
+        assert len(l1) == 5
+        for i in range(0, 5): 
+            assert l1[i]["id"] == 6 - i 
+        l2 = Post.get_posts(page = 2)[0]
+        assert len(l2) == 1
+        assert l2[0]["id"] == 1
+
+    def test_get_posts_from_professor_who_has_no_posts(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123")   
+        l = Post.get_posts(professor_id = "1") 
+        assert l[0] == [] 
+        assert l[1] is None
+
+    def test_get_posts_from_professor_who_has_one_post(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        t1 = p1.date_created
+        t2 = p1.date_modified
+        t3 = p1.stale_date
+        l = Post.get_posts(professor_id = "1")[0]
+        assert len(l) == 1
+        post = l[0]
+        assert post["id"] == 1 
+        assert post["title"] == "title"
+        assert post["description"] == "description"
+        assert post["professor_id"] == "1"
+        assert post["tags"] == ["tags"]
+        assert post["is_active"]
+        assert post["date_created"] == t1 
+        assert post["date_modified"] == t2 
+        assert post["stale_date"] is t3 
+        assert post["contact_email"] == "contact_email"
+        assert post["project_link"] == "project_link"
+        assert post["required_courses"] == "required_courses"
+        assert post["qualifications"] == "qualifications"
+        assert post["desired_skills"] == "desired_skills"
+
+    def test_get_posts_from_professor_who_has_multiple_posts(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p2 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p3 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        l = Post.get_posts(professor_id = "1")[0]
+        assert len(l) == 3
+        assert l[0]["id"] == 3
+        assert l[1]["id"] == 2
+        assert l[2]["id"] == 1
+
+    def test_get_posts_with_matching_keywords(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        p1 = Post.create_post("title1", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p2 = Post.create_post("title2", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p3 = Post.create_post("title3", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        l = Post.get_posts(keywords = "title")[0]
+        assert len(l) == 3
+        assert l[0]["id"] == 3
+        assert l[1]["id"] == 2
+        assert l[2]["id"] == 1
+
+    def test_get_posts_with_no_matching_keywords(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        p1 = Post.create_post("title1", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p2 = Post.create_post("title2", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p3 = Post.create_post("title3", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        l = Post.get_posts(keywords = "sfkjd")[0]
+        assert l == []
+
+    def test_get_posts_with_matching_tags(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        p1 = Post.create_post("title1", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p2 = Post.create_post("title2", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p3 = Post.create_post("title3", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        l = Post.get_posts(tags = 't,g')[0]
+        assert len(l) == 3
+        assert l[0]["id"] == 3
+        assert l[1]["id"] == 2
+        assert l[2]["id"] == 1   
+
+    def test_get_posts_with_no_matching_tags(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        p1 = Post.create_post("title1", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p2 = Post.create_post("title2", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        p3 = Post.create_post("title3", "description", "1", "tags", "qualifications", 
+            "desired_skills", 1, "contact_email", "project_link", 
+            "required_courses")
+        l = Post.get_posts(tags = 'e')[0]
+        assert len(l) == 0 
+
+    def test_create_post(self):     
+        p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
+            "desired_skills", None, "contact_email", "project_link", 
+            "required_courses")
+        t1 = p1.date_created 
+        t2 = p1.date_modified 
+        t3 = p1.stale_date
+        l = Post.get_posts()
+        assert len(l[0]) == 1
+        post = l[0][0]
+        assert post["id"] == 1 
+        assert post["title"] == "title"
+        assert post["description"] == "description"
+        assert post["professor_id"] == "1"
+        assert post["tags"] == ["tags"]
+        assert post["is_active"]
+        assert post["date_created"] == t1 
+        assert post["date_modified"] == t2 
+        assert post["stale_date"] is None 
+        assert post["contact_email"] == "contact_email"
+        assert post["project_link"] == "project_link"
+        assert post["required_courses"] == "required_courses"
+        assert post["qualifications"] == "qualifications"
+        assert post["desired_skills"] == "desired_skills"
 
 if __name__ == '__main__':
     unittest.main()
