@@ -19,17 +19,17 @@ class TestCase(unittest.TestCase):
         db.session.remove()
         db.drop_all()
 
-    def test_get_id(self): 
+    def test_get_student_id(self): 
         s1 = Student.create_student(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         assert s1.get_id() == "abc"
 
-    def test_is_correct_password_with_correct_password(self): 
+    def test_student_is_correct_password_with_correct_password(self): 
         s1 = Student.create_student(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         assert s1.is_correct_password("123")
 
-    def test_is_correct_password_with_incorrect_password(self): 
+    def test_student_is_correct_password_with_incorrect_password(self): 
         s1 = Student.create_student(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         assert not s1.is_correct_password("456")
@@ -79,7 +79,7 @@ class TestCase(unittest.TestCase):
         Student.create_student(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         assert len(Student.get_all_students()) == 1 
-        s3 = Student.update_student("abc", "abc@cs.cornell.edu") 
+        s3 = Student.update_student("abc", email = "abc@cs.cornell.edu") 
         s3 = Student.get_student_by_netid("abc") 
         assert s3.net_id == "abc"
         assert s3.email == "abc@cs.cornell.edu"
@@ -343,7 +343,7 @@ class TestCase(unittest.TestCase):
         s2 = Student.get_student_by_netid("def")
         assert s2 is None
 
-    def test_get_studnet_with_valid_netid(self): 
+    def test_get_student_with_valid_netid(self): 
         Student.create_student(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         s3 = Student.get_student_by_netid("abc")
@@ -369,14 +369,14 @@ class TestCase(unittest.TestCase):
     def test_get_all_students_with_empty_database(self): 
         assert len(Student.get_all_students()) == 0
 
-    def test_get_all_studnets_with_one_student(self): 
+    def test_get_all_students_with_one_student(self): 
         Student.create_student(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         s = Student.get_all_students() 
         assert len(s) == 1
         assert s[0]["net_id"] == "abc"
 
-    def test_get_all_studnets_with_multiple_students(self): 
+    def test_get_all_students_with_multiple_students(self): 
         Student.create_student(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         Student.create_student(net_id = "def",  name = "hello2", 
@@ -540,6 +540,165 @@ class TestCase(unittest.TestCase):
         l1 = Student.delete_favorited_project("abc", "2") 
         assert l1 
         assert Student.get_student_by_netid("abc").favorited_projects == "1,3" 
+
+    def test_get_professor_id(self): 
+        s1 = Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        assert s1.get_id() == "abc"
+
+    def test_professor_is_correct_password_with_correct_password(self): 
+        s1 = Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        assert s1.is_correct_password("123")
+
+    def test_professor_is_correct_password_with_incorrect_password(self): 
+        s1 = Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        assert not s1.is_correct_password("456")
+
+    def test_create_new_professor(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        assert Professor.get_professor_by_netid("abc") is not None 
+        assert len(Professor.get_all_professors()) == 1
+        s3 = Professor.get_professor_by_netid("abc") 
+        assert s3.net_id == "abc"
+        assert s3.name == "hello"
+        assert s3.email == "abc@cornell.edu"
+        assert s3.password == "123"
+        assert s3.desc is None
+        assert s3.interests is None 
+        assert s3.is_student == False 
+        assert s3.is_authenticated == True 
+        assert s3.is_active == True 
+        assert s3.is_anonymous == True 
+
+    def test_create_professor_with_existing_professor(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        assert Professor.get_professor_by_netid("abc") is not None 
+        assert len(Professor.get_all_professors()) == 1
+        s1 = Professor.create_professor(net_id = "abc",  name = "h", 
+            email = "abc@cornell.edu", password = "123")         
+        assert s1 is None 
+        assert len(Professor.get_all_professors()) == 1 
+
+    def test_update_professor_with_none_existing_professor(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        assert len(Professor.get_all_professors()) == 1 
+        s1 = Professor.update_professor("def", email="def@cornell.edu")
+        assert s1 is None 
+
+    def test_update_professor_email(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        assert len(Professor.get_all_professors()) == 1 
+        s3 = Professor.update_professor("abc", email = "abc@cs.cornell.edu") 
+        s3 = Professor.get_professor_by_netid("abc") 
+        assert s3.net_id == "abc"
+        assert s3.name == "hello"
+        assert s3.email == "abc@cs.cornell.edu"
+        assert s3.password == "123"
+        assert s3.desc is None
+        assert s3.interests is None 
+        assert s3.is_student == False 
+        assert s3.is_authenticated == True 
+        assert s3.is_active == True 
+        assert s3.is_anonymous == True 
+
+    def test_update_professor_name(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        assert len(Professor.get_all_professors()) == 1 
+        s3 = Professor.update_professor("abc", name="world") 
+        s3 = Professor.get_professor_by_netid("abc") 
+        assert s3.net_id == "abc"
+        assert s3.name == "world"
+        assert s3.email == "abc@cornell.edu"
+        assert s3.password == "123"
+        assert s3.desc is None
+        assert s3.interests is None 
+        assert s3.is_student == False 
+        assert s3.is_authenticated == True 
+        assert s3.is_active == True 
+        assert s3.is_anonymous == True 
+
+    def test_update_professor_desc(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        assert len(Professor.get_all_professors()) == 1 
+        s3 = Professor.update_professor("abc", desc = "new description") 
+        s3 = Professor.get_professor_by_netid("abc") 
+        assert s3.net_id == "abc"
+        assert s3.name == "hello"
+        assert s3.email == "abc@cornell.edu"
+        assert s3.password == "123"
+        assert s3.desc == "new description"
+        assert s3.interests is None 
+        assert s3.is_student == False 
+        assert s3.is_authenticated == True 
+        assert s3.is_active == True 
+        assert s3.is_anonymous == True 
+
+    def test_update_professor_interests(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        assert len(Professor.get_all_professors()) == 1 
+        s3 = Professor.update_professor("abc", interests = "new interests") 
+        s3 = Professor.get_professor_by_netid("abc") 
+        assert s3.net_id == "abc"
+        assert s3.name == "hello"
+        assert s3.email == "abc@cornell.edu"
+        assert s3.password == "123"
+        assert s3.desc is None
+        assert s3.interests == "new interests"
+        assert s3.is_student == False 
+        assert s3.is_authenticated == True 
+        assert s3.is_active == True 
+        assert s3.is_anonymous == True 
+
+    def test_get_professor_with_invalid_netid(self): 
+        s2 = Professor.get_professor_by_netid("def")
+        assert s2 is None
+
+    def test_get_professor_with_valid_netid(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        s3 = Professor.get_professor_by_netid("abc") 
+        assert s3.net_id == "abc"
+        assert s3.name == "hello"
+        assert s3.email == "abc@cornell.edu"
+        assert s3.password == "123"
+        assert s3.desc is None
+        assert s3.interests is None 
+        assert s3.is_student == False 
+        assert s3.is_authenticated == True 
+        assert s3.is_active == True 
+        assert s3.is_anonymous == True 
+
+    def test_get_all_professors_with_empty_database(self): 
+        assert len(Professor.get_all_professors()) == 0
+
+    def test_get_all_professors_with_one_professor(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        s = Professor.get_all_professors() 
+        assert len(s) == 1
+        assert s[0]["net_id"] == "abc"
+
+    def test_get_all_professors_with_multiple_professors(self): 
+        Professor.create_professor(net_id = "abc",  name = "hello", 
+            email = "abc@cornell.edu", password = "123") 
+        Professor.create_professor(net_id = "def",  name = "hello2", 
+            email = "def@cornell.edu", password = "123") 
+        Professor.create_professor(net_id = "ghi",  name = "hello3", 
+            email = "ghi@cornell.edu", password = "123") 
+        s = Professor.get_all_professors() 
+        assert len(s) == 3
+        assert s[0]["net_id"] == "abc"
+        assert s[1]["net_id"] == "def"
+        assert s[2]["net_id"] == "ghi"
 
 if __name__ == '__main__':
     unittest.main()
