@@ -17,13 +17,15 @@
 	    	{% endwith %}
 	    {% endfor %}
 	</div>
-    <span class="pagination">
-        {% if page > 1: %}
-        <a href="{{BASE_URL}}/page/{{ page - 1 }}">&laquo; Previous</a> | 
-        {% endif %}
-    Page {{page}}
-        {% if has_next_page: %}
-        | <a href="{{BASE_URL}}/page/{{ page + 1 }}">Next &raquo;</a>
-        {% endif %}
-    </span>
+	<div class="row">
+		<div class="pagination">
+	        {% if page > 1: %}
+	        <a href="{{BASE_URL}}/page/{{ page - 1 }}">&laquo; Previous</a> | 
+	        {% endif %}
+	    Page {{page}}
+	        {% if has_next_page: %}
+	        | <a href="{{BASE_URL}}/page/{{ page + 1 }}">Next &raquo;</a>
+	        {% endif %}
+	    </div>
+	</div>
 {% endblock %}

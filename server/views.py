@@ -34,7 +34,6 @@ def index(tags=None, all=None, posts=None, page=None):
     return render_template(
         "index.html",
         title='Home',
-        url=BASE_URL,
         user=current_user,
         posts=posts,
         search=True,
@@ -80,6 +79,14 @@ def allowed_file(filename):
 def profile(net_id):
     favorited_projects = Student.get_student_favorited_projects(net_id)
     post_collection = Post.get_posts_by_professor_id(net_id)
+    active_collection = []
+    inactive_collection = []
+    for p in post_collection:
+        if p['is_active']:
+            active_collection.append(p)
+        else:
+            inactive_collection.append(p)
+
     for post in post_collection:
         post['professor_name'] = Professor.get_professor_by_netid(
             post['professor_id']).name
@@ -127,7 +134,10 @@ def profile(net_id):
             title=current_user.name + "'s Profile",
             profile=current_user,
             favorited_projects=favorited_projects,
-            post_collection=post_collection
+            post_collection=post_collection,
+            active_collection=active_collection,
+            inactive_collection=inactive_collection
+
         )
 
 

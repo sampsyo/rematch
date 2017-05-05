@@ -215,6 +215,12 @@ p, a {
 	}
 }
 
+.inactive {
+	background: #fafafa;
+    border: 1px solid #eaeaea;
+    box-shadow: none;
+}
+
 .shadowed {
 	box-shadow: .1px .1px .1px .1px rgba(33,33,33,.2);
 }

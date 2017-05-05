@@ -3,7 +3,7 @@
     <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#myprofile" aria-controls="myprofile" role="tab" data-toggle="tab">My Profile</a></li>
     <li role="presentation"><a href="#starred" aria-controls="starred" role="tab" data-toggle="tab">Active Posts</a></li>
-    <li role="presentation"><a href="#starred" aria-controls="starred" role="tab" data-toggle="tab">Inactive Posts</a></li>
+    <li role="presentation"><a href="#inactive-posts" aria-controls="inactive-posts" role="tab" data-toggle="tab">Inactive Posts</a></li>
     </ul>
 
       <!-- Tab panes -->
@@ -34,7 +34,7 @@
         <div role="tabpanel" class="tab-pane" id="starred">
             {% if post_collection %}
                 <div class="row">
-                    {% for post in post_collection %}        
+                    {% for post in active_collection %}
                         {% include "partials/post.html" %}
                     {% endfor %}
                 </div>
@@ -47,7 +47,19 @@
             {% endif %}
         </div>
         <div role="tabpanel" class="tab-pane" id="inactive-posts">
-
+            {% if post_collection %}
+                <div class="row">
+                    {% for post in inactive_collection %}
+                        {% include "partials/post.html" %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="profile">
+                    <div class="card">
+                        <h2>You have no posts</h2>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>
