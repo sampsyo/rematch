@@ -20,16 +20,12 @@ class Post(db.Model):
                               onupdate=db.func.current_timestamp())
     stale_date = db.Column(db.DateTime)
     contact_email = db.Column(db.String(10000))
-    project_link= db.Column(db.String(10000))
+    project_link = db.Column(db.String(10000))
 
     # unimplemented
     required_courses = db.Column(db.String(10000))
-    #grad_only = db.Column(db.Boolean, default=False)
     qualifications = db.Column(db.String(10000))
-    #current_students = db.Column(db.String(10000)) #are not using it anywhere else 
     desired_skills = db.Column(db.String(10000))
-    #capacity = db.Column(db.Integer) #are not using it anywhere else
-    #current_number = db.Column(db.Integer) #are not using it anywhere else 
 
     def is_stale(self):
         return self.stale_date is not None and \
@@ -43,7 +39,7 @@ class Post(db.Model):
 
     @classmethod
     def get_posts(cls, page=None, compressed=False, descend=True,
-                  active_only=False, inactive_only=False, 
+                  active_only=False, inactive_only=False,
                   professor_id=None, keywords=None, tags=None):
         """
             page: current page of pagination, else None to get all posts
@@ -66,8 +62,6 @@ class Post(db.Model):
             query = query.filter_by(is_active=True)
         if inactive_only:
             query = query.filter_by(is_active=False)
-        #if grad_only:
-        #    query = query.filter_by(grad_only=True)
         if professor_id:
             query = query.filter_by(professor_id=professor_id)
 
@@ -95,7 +89,7 @@ class Post(db.Model):
 
         if compressed:
             return ([p.serialize_compressed_post for p in posts], has_next)
-        else: 
+        else:
             return ([p.serialize for p in posts], has_next)
 
     @classmethod
@@ -121,7 +115,6 @@ class Post(db.Model):
             contact_email=contact_email,
             project_link=project_link,
             required_courses=required_courses,
-            #grad_only=grad_only
         )
         # update_tags_from_desc(post)
         db.session.add(post)
@@ -161,14 +154,13 @@ class Post(db.Model):
         #    post.grad_only = grad_only
         #if description is not None:
         #    update_tags_from_desc(post)
-        date_modified = db.func.current_timestamp()
         db.session.commit()
         return post
 
     @classmethod
     def update_tags_from_desc(cls, post):
         new_tags = []
-        for tag in TAGS:
+        for tag in Post.TAGS:
             if tag in post.description.lower() and tag not in post.tags:
                 new_tags.append(tag)
         post.tags = post.tags + "," + ",".join(new_tags)
