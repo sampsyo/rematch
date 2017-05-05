@@ -436,7 +436,7 @@ class TestCase(unittest.TestCase):
         assert len(Student.get_all_students()) == 1 
         p1 = Post.create_post("title", "description", "def", "tags", 
             "qualifications", "desired_skills", None, "contact_email", 
-            "project_link", "required_courses")
+            "project_link", "courses")
         assert p1.id == 1
         Student.update_student("abc", favorited_projects = "1")
         l1 = Student.get_student_favorited_projects("abc") 
@@ -451,13 +451,13 @@ class TestCase(unittest.TestCase):
         assert len(Student.get_all_students()) == 1 
         p1 = Post.create_post("title", "description", "def", "tags", 
             "qualifications", "desired_skills", None, "contact_email", 
-            "project_link", "required_courses")
+            "project_link", "courses")
         p2 = Post.create_post("title", "description", "def", "tags", 
             "qualifications", "desired_skills", None, "contact_email", 
-            "project_link", "required_courses")
+            "project_link", "courses")
         p3 = Post.create_post("title", "description", "def", "tags", 
             "qualifications", "desired_skills", None, "contact_email", 
-            "project_link", "required_courses")
+            "project_link", "courses")
         assert p1.id == 1
         assert p2.id == 2
         assert p3.id == 3
@@ -487,7 +487,7 @@ class TestCase(unittest.TestCase):
         assert len(Student.get_all_students()) == 1 
         p1 = Post.create_post("title", "description", "def", "tags", 
             "qualifications", "desired_skills", None, "contact_email", 
-            "project_link", "required_courses")
+            "project_link", "courses")
         assert p1.id == 1
         Student.update_student("abc", favorited_projects = "1")
         l1 = Student.delete_favorited_project("abc", "1") 
@@ -502,7 +502,7 @@ class TestCase(unittest.TestCase):
         assert len(Student.get_all_students()) == 1 
         p1 = Post.create_post("title", "description", "def", "tags", 
             "qualifications", "desired_skills", None, "contact_email", 
-            "project_link", "required_courses")
+            "project_link", "courses")
         assert p1.id == 1
         Student.update_student("abc", favorited_projects = "1")
         l1 = Student.delete_favorited_project("abc", "2") 
@@ -517,13 +517,13 @@ class TestCase(unittest.TestCase):
         assert len(Student.get_all_students()) == 1 
         p1 = Post.create_post("title", "description", "def", "tags", 
             "qualifications", "desired_skills", None, "contact_email", 
-            "project_link", "required_courses")
+            "project_link", "courses")
         p2 = Post.create_post("title", "description", "def", "tags", 
             "qualifications", "desired_skills", None, "contact_email", 
-            "project_link", "required_courses")
+            "project_link", "courses")
         p3 = Post.create_post("title", "description", "def", "tags", 
             "qualifications", "desired_skills", None, "contact_email", 
-            "project_link", "required_courses")
+            "project_link", "courses")
         assert p1.id == 1
         assert p2.id == 2
         assert p3.id == 3
@@ -695,55 +695,55 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123")        
         p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         b = p1.is_stale()
         assert not b 
 
-    def test_is_stale_with_inactive_post(self): 
-        Professor.create_professor(net_id = "abc",  name = "hello", 
-            email = "abc@cornell.edu", password = "123")        
-        p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
-        b = p1.is_stale()
-        assert not b 
-        Post.refresh(1, -1)
-        p2 = Post.get_post_by_id(1) 
-        b2 = p2.is_stale()
-        assert b2
+    # def test_is_stale_with_inactive_post(self): 
+    #     Professor.create_professor(net_id = "abc",  name = "hello", 
+    #         email = "abc@cornell.edu", password = "123")        
+    #     p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+    #         "desired_skills", 1, "contact_email", "project_link", 
+    #         "courses")
+    #     b = p1.is_stale()
+    #     assert not b 
+    #     Post.refresh(1, -1)
+    #     p2 = Post.get_post_by_id(1) 
+    #     b2 = p2.is_stale()
+    #     assert b2
 
-    def test_refresh_with_0_days(self): 
-        Professor.create_professor(net_id = "abc",  name = "hello", 
-            email = "abc@cornell.edu", password = "123")        
-        p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
-        Post.refresh(1, 0)
-        p2 = Post.get_post_by_id(1) 
-        assert p1.stale_date == p2.stale_date
+    # def test_refresh_with_0_days(self): 
+    #     Professor.create_professor(net_id = "abc",  name = "hello", 
+    #         email = "abc@cornell.edu", password = "123")        
+    #     p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+    #         "desired_skills", None, "contact_email", "project_link", 
+    #         "courses")
+    #     Post.refresh(1, 0)
+    #     p2 = Post.get_post_by_id(1) 
+    #     assert p1.stale_date == p2.stale_date
 
-    def test_refresh_with_positive_days(self): 
-        Professor.create_professor(net_id = "abc",  name = "hello", 
-            email = "abc@cornell.edu", password = "123")        
-        p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
-        t1 = p1.stale_date
-        Post.refresh(1, 5)
-        p2 = Post.get_post_by_id(1) 
-        assert t1 + datetime.timedelta(days=5) == p2.stale_date
+    # def test_refresh_with_positive_days(self): 
+    #     Professor.create_professor(net_id = "abc",  name = "hello", 
+    #         email = "abc@cornell.edu", password = "123")        
+    #     p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+    #         "desired_skills", None, "contact_email", "project_link", 
+    #         "courses")
+    #     t1 = p1.stale_date
+    #     Post.refresh(1, 5)
+    #     p2 = Post.get_post_by_id(1) 
+    #     assert t1 + datetime.timedelta(days=5) == p2.stale_date
 
-    def test_refresh_with_negative_days(self): 
-        Professor.create_professor(net_id = "abc",  name = "hello", 
-            email = "abc@cornell.edu", password = "123")        
-        p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
-        t1 = p1.stale_date
-        Post.refresh(1, -5)
-        p2 = Post.get_post_by_id(1) 
-        assert t1 == p2.stale_date + datetime.timedelta(days=5) 
+    # def test_refresh_with_negative_days(self): 
+    #     Professor.create_professor(net_id = "abc",  name = "hello", 
+    #         email = "abc@cornell.edu", password = "123")        
+    #     p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
+    #         "desired_skills", None, "contact_email", "project_link", 
+    #         "courses")
+    #     t1 = p1.stale_date
+    #     Post.refresh(1, -5)
+    #     p2 = Post.get_post_by_id(1) 
+    #     assert t1 == p2.stale_date + datetime.timedelta(days=5) 
 
     def test_get_posts_with_zero_post(self): 
         l = Post.get_posts()
@@ -755,7 +755,7 @@ class TestCase(unittest.TestCase):
             email = "abc@cornell.edu", password = "123")        
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
             "desired_skills", None, "contact_email", "project_link", 
-            "required_courses")
+            "courses")
         t1 = p1.date_created 
         t2 = p1.date_modified 
         t3 = p1.stale_date
@@ -773,7 +773,7 @@ class TestCase(unittest.TestCase):
         assert post["stale_date"] is None 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
-        assert post["required_courses"] == "required_courses"
+        assert post["courses"] == ["courses"]
         assert post["qualifications"] == "qualifications"
         assert post["desired_skills"] == "desired_skills"
 
@@ -781,14 +781,14 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123")        
         p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         p2 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         p3 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         l = Post.get_posts()[0]
         assert len(l) == 3
         assert l[0]["id"] == 3
@@ -799,53 +799,30 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123")        
         p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         p2 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
-        p3 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
-        p4 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
-        p5 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         l1 = Post.get_posts(page = 1)[0]
-        assert len(l1) == 5
-        for i in range(0, 5): 
-            assert l1[i]["id"] == 5 - i 
+        assert len(l1) == PAGINATION_PER_PAGE
 
     def test_get_posts_with_pagination_two_pages(self): 
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123")        
         p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         p2 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         p3 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
-        p4 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
-        p5 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
-        p6 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         l1 = Post.get_posts(page = 1)[0]
-        assert len(l1) == 5
-        for i in range(0, 5): 
-            assert l1[i]["id"] == 6 - i 
+        assert len(l1) == 2
         l2 = Post.get_posts(page = 2)[0]
         assert len(l2) == 1
-        assert l2[0]["id"] == 1
 
     def test_get_posts_from_professor_who_has_no_posts(self): 
         Professor.create_professor(net_id = "abc",  name = "hello", 
@@ -858,8 +835,8 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
         t3 = p1.stale_date
@@ -877,7 +854,7 @@ class TestCase(unittest.TestCase):
         assert post["stale_date"] is t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
-        assert post["required_courses"] == "required_courses"
+        assert post["courses"] == ["courses"]
         assert post["qualifications"] == "qualifications"
         assert post["desired_skills"] == "desired_skills"
 
@@ -885,14 +862,14 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         p2 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         p3 = Post.create_post("title", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         l = Post.get_posts(professor_id = "1")[0]
         assert len(l) == 3
         assert l[0]["id"] == 3
@@ -903,14 +880,14 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title1", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         p2 = Post.create_post("title2", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         p3 = Post.create_post("title3", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         l = Post.get_posts(keywords = "title")[0]
         assert len(l) == 3
         assert l[0]["id"] == 3
@@ -921,14 +898,14 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title1", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         p2 = Post.create_post("title2", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         p3 = Post.create_post("title3", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         l = Post.get_posts(keywords = "sfkjd")[0]
         assert l == []
 
@@ -936,14 +913,14 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title1", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         p2 = Post.create_post("title2", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         p3 = Post.create_post("title3", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         l = Post.get_posts(tags = 't,g')[0]
         assert len(l) == 3
         assert l[0]["id"] == 3
@@ -954,21 +931,21 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title1", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         p2 = Post.create_post("title2", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         p3 = Post.create_post("title3", "description", "1", "tags", "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         l = Post.get_posts(tags = 'e')[0]
         assert len(l) == 0 
 
     def test_create_post(self):     
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
             "desired_skills", None, "contact_email", "project_link", 
-            "required_courses")
+            "courses")
         t1 = p1.date_created 
         t2 = p1.date_modified 
         t3 = p1.stale_date
@@ -986,7 +963,7 @@ class TestCase(unittest.TestCase):
         assert post["stale_date"] is None 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
-        assert post["required_courses"] == "required_courses"
+        assert post["courses"] == ["courses"]
         assert post["qualifications"] == "qualifications"
         assert post["desired_skills"] == "desired_skills"
 
@@ -998,8 +975,8 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
         t3 = p1.stale_date
@@ -1017,7 +994,7 @@ class TestCase(unittest.TestCase):
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
-        assert post["required_courses"] == "required_courses"
+        assert post["courses"] == ["courses"]
         assert post["qualifications"] == "qualifications"
         assert post["desired_skills"] == "desired_skills"
 
@@ -1025,8 +1002,8 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
         t3 = p1.stale_date
@@ -1044,7 +1021,7 @@ class TestCase(unittest.TestCase):
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
-        assert post["required_courses"] == "required_courses"
+        assert post["courses"] == ["courses"]
         assert post["qualifications"] == "qualifications"
         assert post["desired_skills"] == "new desired_skills"
 
@@ -1052,8 +1029,8 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
         t3 = p1.stale_date
@@ -1071,7 +1048,7 @@ class TestCase(unittest.TestCase):
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
-        assert post["required_courses"] == "required_courses"
+        assert post["courses"] == ["courses"]
         assert post["qualifications"] == "qualifications"
         assert post["desired_skills"] == "desired_skills"
 
@@ -1079,8 +1056,8 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
         t3 = p1.stale_date
@@ -1098,7 +1075,7 @@ class TestCase(unittest.TestCase):
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
-        assert post["required_courses"] == "required_courses"
+        assert post["courses"] == ["courses"]
         assert post["qualifications"] == "qualifications"
         assert post["desired_skills"] == "desired_skills"
 
@@ -1106,8 +1083,8 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
         t3 = p1.stale_date
@@ -1125,16 +1102,16 @@ class TestCase(unittest.TestCase):
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
-        assert post["required_courses"] == "required_courses"
+        assert post["courses"] == ["courses"]
         assert post["qualifications"] == "new qualifications"
         assert post["desired_skills"] == "desired_skills"
 
-    def test_update_post_required_courses(self): 
+    def test_update_post_courses(self): 
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
         t3 = p1.stale_date
@@ -1152,7 +1129,7 @@ class TestCase(unittest.TestCase):
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
-        assert post["required_courses"] == "new required courses"
+        assert post["courses"] == ["new required courses"]
         assert post["qualifications"] == "qualifications"
         assert post["desired_skills"] == "desired_skills"
 
@@ -1160,8 +1137,8 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
         t3 = p1.stale_date
@@ -1179,7 +1156,7 @@ class TestCase(unittest.TestCase):
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
-        assert post["required_courses"] == "required_courses"
+        assert post["courses"] == ["courses"]
         assert post["qualifications"] == "qualifications"
         assert post["desired_skills"] == "desired_skills"
 
@@ -1187,8 +1164,7 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
         t3 = p1.stale_date
@@ -1206,7 +1182,7 @@ class TestCase(unittest.TestCase):
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
-        assert post["required_courses"] == "required_courses"
+        assert post["courses"] == ["courses"]
         assert post["qualifications"] == "qualifications"
         assert post["desired_skills"] == "desired_skills"
 
@@ -1214,8 +1190,8 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
         t3 = p1.stale_date
@@ -1233,7 +1209,7 @@ class TestCase(unittest.TestCase):
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "new project_link"
-        assert post["required_courses"] == "required_courses"
+        assert post["courses"] == ["courses"]
         assert post["qualifications"] == "qualifications"
         assert post["desired_skills"] == "desired_skills"
 
@@ -1241,8 +1217,8 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
         t3 = p1.stale_date
@@ -1260,7 +1236,7 @@ class TestCase(unittest.TestCase):
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "new contact_email"
         assert post["project_link"] == "project_link"
-        assert post["required_courses"] == "required_courses"
+        assert post["courses"] == ["courses"]
         assert post["qualifications"] == "qualifications"
         assert post["desired_skills"] == "desired_skills"
 
@@ -1269,7 +1245,7 @@ class TestCase(unittest.TestCase):
     #         email = "abc@cornell.edu", password = "123") 
     #     p1 = Post.create_post("title", "description", "1", ["tags"], "qualifications", 
     #         "desired_skills", 1, "contact_email", "project_link", 
-    #         "required_courses")
+    #         "courses")
     #     t1 = p1.date_created
     #     t2 = p1.date_modified
     #     t3 = p1.stale_date
@@ -1288,7 +1264,7 @@ class TestCase(unittest.TestCase):
     #     assert post["stale_date"] == t3 
     #     assert post["contact_email"] == "contact_email"
     #     assert post["project_link"] == "project_link"
-    #     assert post["required_courses"] == "required_courses"
+    #     assert post["courses"] == "courses"
     #     assert post["qualifications"] == "qualifications"
     #     assert post["desired_skills"] == "desired_skills"
 
@@ -1298,7 +1274,7 @@ class TestCase(unittest.TestCase):
     #     p1 = Post.create_post("title", "machine learning algorithms java", 
     #         "1", ["tags"], "qualifications", 
     #         "desired_skills", 1, "contact_email", "project_link", 
-    #         "required_courses")
+    #         "courses")
     #     t1 = p1.date_created
     #     t2 = p1.date_modified
     #     t3 = p1.stale_date
@@ -1317,7 +1293,7 @@ class TestCase(unittest.TestCase):
     #     assert post["stale_date"] == t3 
     #     assert post["contact_email"] == "contact_email"
     #     assert post["project_link"] == "project_link"
-    #     assert post["required_courses"] == "required_courses"
+    #     assert post["courses"] == "courses"
     #     assert post["qualifications"] == "qualifications"
     #     assert post["desired_skills"] == "desired_skills"
 
@@ -1330,8 +1306,8 @@ class TestCase(unittest.TestCase):
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "machine learning algorithms java", 
             "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         t1 = p1.date_created
         t2 = p1.date_modified
         t3 = p1.stale_date
@@ -1350,7 +1326,7 @@ class TestCase(unittest.TestCase):
         assert post["stale_date"] == t3 
         assert post["contact_email"] == "contact_email"
         assert post["project_link"] == "project_link"
-        assert post["required_courses"] == "required_courses"
+        assert post["courses"] == ["courses"]
         assert post["qualifications"] == "qualifications"
         assert post["desired_skills"] == "desired_skills"
 
@@ -1363,8 +1339,8 @@ class TestCase(unittest.TestCase):
             email = "abc@cornell.edu", password = "123") 
         p1 = Post.create_post("title", "machine learning algorithms java", 
             "1", ["tags"], "qualifications", 
-            "desired_skills", 1, "contact_email", "project_link", 
-            "required_courses")
+            "desired_skills", None, "contact_email", "project_link", 
+            "courses")
         Post.delete_post(1)
         post = Post.get_post_by_id(1)
         assert not post 
@@ -1379,7 +1355,7 @@ class TestCase(unittest.TestCase):
     #     p1 = Post.create_post("title", "machine learning algorithms java", 
     #         "1", ["tags"], "qualifications", 
     #         "desired_skills", 1, "contact_email", "project_link", 
-    #         "required_courses")
+    #         "courses")
     #     t1 = p1.date_created
     #     t2 = p1.date_modified
     #     t3 = p1.stale_date
@@ -1398,7 +1374,7 @@ class TestCase(unittest.TestCase):
     #     assert post["stale_date"] == t3 
     #     assert post["contact_email"] == "contact_email"
     #     assert post["project_link"] == "project_link"
-    #     assert post["required_courses"] == "required_courses"
+    #     assert post["courses"] == "courses"
     #     assert post["qualifications"] == "qualifications"
     #     assert post["desired_skills"] == "desired_skills"
 
