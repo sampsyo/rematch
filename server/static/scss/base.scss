@@ -1,7 +1,6 @@
-@import 'partials/colors';
+@import 'partials/variables';
 @import 'partials/search';
 
-$border-radius: 3px;
 
 .center {
 	margin: auto;
@@ -366,6 +365,7 @@ code {
 
 
 .form-control {
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 	border-color: $border-color;
 	&.tall {
 		height: 45px;
@@ -483,4 +483,12 @@ a.no-decoration {
 }
 .activate-post-toggle {
 	display: inline;
+}
+
+
+.search {
+	background-color: #FFFFFF;
+	padding: 30px;
+	margin-bottom: 30px;
+	border-bottom: 1px solid $border-color;
 }
