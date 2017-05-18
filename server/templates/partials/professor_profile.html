@@ -12,21 +12,22 @@
 
             <form method="POST">    
                 <div class="profile">
-
                     <div class="header card">
-                        <div id="name-editable" class="name">
-                            {{current_user.name}}
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"
-                            style="margin-left: 5px" height="50%" width="50%"></i>
-                            <hr>
+                         <span id="edit-profile-icon"> <i class="fa fa-pencil-square-o" aria-hidden="true"
+                                style="margin-left: 5px" height="50%" width="50%"></i> </span> 
+                        <div class="form-group">
+                            <label> Name </label>
+                            <div id="name-editable" class="name">
+                                {{current_user.name}}
+                                <hr>
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label>Contact Email</label>
                             <div id="email-editable">
                                 {{current_user.email}}
-                                <i class="fa fa-pencil-square-o" aria-hidden="true"
-                                style="margin-left: 5px"></i>
+                                
                             </div>
                         </div>
 
@@ -34,8 +35,7 @@
                             <label>Website</label>
                             <div id="website-editable">
                                 {{current_user.desc}}
-                                <i class="fa fa-pencil-square-o" aria-hidden="true"
-                                style="margin-left: 5px"></i> 
+                             
                             </div>
                         </div>
 
@@ -43,8 +43,7 @@
                             <label>Office Location</label>
                             <div id="office-editable">
                                 {{current_user.interests}}
-                                <i class="fa fa-pencil-square-o" aria-hidden="true"
-                                style="margin-left: 5px"></i> 
+                             
                             </div>
                         </div>
 
@@ -95,44 +94,45 @@
 </div>
 <script type="text/javascript">
 
-$('#name-editable').click(function(event){
+$('#edit-profile-icon').click(function(event){
+    // remove the icon
+    $('#edit-profile-icon').html(''); 
+    // name
     {% if current_user.name == 'None': %}
     var innertext = ''
     {% else: %}
     var innertext = '{{current_user.name}}'
     {% endif %}
-    $('#name-editable').html('<input class="form-control" type="text" name="name" value="'+innertext+'">');
-    $(this).attr('id', 'name-editing');
-});
+    $('#name-editable').html('<input class="form-control professor-name-input" type="text" name="name" value="'+innertext+'">');
+    $('#name-editable').attr('id', 'name-editing');
 
-
-$('#email-editable').click(function(event){
+    // email
     {% if current_user.email == 'None': %}
     var innertext = ''
     {% else: %}
     var innertext = '{{current_user.email}}'
     {% endif %}
     $('#email-editable').html('<input class="form-control" type="text" name="email" value="'+innertext+'">');
-    $(this).attr('id', 'email-editing');
-});
-$('#website-editable').click(function(event){
+    $('#email-editable').attr('id', 'email-editing');
+
+    // website
     {% if current_user.desc == 'None': %}
     var innertext = 'http://'
     {% else: %}
     var innertext = '{{current_user.desc}}'
     {% endif %}
     $('#website-editable').html('<input class="form-control" type="text" name="website" value="' + innertext + '">');
-    $(this).attr('id', 'website-editing');
-});
-$('#office-editable').click(function(event){
+    $('#website-editable').attr('id', 'website-editing');
+
+    // office location
     {% if current_user.interests == 'None': %}
     var innertext = ''
     {% else: %}
     var innertext = '{{current_user.interests}}'
     {% endif %}
-
     $('#office-editable').html('<input class="form-control" type="text" name="office_loc" value="' + innertext + '">')
-    $(this).attr('id', 'office-editing');
+    $('#office-editable').attr('id', 'office-editing');
+
 });
 
 </script>
