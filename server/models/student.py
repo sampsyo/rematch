@@ -30,9 +30,8 @@ class Student(db.Model):
         return self.password == password
 
     @classmethod
-    def create_student(
-        cls, net_id=net_id, name=name, email=email, password=password
-    ):
+    def create_student(cls, net_id=net_id, name=name, email=email,
+                       password=password):
         if Student.get_student_by_netid(net_id):
             return None
 
@@ -75,12 +74,8 @@ class Student(db.Model):
             student.interests = interests
         if favorited_projects is not None:
             student.favorited_projects = favorited_projects
-        #if availability:
-        #    student.availability = availability
-        if courses is not None: 
+        if courses is not None:
             student.courses = courses
-        #if is_grad is not None:
-        #    student.is_grad = is_grad
         db.session.commit()
         return student
 
@@ -150,8 +145,8 @@ class Student(db.Model):
                 )
                 Student.update_student(net_id, favorited_projects=new_favorites)
                 return True
-            else: 
-                return False 
+            else:
+                return False
 
     @property
     def serialize(self):
@@ -165,7 +160,5 @@ class Student(db.Model):
             'description': self.description,
             'interests': self.interests,
             'favorited_projects': self.favorited_projects,
-            #'availability': self.availability,
             'courses': self.courses
-            #'is_grad': self.is_grad
         }

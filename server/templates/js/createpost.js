@@ -1,8 +1,8 @@
 var TAGS = {{all_tags | safe}}
 var COURSES = {{all_courses | safe}};
 
-console.log(TAGS);
-console.log(COURSES);
+//console.log(TAGS);
+//console.log(COURSES);
 
 $('.tags-input').tagsinput({
     typeahead: {
@@ -74,4 +74,40 @@ function doneTyping () {
             $('.tags-input').tagsinput('add', value);
         }
     });
+}
+
+
+// validations
+function validate() {
+    var isValid = true;
+    // title
+    if (!$("#post_title input").val()) {
+        $("#post_title").addClass("invalidInput");
+        isValid = false;
+    } else {
+        $("#post_title").removeClass("invalidInput");
+    }
+    // description
+    if (!$("#post_description_group textarea").val()) {
+        $("#post_description_group").addClass("invalidInput");
+        isValid = false;
+    } else {
+        $("#post_description_group").removeClass("invalidInput");
+    }
+    // tags
+    var tags = $("#post_topics_group .bootstrap-tagsinput .tag");
+    if (tags.length <= 0) {
+        $("#post_topics_group").addClass("invalidInput");
+        isValid = false;
+    } else {
+        $("#post_topics_group").removeClass("invalidInput");
+    }
+    // email
+    if (!$("#post_email_group input").val()) {
+        $("#post_email_group").addClass("invalidInput");
+        isValid = false;
+    } else {
+        $("#post_email_group").removeClass("invalidInput");
+    }
+    return isValid;
 }
