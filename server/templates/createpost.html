@@ -2,17 +2,14 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <!-- TODO: replace this with a partial and a function to generate cards -->
-
     <div class="spacer"></div>
     <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 center">
         <div class="card">
-            <form method="POST">
+            <form method="POST" onsubmit="return validate(this)">
 
-                <div class="form-group">
+                <div id="post_title" class="form-group" >
                     <label>Project Title*:</label>
-                    <input type="text" name="post_title" class="form-control"
-                                                         value="{{post['title']}}">
+                    <input type="text" name="post_title" class="form-control" value="{{post['title']}}">
                 </div>
 
                 <div class="form-group">
@@ -26,17 +23,17 @@
                                    {% endif %}>
                 </div>
 
-                <div class="form-group">
+                <div id="post_description_group" class="form-group">
                     <label>Project Description*:</label>
                      <p class="helper-text"> Provide information about research topic, qualifications, time committment, and number of students you are seeking.  </p> 
                     <textarea name="post_description" class="form-control"
                               id="post_description" rows="5">{{post['description']}}</textarea>
                 </div>
 
-                <div class="form-group">
+                <div id="post_topics_group" class="form-group">
                     <label>Topics*:</label><br>
                     <p class="helper-text"> Search and select research topics relevant to this listing. </p> 
-                    <input autocomplete="off" class="tags-input" type="text"
+                    <input id="post_topics" autocomplete="off" class="tags-input" type="text"
                                                                  data-role="tagsinput"
                                                                  name="tags"
                                                                  value="{{post['tags']}}"/>
@@ -72,14 +69,14 @@
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div id="post_email_group" class="form-group">
                     <label>Contact Email*:</label>
-                    <input type="text" name="post_professor_email" class="form-control" value='{{current_user.email}}'>
+                    <input id="post_email" type="email" name="post_professor_email" class="form-control" value='{{current_user.email}}'>
                 </div>
 
                 <div class="form-group">
                     <input name="post-activate" class="activate-post-toggle" type="checkbox" {% if post['is_active'] %} checked {% endif %}>
-                    <label>Activate / Deactivate Post</label>
+                    <label>Activate Post</label>
                 </div>
 
                 <div class="form-group">
@@ -160,6 +157,42 @@
                     $('.tags-input').tagsinput('add', value);
                 }
             });
+        }
+
+
+        // validations
+        function validate() {
+            var isValid = true;
+            // title
+            if (!$("#post_title input").val()) {
+                $("#post_title").addClass("invalidInput");
+                isValid = false;
+            } else {
+                $("#post_title").removeClass("invalidInput");
+            }
+            // description
+            if (!$("#post_description_group textarea").val()) {
+                $("#post_description_group").addClass("invalidInput");
+                isValid = false;
+            } else {
+                $("#post_description_group").removeClass("invalidInput");
+            }
+            // tags
+            var tags = $("#post_topics_group .bootstrap-tagsinput .tag");
+            if (tags.length <= 0) {
+                $("#post_topics_group").addClass("invalidInput");
+                isValid = false;
+            } else {
+                $("#post_topics_group").removeClass("invalidInput");
+            }
+            // email
+            if (!$("#post_email_group input").val()) {
+                $("#post_email_group").addClass("invalidInput");
+                isValid = false;
+            } else {
+                $("#post_email_group").removeClass("invalidInput");
+            }
+            return isValid;
         }
     </script>
 
