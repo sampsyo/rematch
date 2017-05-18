@@ -58,7 +58,7 @@ def posts():
 def register():
     form = RegistrationForm()
     if request.method == 'POST' and form.validate_on_submit():
-        print "HERE"
+        print form.is_student.data
         if Student.get_student_by_netid(form.net_id.data) or \
            Professor.get_professor_by_netid(form.net_id.data):
                 flash('A Profile has already been created with that Net ID')
@@ -74,7 +74,6 @@ def register():
             )
         flash('Thanks for registering!')
         return redirect('/login')
-    print "rendering"
     return render_template('register.html', form=form)
 
 
