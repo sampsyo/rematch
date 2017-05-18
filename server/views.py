@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, request
 from server import app
-from .forms import LoginForm
+from .forms import LoginForm, RegistrationForm
 from flask_login import login_user, logout_user, login_required, current_user
 from models import Post, Student, Professor
 from config import BASE_URL, TAGS, COURSES
@@ -52,6 +52,30 @@ def posts():
         has_next_page=has_next,
         search_url=search_url
     )
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        print "HERE"
+        if Student.get_student_by_netid(form.net_id.data) or \
+           Professor.get_professor_by_netid(form.net_id.data):
+                flash('A Profile has already been created with that Net ID')
+                return redirect('/register')
+        if form.is_student.data:
+            Student.create_student(
+                net_id=form.net_id.data, name=form.name.data,
+                email=form.email.data, password=form.password.data)
+        else:
+            Professor.create_professor(
+                net_id=form.net_id.data, name=form.name.data,
+                email=form.email.data, password=form.password.data
+            )
+        flash('Thanks for registering!')
+        return redirect('/login')
+    print "rendering"
+    return render_template('register.html', form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
