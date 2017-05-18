@@ -1,6 +1,6 @@
 import datetime
 from server import db
-from config import PAGINATION_PER_PAGE
+from config import PAGINATION_PER_PAGE, TAGS, COURSES
 from sqlalchemy import desc, or_, not_
 # from server.models.professor import Professor
 
