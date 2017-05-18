@@ -69,7 +69,7 @@ TAGS = [
 
     ]
 
-    COURSES = [
+COURSES = [
         'CS 1110',
         'CS 1112',
         'CS 2800',
