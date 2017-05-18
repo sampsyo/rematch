@@ -7,7 +7,7 @@ class Student(db.Model):
     net_id = db.Column(db.String(64), primary_key=True)
     email = db.Column(db.String(64), unique=True)
     password = db.Column(db.String(128))
-    name = db.Column(db.String(64), index=True, unique=True)
+    name = db.Column(db.String(64), index=True)
     major = db.Column(db.String(64))
     year = db.Column(db.Integer)
     skills = db.Column(db.String(10000))
