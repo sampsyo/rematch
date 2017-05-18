@@ -18,4 +18,4 @@ class RegistrationForm(Form):
         EqualTo('confirm', message='Passwords must match')
     ])
     confirm = PasswordField('Repeat Password')
-    is_student = BooleanField('I am a student', validators=[DataRequired()])
+    is_student = BooleanField('I am a student')
