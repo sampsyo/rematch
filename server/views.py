@@ -4,9 +4,27 @@ from .forms import LoginForm
 from flask_login import login_user, logout_user, login_required, current_user
 from models import Post, Student, Professor
 from werkzeug import secure_filename
-from config import BASE_URL
+from config import BASE_URL, TAGS, COURSES
 import os
 import datetime
+from apscheduler.schedulers.background import BackgroundScheduler
+
+
+def check_stale_posts():
+    with app.app_context():
+        posts = Post.get_all_posts()
+        print "Hello"
+        for post in posts:
+            if post.stale_date < db.func.current_timestamp():
+                post.is_active = False
+
+
+@app.before_first_request
+def initialize():
+    apsched = BackgroundScheduler()
+    apsched.start()
+
+    apsched.add_interval_job(check_stale_posts, seconds=5)
 
 
 @app.route('/', methods=['GET'])
@@ -42,7 +60,7 @@ def posts():
         posts=posts,
         search=True,
         isInIndex=True,
-        tags=Post.TAGS,
+        tags=TAGS,
         total_number_of_pages=total_number_of_pages,
         search_tags=search_tags or '',
         checked='checked' if bool(courses) else '',
@@ -137,7 +155,7 @@ def profile(net_id):
                 name=result.get('name', None),
                 email=result.get('user_email', None),
                 website=result.get('website', None),
-                office=result.get('office_loc', None)   
+                office=result.get('office_loc', None)
             )
         return redirect("/profile/" + net_id, code=302)
     else:
@@ -147,7 +165,7 @@ def profile(net_id):
             base_url=BASE_URL,
             profile=current_user,
             isInIndex=True,
-            all_courses=Post.COURSES,
+            all_courses=COURSES,
             favorited_projects=favorited_projects,
             active_collection=active_collection,
             inactive_collection=inactive_collection
@@ -252,8 +270,8 @@ def createpost():
             'createpost.html',
             base_url=BASE_URL,
             title='Submit Research Listing',
-            all_tags=Post.TAGS,
-            all_courses=Post.COURSES,
+            all_tags=TAGS,
+            all_courses=COURSES,
             post=Post.empty,
             options=options
         )
@@ -339,8 +357,8 @@ def editpost(post_id):
             'createpost.html',
             base_url=BASE_URL,
             id='Sign In',
-            all_tags=Post.TAGS,
-            all_courses=Post.COURSES,
+            all_tags=TAGS,
+            all_courses=COURSES,
             post=post,
             options=options
         )
@@ -357,3 +375,15 @@ def get_styleguide():
 def page_not_found(e):
     flash('Resume File Size Exceeds Limit')
     return redirect("/profile/" + current_user.net_id, code=302)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('errorpages/404.html'), 404
+
+@app.errorhandler(403)
+def page_not_found(e):
+    return render_template('errorpages/403.html'), 403
+
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template('errorpages/500.html'), 500

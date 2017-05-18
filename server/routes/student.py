@@ -2,13 +2,14 @@ from flask import jsonify, request
 from server import app
 from server.models.student import Student
 
-
+# Returns a Response object of all students from the database
 @app.route('/api/students', methods=['GET'])
 def get_all_students():
     return jsonify(students=Student.get_all_students())
 
 
 # Add a new user to the database
+# Return a Response object if valid student
 @app.route('/api/students', methods=['POST'])
 def create_student():
     r = request.get_json(force=True)
@@ -25,7 +26,7 @@ def create_student():
             "error": "Student with given net_id already exists"
         })
 
-
+# Return a Response object given valid student netid
 @app.route('/api/students/<string:net_id>', methods=['GET'])
 def get_student_by_netid(net_id):
     student = Student.get_student_by_netid(net_id)
@@ -36,7 +37,7 @@ def get_student_by_netid(net_id):
             "error": "User not found with given net_id"
         })
 
-
+# If valid student netid, delete corresponding student from database
 @app.route('/api/students/<string:net_id>', methods=['DELETE'])
 def delete_student(net_id):
     if Student.delete_student(net_id):
@@ -47,7 +48,7 @@ def delete_student(net_id):
         })
 
 
-# maybe a put request?
+# Add starred post to student profile
 @app.route('/api/students/<string:net_id>/<int:post_id>', methods=['POST'])
 def add_favorited_project(net_id, post_id):
     if Student.add_favorited_project(net_id, post_id):
@@ -57,7 +58,7 @@ def add_favorited_project(net_id, post_id):
             "error": "Could not add favorited post to student"
         })
 
-
+# Delete starred post from student profile 
 @app.route('/api/students/<string:net_id>/<int:post_id>', methods=['DELETE'])
 def delete_favorited_project(net_id, post_id):
     if Student.delete_favorited_project(net_id, post_id):

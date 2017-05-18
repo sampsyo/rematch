@@ -1,6 +1,6 @@
 import datetime
 from server import db
-from config import PAGINATION_PER_PAGE
+from config import PAGINATION_PER_PAGE, TAGS, COURSES
 from sqlalchemy import desc, or_, not_
 # from server.models.professor import Professor
 
@@ -22,6 +22,7 @@ class Post(db.Model):
     stale_date = db.Column(db.DateTime)
     contact_email = db.Column(db.String(10000))
     project_link = db.Column(db.String(10000))
+    grad_only = db.Column(db.Boolean, default = False, nullable = False)
 
     # unimplemented
     qualifications = db.Column(db.String(10000))
@@ -41,7 +42,7 @@ class Post(db.Model):
     def get_posts(cls, page=None, compressed=False, descend=True,
                   active_only=False, inactive_only=False,
                   professor_id=None, keywords=None, tags=None,
-                  required_courses=None):
+                  required_courses=None, grad_only=False):
         """
             page: current page of pagination, else None to get all posts
             compressed: True to get the compressed serialization
@@ -64,6 +65,8 @@ class Post(db.Model):
             query = query.filter_by(is_active=False)
         if professor_id:
             query = query.filter_by(professor_id=professor_id)
+        if grad_only: 
+            query = query.filter_by(grad_only=grad_only)
 
         # search features
         if keywords:
@@ -107,7 +110,8 @@ class Post(db.Model):
     @classmethod
     def create_post(cls, title, description, professor_id, tags,
                     qualifications, desired_skills, stale_date,
-                    contact_email, project_link, required_courses):
+                    contact_email, project_link, required_courses, 
+                    grad_only):
         # if not (Professor.get_professor_by_netid(professor_id)):
         #    return None
 
@@ -122,6 +126,7 @@ class Post(db.Model):
             contact_email=contact_email,
             project_link=project_link,
             required_courses=required_courses,
+            grad_only=grad_only
         )
         db.session.add(post)
         db.session.commit()
@@ -133,7 +138,7 @@ class Post(db.Model):
                     description=None, desired_skills=None, is_active=None,
                     professor_id=None, qualifications=None, tags=None,
                     required_courses=None, title=None, project_link=None,
-                    contact_email=None, stale_date=None):
+                    contact_email=None, stale_date=None, grad_only=None):
         post = Post.get_post_by_id(post_id)
         if not post:
             return None
@@ -159,6 +164,8 @@ class Post(db.Model):
             post.required_courses = required_courses
         if stale_date:
             post.stale_date = stale_date
+        if grad_only: 
+            post.grad_only = grad_only
 
         db.session.commit()
         return post
@@ -249,54 +256,4 @@ class Post(db.Model):
             'required_courses': '',
         }
 
-    TAGS = [
-        'artificial intelligence',
-        'computer architecture',
-        'computational biology',
-        'databases',
-        'education',
-        'graphics',
-        'human computer interaction',
-        'operating systems',
-        'networking',
-        'programming languages',
-        'scientific computing',
-        'security',
-        'theory',
-        'natural language processing',
-        'algorithms',
-        'distributed systems',
-        'robotics',
-        'information processing',
-        'computer vision',
-        'ethics',
-        'design',
-        'compilers',
-        'machine learning',
-        'other',
-        'java',
-        'c',
-        'c#',
-        'c++',
-        'python',
-        'ocaml',
-        'javascript',
-        'mongodb',
-        'sql'
-    ]
-
-    COURSES = [
-        'CS 2110',
-        'CS 3110',
-        'CS 4410',
-        'CS 4411',
-        'CS 4670',
-        'CS 4700',
-        'CS 4710',
-        'CS 4780',
-        'CS 5150',
-        'CS 5152',
-        'CS 5414',
-        'INFO 3450',
-        'INFO 4300'
-    ]
+    

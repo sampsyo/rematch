@@ -12,43 +12,55 @@
             <p class="edit more"><a href="/posts/{{post['id']}}/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a><p>
         {% endif %}
 
-        <h1 class="title">{{ post["title"] }}</h1>
-        <h2 class="professor">{{ post['professor_name'] }}, {{ "{:%b %d, %Y}".format(post['date_created']) }} </h2> 
-        <br> 
-        <label> Description </label> 
-         <p class="description">
-         {% for line in post['description'].split('\n') %}
-             {{line}}<br>
-         {% endfor %}
-         </p>
-        {% if isInIndex: %}
-        <!--<a class="more" href="/posts/{{post['id']}}">Read more &rsaquo;</a>-->
-        {% elif post['project_link']: %}
-        </br>
-        <label>Project Website</label> 
-        <p><a href="{{post['project_link']}}" class="more"> <i class="fa fa-external-link" aria-hidden="true"></i> External Project Site</a></p> 
-        {% endif %} 
-        <br> 
-        <label> Topics </label> 
-        <ul class="tags">
-            {% for tag in post['tags'] %}
-            <a class="tag fullpost-tags" href="/?search_tags={{tag}}">{{tag}}</a>
-            {% endfor %}
-        </ul>
-        <br>
+        <div class="form-group">
+            <h1 class="title">{{ post["title"] }}</h1>
+            <h2 class="professor">{{ post['professor_name'] }}, {{ "{:%b %d, %Y}".format(post['date_created']) }} </h2> 
+        </div>
+
+        <div class="form-group">
+            <label>Description</label> 
+            <p class="description">
+                {% for line in post['description'].split('\n') %}
+                    {{line}}<br>
+                {% endfor %}
+            </p>
+        </div>
+
+        <div class="form-group">
+            {% if post['project_link']: %}
+            </br>
+            <label>Project Website</label> 
+            <p><a href="{{post['project_link']}}" class="more"><i class="fa fa-external-link" aria-hidden="true"></i> External Project Site</a></p> 
+            {% endif %} 
+        </div>
+
+        <div class="form-group">
+            <label>Topics</label> 
+            <ul class="tags">
+                {% for tag in post['tags'] %}
+                <a class="tag fullpost-tags" href="/?search_tags={{tag}}">{{tag}}</a>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="form-group">
         {% if post['courses'] %}
-            <label> Recommended Course Prerequisites</label>
+            <label>Recommended Course Prerequisites</label>
             <ul class="tags fullpost-tags">
                 {% for course in post['courses'] %}
                     <span class="tag course-tag">{{course}}</span>
                 {% endfor %}
             </ul>
         {% endif %}
-        <br> 
-        <br> 
+        </div>
+
+        <div class="form-group">
          {% if post['contact_email']: %} 
-            <label> Contact Information </label> 
-            <div class="contact">If interested, email {{ post['professor_name'] }} at <a href='mailto:{{ post["contact_email"] }}'>{{ post["contact_email"] }}. </a></div>
+            <label>Contact Information</label> 
+            <div class="contact">If interested, email {{ post['professor_name'] }} at <a href='mailto:{{ post["contact_email"] }}'>{{ post["contact_email"] }}</a>.</div>
         {% endif %}
+        </div>
+
+
     </div>
 </div>
