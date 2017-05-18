@@ -7,7 +7,7 @@ $(document).ready(function() {
             $(this).removeClass('ion-ios-star');
             $.ajax({
                 type: 'DELETE',
-                url: "/api/students/" + $('meta').data('user-id') + "/" + $(this).data('id'),
+                url: "/api/students/{{net_id}}/"+$(this).data('id'),
                 success: function(response) {
                     console.log(response);
                 },
@@ -22,7 +22,7 @@ $(document).ready(function() {
             $(this).removeClass('ion-ios-star-outline');
             $.ajax({
                 type: 'POST',
-                url: "/api/students/" + $('meta').data('user-id') + "/" + $(this).data('id'),
+                url: "/api/students/{{net_id}}/" + $(this).data('id'),
                 success: function(response) {
                     console.log(response);
                 },

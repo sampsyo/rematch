@@ -7,6 +7,7 @@ from server.models.post import Post
 
 @app.route('/js/<string:file_name>.js', methods=['GET'])
 def js_create_post(file_name):
+    height = request.args.get("height")
     if file_name == "create_post":
         return render_template(
             "js/createpost.js",
@@ -14,8 +15,14 @@ def js_create_post(file_name):
             all_courses=Post.COURSES
         )
     if file_name == "posts":
+        net_id = request.args.get("net_id")
         return render_template(
-            "js/posts.js"
+            "js/posts.js",
+            net_id=net_id
+        )
+    if file_name == "validate":
+        return render_template(
+            "js/validate.js"
         )
     else:
         return jsonify({
