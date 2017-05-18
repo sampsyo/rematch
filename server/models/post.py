@@ -15,10 +15,10 @@ class Post(db.Model):
     required_courses = db.Column(db.String(10000))
     is_active = db.Column(db.Boolean, default=True, nullable=False)
     date_created = db.Column(db.DateTime,
-                             default=db.func.current_timestamp())
+                             default=db.func.now())
     date_modified = db.Column(db.DateTime,
-                              default=db.func.current_timestamp(),
-                              onupdate=db.func.current_timestamp())
+                              default=db.func.now(),
+                              onupdate=db.func.now())
     stale_date = db.Column(db.DateTime)
     contact_email = db.Column(db.String(10000))
     project_link = db.Column(db.String(10000))
@@ -42,7 +42,7 @@ class Post(db.Model):
     def get_posts(cls, page=None, compressed=False, descend=True,
                   active_only=False, inactive_only=False,
                   professor_id=None, keywords=None, tags=None,
-                  required_courses=None, grad_only=False):
+                  required_courses=None, grad_only=False, stale=None):
         """
             page: current page of pagination, else None to get all posts
             compressed: True to get the compressed serialization
@@ -55,6 +55,7 @@ class Post(db.Model):
                 title and description of a post
             tags: a string of tags, separated by a comma; posts must have at
                 least one tag
+            stale: True to only show stale listings
         """
 
         # Build a query object
@@ -65,8 +66,10 @@ class Post(db.Model):
             query = query.filter_by(is_active=False)
         if professor_id:
             query = query.filter_by(professor_id=professor_id)
-        if grad_only: 
+        if grad_only:
             query = query.filter_by(grad_only=grad_only)
+        if stale:
+            query = query.filter(Post.stale_date < db.func.now())
 
         # search features
         if keywords:
