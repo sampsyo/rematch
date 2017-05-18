@@ -7,6 +7,12 @@ from server.models.professor import Professor
 # Return a Response object if valid professor
 @app.route('/api/professors', methods=['POST'])
 def create_professor():
+    """ An endpoint for creating a professor to be used programmatically.
+    This route is disabled except when the app is run with the debug flag.
+    """
+    if not app.debug:
+        return jsonify(error="This endpoint is only enabled in debug mode.")
+
     r = request.get_json(force=True)
     professor = Professor.create_professor(
         net_id=r.get('net_id'),
@@ -19,26 +25,4 @@ def create_professor():
     else:
         return jsonify({
             "error": "professor with given net_id already exists"
-        })
-
-
-# Return a Response object given valid professor netid
-@app.route('/api/professors/<string:net_id>', methods=['GET'])
-def get_professor_by_netid(net_id):
-    professor = Professor.get_professor_by_netid(net_id)
-    if professor:
-        return jsonify(professor=professor.serialize)
-    else:
-        return jsonify({
-            "error": "User not found with given net_id"
-        })
-
-# If valid student netid, delete corresponding professor from database
-@app.route('/api/professors/<string:net_id>', methods=['DELETE'])
-def delete_professor(net_id):
-    if Professor.delete_professor(net_id):
-        return "professor deleted"
-    else:
-        return jsonify({
-            "error": "Could not delete professor"
         })

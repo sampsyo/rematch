@@ -1,17 +1,17 @@
 from flask import jsonify, request
 from server import app
 from server.models.student import Student
-
-# Returns a Response object of all students from the database
-@app.route('/api/students', methods=['GET'])
-def get_all_students():
-    return jsonify(students=Student.get_all_students())
+from flask_login import current_user, login_required
 
 
-# Add a new user to the database
-# Return a Response object if valid student
 @app.route('/api/students', methods=['POST'])
 def create_student():
+    """ An endpoint for creating a student to be used programmatically.
+    This route is disabled except when the app is run with the debug flag.
+    """
+    if not app.debug:
+        return jsonify(error="This endpoint is only enabled in debug mode.")
+
     r = request.get_json(force=True)
     student = Student.create_student(
         net_id=r.get('net_id'),
@@ -26,44 +26,29 @@ def create_student():
             "error": "Student with given net_id already exists"
         })
 
-# Return a Response object given valid student netid
-@app.route('/api/students/<string:net_id>', methods=['GET'])
-def get_student_by_netid(net_id):
-    student = Student.get_student_by_netid(net_id)
-    if student:
-        return jsonify(student=student.serialize)
-    else:
-        return jsonify({
-            "error": "User not found with given net_id"
-        })
-
-# If valid student netid, delete corresponding student from database
-@app.route('/api/students/<string:net_id>', methods=['DELETE'])
-def delete_student(net_id):
-    if Student.delete_student(net_id):
-        return "Student deleted"
-    else:
-        return jsonify({
-            "error": "Could not delete student"
-        })
-
 
 # Add starred post to student profile
 @app.route('/api/students/<string:net_id>/<int:post_id>', methods=['POST'])
+@login_required
 def add_favorited_project(net_id, post_id):
-    if Student.add_favorited_project(net_id, post_id):
-        return "Added post to favorited posts"
-    else:
-        return jsonify({
-            "error": "Could not add favorited post to student"
-        })
+    """ Add a starred post to a student profile. """
+    if not current_user.net_id == net_id:
+        return jsonify({"status": "error"})
 
-# Delete starred post from student profile 
-@app.route('/api/students/<string:net_id>/<int:post_id>', methods=['DELETE'])
-def delete_favorited_project(net_id, post_id):
-    if Student.delete_favorited_project(net_id, post_id):
-        return "Deleted post from favorited posts"
+    if Student.add_favorited_project(net_id, post_id):
+        return jsonify({"status": "success"})
     else:
-        return jsonify({
-            "error": "Could not delete from favorited posts"
-        })
+        return jsonify({"status": "error"})
+
+
+@app.route('/api/students/<string:net_id>/<int:post_id>', methods=['DELETE'])
+@login_required
+def delete_favorited_project(net_id, post_id):
+    """ Remove a starred post from a student profile. """
+    if not current_user.net_id == net_id:
+        return jsonify({"status": "error"})
+
+    if Student.delete_favorited_project(net_id, post_id):
+        return jsonify({"status": "success"})
+    else:
+        return jsonify({"status": "error"})

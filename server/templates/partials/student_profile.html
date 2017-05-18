@@ -53,8 +53,10 @@
                         {% endif %}
                         <div class="form-group typeahead">
                             <label>Courses</label><br>
-                            <input autocomplete="on" class="tags-input" type="text" value="{{ profile.courses }}" data-role="tagsinput" name="profile_courses"/>
+                            <input autocomplete="on" class="tags-input" type="text" value="{{ profile.courses if profile.courses else '' }}" data-role="tagsinput" name="profile_courses"/>
                         </div>
+{% if False: %}
+RESUMES DISABLED
                         <div class="form-group">
                             <label class="resume">
                                 <input id="resume-upload" type="file" name="resume"/>
@@ -64,6 +66,7 @@
                         {% if profile.resume %}
                             <span class="file-selected">{{profile.resume}}</span>
                         {% endif %}
+{% endif %}
                         <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary">
                     </div>
                 </div>

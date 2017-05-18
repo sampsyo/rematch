@@ -2,6 +2,7 @@ from server import db
 from config import PAGINATION_PER_PAGE
 from sqlalchemy import desc, or_, not_
 from server.utils import send_email
+from config import COURSES
 # from server.models.professor import Professor
 
 
@@ -64,7 +65,7 @@ class Post(db.Model):
         if required_courses:
             required_courses = required_courses.strip().lower().split(',')
             unsat_courses = set(
-                [x.lower() for x in Post.COURSES]
+                [x.lower() for x in COURSES]
             ).difference(set(required_courses))
 
             query = query.filter(not_(
