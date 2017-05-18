@@ -353,13 +353,6 @@ def editpost(post_id):
         )
 
 
-@app.route('/styleguide', methods=['GET'])
-def get_styleguide():
-    return render_template(
-        'styleguide.html'
-    )
-
-
 @app.errorhandler(413)
 def page_not_found(e):
     flash('Resume File Size Exceeds Limit')

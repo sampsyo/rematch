@@ -59,7 +59,7 @@ def create_post():
         grad_only=False,
         required_courses="",
         project_link="",
-        contact_email=""
+        contact_email=r.get('contact_email')
     )
     return jsonify(post=post.serialize)
 

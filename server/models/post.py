@@ -1,6 +1,7 @@
 from server import db
 from config import PAGINATION_PER_PAGE
 from sqlalchemy import desc, or_, not_
+from server.utils import send_email
 # from server.models.professor import Professor
 
 
@@ -229,12 +230,14 @@ class Post(db.Model):
     @staticmethod
     def disable_stale_posts():
         """ Triggered by a scheduler that is initialized in server/__init__.py
-        Trigger interval can be set in the configuration file.
+        Trigger interval is once per day.
         """
         print 'Running stale post scheduler.'
-        stale_posts = Post.get_posts(active_only=True, stale=True)
+        stale_posts, _, _ = Post.get_posts(active_only=True, stale=True)
         print stale_posts
         for post in stale_posts:
             print 'Setting post %s to inactive.' % post['id']
             Post.update_post(post['id'], is_active=False)
-            print 'We should notify %s' % post['contact_email']
+            send_email(post['contact_email'],
+                       'Your research listing has expired',
+                       'Just to let you know!')
