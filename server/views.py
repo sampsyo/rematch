@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, request
 from server import app
-from .forms import LoginForm
+from .forms import LoginForm, RegistrationForm
 from flask_login import login_user, logout_user, login_required, current_user
 from models import Post, Student, Professor
 from werkzeug import secure_filename
@@ -55,29 +55,26 @@ def posts():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'GET':
-        return render_template('register.html')
-    result = request.form
-    is_student = result['is_student']
-    net_id = result['net_id']
-    password = result['password']
-    if not (net_id and password and is_student):
-        flash('Net_id,password and is_student fields required!')
-        return redirect('/register')
-    new_user = None
-    if is_student:
-        new_user = Student.create_student(
-            net_id=net_id, name=result['name'], email=result['email'],
-            password=password)
-    else:
-        new_user = Professor.create_professor(
-            net_id=net_id, name=result['name'], email=result['email'],
-            password=password)
-    if not new_user:
-        flash('User with that net_id already exists!')
-        return redirect('/register')
-    flash('User successfully registered')
-    return redirect('/login')
+    form = RegistrationForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        print "HERE"
+        if Student.get_student_by_netid(form.net_id.data) or \
+           Professor.get_professor_by_netid(form.net_id.data):
+                flash('A Profile has already been created with that Net ID')
+                return redirect('/register')
+        if form.is_student.data:
+            Student.create_student(
+                net_id=form.net_id.data, name=form.name.data,
+                email=form.email.data, password=form.password.data)
+        else:
+            Professor.create_professor(
+                net_id=form.net_id.data, name=form.name.data,
+                email=form.email.data, password=form.password.data
+            )
+        flash('Thanks for registering!')
+        return redirect('/login')
+    print "rendering"
+    return render_template('register.html', form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
