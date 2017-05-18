@@ -1,4 +1,5 @@
 """ Random functions that didn't quite fit anywhere else. """
+from config import FROM_EMAIL
 
 
 def send_email(recipient, subject, content):
@@ -12,9 +13,9 @@ def send_email(recipient, subject, content):
 
     message = MIMEText(content)
     message['Subject'] = subject
-    message['From'] = 'no.reply@example.com'
+    message['From'] = FROM_EMAIL
     message['To'] = recipient
 
     s = smtplib.SMTP('localhost')
-    s.sendmail('no.reply@example.com', [recipient], message.as_string())
+    s.sendmail(FROM_EMAIL, [recipient], message.as_string())
     s.quit()

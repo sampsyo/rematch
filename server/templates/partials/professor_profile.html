@@ -10,25 +10,24 @@
       <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="myprofile">
 
-            <form method="POST">    
+            <form method="POST" onsubmit="return validate(this)">    
                 <div class="profile">
                     <div class="header card">
-                         <span id="edit-profile-icon"> <i class="fa fa-pencil-square-o" aria-hidden="true"
-                                style="margin-left: 5px" height="50%" width="50%"></i> </span> 
+                        <span id="edit-profile"> <i class="fa fa-pencil-square-o" aria-hidden="true"
+                                style="margin-left: 5px" height="50%" width="50%"></i> Edit profile </span> 
 
                         <div class="form-group">
-                            <label> Name </label>
+                            <label>Name</label>
                             <div id="name-editable" class="name">
                                 {{current_user.name}}
                                 <hr>
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group validate-input">
                             <label>Contact Email</label>
                             <div id="email-editable">
                                 {{current_user.email}}
-                                
                             </div>
                         </div>
 
@@ -36,7 +35,6 @@
                             <label>Website</label>
                             <div id="website-editable">
                                 {{current_user.website}}
-                             
                             </div>
                         </div>
 
@@ -98,9 +96,9 @@
 </div>
 <script type="text/javascript">
 
-$('#edit-profile-icon').click(function(event){
+$('#edit-profile').click(function(event){
     // remove the icon
-    $('#edit-profile-icon').html(''); 
+    $('#edit-profile').html(''); 
     // name
     {% if current_user.name == 'None': %}
     var innertext = ''
@@ -138,5 +136,48 @@ $('#edit-profile-icon').click(function(event){
     $('#office-editable').attr('id', 'office-editing');
 
 });
+
+function validate() {
+    var isValid = true;
+    // title
+    $(".validate-input").each(function() {
+        if ($(this) + " .input") {
+            console.log($(this));
+            $(this).addClass("invalidInput");
+        }
+    });
+
+
+    if (!$(".validate-input input").val()) {
+        console.log("aaa");
+        $(this).addClass("invalidInput");
+        isValid = false;
+    } else {
+        $("#post_title").removeClass("invalidInput");
+    }
+    // description
+    if (!$("#post_description_group textarea").val()) {
+        $("#post_description_group").addClass("invalidInput");
+        isValid = false;
+    } else {
+        $("#post_description_group").removeClass("invalidInput");
+    }
+    // tags
+    var tags = $("#post_topics_group .bootstrap-tagsinput .tag");
+    if (tags.length <= 0) {
+        $("#post_topics_group").addClass("invalidInput");
+        isValid = false;
+    } else {
+        $("#post_topics_group").removeClass("invalidInput");
+    }
+    // email
+    if (!$("#post_email_group input").val()) {
+        $("#post_email_group").addClass("invalidInput");
+        isValid = false;
+    } else {
+        $("#post_email_group").removeClass("invalidInput");
+    }
+    return isValid;
+}
 
 </script>
