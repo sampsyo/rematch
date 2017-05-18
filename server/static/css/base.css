@@ -253,6 +253,8 @@ a {
     font-size: 14px;
     margin-left: 3px;
     margin-right: 6px; }
+.profile .profile-tags {
+  margin-top: 0px; }
 .profile #save-profile-updates {
   margin-top: 15px;
   display: none;
