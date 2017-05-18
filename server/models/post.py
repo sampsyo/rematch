@@ -32,7 +32,6 @@ class Post(db.Model):
             descend: True to order descending by post id (creation)
             active_only: Only show active posts
             inactive_only: Only show inactive posts
-            grad_only: True to only show listings for graduate listings
             professor_id: string, usually netid
             keywords: a string of keywords, exact match searched in the
                 title and description of a post
@@ -92,9 +91,20 @@ class Post(db.Model):
             return ([p.serialize for p in posts], has_next, number_pages)
 
     @classmethod
+    def get_post_by_id(cls, post_id):
+        if not post_id:
+            return None
+
+        post = Post.query.filter(Post.id == int(post_id)).first()
+        if post:
+            return post
+        else:
+            return None
+
+    @classmethod
     def create_post(cls, title=None, description=None, professor_id=None,
                     tags=None, stale_date=None, contact_email=None,
-                    project_link=None, required_courses=None, grad_only=False):
+                    project_link=None, required_courses=None):
         if None in (title, description, professor_id, tags, stale_date,
                     contact_email, project_link, required_courses):
             return None
@@ -111,7 +121,6 @@ class Post(db.Model):
             contact_email=contact_email,
             project_link=project_link,
             required_courses=''.join(required_courses),
-            grad_only=grad_only
         )
         db.session.add(post)
         db.session.commit()

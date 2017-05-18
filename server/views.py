@@ -100,8 +100,7 @@ def profile(net_id):
     if current_user.is_student:
         favorited_projects = Student.get_student_favorited_projects(net_id)
         Professor.annotate_posts(favorited_projects)
-
-    if current_user.is_professor:
+    else:
         active_collection, _, _ = Post.get_posts(
             professor_id=net_id, active_only=True, compressed=True)
         inactive_collection, _, _ = Post.get_posts(

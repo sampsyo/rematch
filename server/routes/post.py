@@ -20,7 +20,6 @@ def create_post():
         description=r.get('description'),
         tags=r.get('tags') or [],
         stale_date=r.get('stale_date') or datetime.now(),
-        # grad_only=False,
         required_courses=r.get('required_courses') or [],
         project_link=r.get('project_link'),
         contact_email=r.get('contact_email')

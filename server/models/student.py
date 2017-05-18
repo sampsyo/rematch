@@ -15,9 +15,7 @@ class Student(db.Model):
     description = db.Column(db.String(10000))
     interests = db.Column(db.String(10000))
     favorited_projects = db.Column(db.String(10000))
-    #availability = db.Column(db.String(10000))
     courses = db.Column(db.String(10000))
-    #is_grad = db.Column(db.Boolean, default = False)
     is_student = True
 
     # This is for Login Stuff
@@ -42,7 +40,8 @@ class Student(db.Model):
             net_id=net_id,
             name=name,
             email=email,
-            password=password  # Just for NOW!!
+            password=password,  # Just for NOW!!
+            major="Computer Science"
         )
         db.session.add(student)
         db.session.commit()
