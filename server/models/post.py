@@ -94,7 +94,7 @@ class Post(db.Model):
     @classmethod
     def create_post(cls, title=None, description=None, professor_id=None,
                     tags=None, stale_date=None, contact_email=None,
-                    project_link=None, required_courses=None, grad_only=False):
+                    project_link=None, required_courses=None):
         if None in (title, description, professor_id, tags, stale_date,
                     contact_email, project_link, required_courses):
             return None
@@ -110,9 +110,7 @@ class Post(db.Model):
             stale_date=stale_date,
             contact_email=contact_email,
             project_link=project_link,
-            required_courses=''.join(required_courses),
-            grad_only=grad_only
-        )
+            required_courses=''.join(required_courses)        )
         db.session.add(post)
         db.session.commit()
         return post
