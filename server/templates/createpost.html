@@ -21,7 +21,7 @@
                 </div>
                 <div id="post_description_group" class="form-group">
                     <label>Project Description*:</label>
-                    <p class="helper-text">Provide information about research topic, qualifications, time committment, and number of students you are seeking.</p> 
+                    <p class="helper-text">Provide information about research topic, qualifications, time commitment, and number of students you are seeking.</p> 
                     <textarea name="post_description" class="form-control" id="post_description" rows="5">{{post['description']}}</textarea>
                 </div>
                 <div id="post_topics_group" class="form-group">
@@ -47,7 +47,7 @@
                         {% for i in range(options|length) %}
                             <option value={{i}}> {{ options[i] }}</option>
                         {% endfor %}
-                        <option value="-1">Continously</option> 
+                        <option value="-1">Continuously</option> 
                     </select>
                 </div>
                 <div id="post_email_group" class="form-group">
@@ -55,8 +55,9 @@
                     <input id="post_email" type="email" name="post_professor_email" class="form-control" value='{{current_user.email}}'>
                 </div>
                 <div class="form-group">
-                    <input name="post-activate" class="activate-post-toggle" type="checkbox" {% if post['is_active'] %} checked {% endif %}>
-                    <label>Activate Post</label>
+                    <input name="post-activate" class="activate-post-toggle"
+                    type="checkbox" {% if post['is_active'] or not post['title'] %} checked {% endif %}>
+                    <label>Make this listing live?</label>
                 </div>
                 <div class="form-group">
                     <input type="submit" class="btn btn-primary" value="Submit Listing">
