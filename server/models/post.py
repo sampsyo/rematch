@@ -255,3 +255,5 @@ class Post(db.Model):
             'contact_email': '',
             'required_courses': '',
         }
+
+    
