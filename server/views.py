@@ -3,10 +3,12 @@ from server import app
 from .forms import LoginForm
 from flask_login import login_user, logout_user, login_required, current_user
 from models import Post, Student, Professor
-from werkzeug import secure_filename
 from config import BASE_URL, TAGS, COURSES
-import os
 import datetime
+
+# Used for file uploads
+# from werkzeug import secure_filename
+# import os
 
 
 @app.route('/', methods=['GET'])
@@ -281,7 +283,6 @@ def showpost(post_id):
     post = post.serialize
     post['professor_name'] = Professor.get_professor_by_netid(
         post['professor_id']).name
-    print(post['courses'])
 
     return render_template(
         'full_post.html',
