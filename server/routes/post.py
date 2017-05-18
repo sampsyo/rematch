@@ -2,53 +2,14 @@ from flask import jsonify, request
 from server import app
 from server.models.post import Post
 from datetime import datetime
-
-
-@app.route('/api/posts', methods=['GET'])
-def get_all_posts():
-    return jsonify(posts=Post.get_posts())
-
-
-@app.route('/api/posts/tags=<tags>/all', methods=['GET'])
-def get_posts_exclusive(tags):
-    tags = tags.lower().split(',')
-    return jsonify(posts=Post.get_posts(tags=tags, exclusive=True))
-
-
-@app.route('/api/posts/tags=<tags>', methods=['GET'])
-def get_posts_inclusive(tags):
-    tags = tags.lower().split(',')
-    return jsonify(posts=Post.get_posts(tags=tags, exclusive=False))
-
-
-@app.route('/api/setpostinactive/<int:post_id>', methods=['GET'])
-def setpostinactive(post_id):
-    post = Post.get_post_by_id(post_id)
-    if post:
-        post = Post.update_post(
-            post_id,
-            description=None, desired_skills=None, is_active=False,
-                    professor_id=None, qualifications=None, required_courses=None,
-                    tags=None, title=None, project_link=None, contact_email=None)
-        return jsonify(post=post.serialize)
-    else:
-        return jsonify({
-            "error": "Post not found with given id"
-        })
-
-@app.route('/api/posts/<int:id>', methods=['GET'])
-def get_post_by_id(post_id):
-    post = Post.get_post_by_id(post_id)
-    if post:
-        return jsonify(post=post.serialize)
-    else:
-        return jsonify({
-            "error": "Post not found with given id"
-        })
+from flask_login import current_user
 
 
 @app.route('/api/posts', methods=['POST'])
 def create_post():
+    if not app.debug:
+        return jsonify(error="This endpoint is only enabled in debug mode.")
+
     r = request.get_json(force=True)
     post = Post.create_post(
         title=r.get('title'),
@@ -64,42 +25,16 @@ def create_post():
     return jsonify(post=post.serialize)
 
 
-@app.route('/api/posts/<int:post_id>', methods=['DELETE'])
-def delete_post(post_id):
-    if Post.delete_post(post_id):
-        return "Post deleted"
-    else:
-        return jsonify({
-            "error": "Post not deleted"
-        })
-
-
-@app.route('/api/posts/<int:post_id>', methods=['POST'])
-def update_post(post_id):
-    r = request.get_json(force=True)
-    post = Post.update_post(
-        post_id,
-        description=r.get('description', None),
-        desired_skills=r.get('desired_skills', None),
-        is_active=r.get('is_active', False),
-        professor_id=r.get('professor_id', None),
-        qualifications=r.get('qualifications', None),
-        tags=r.get('tags', None),
-        title=r.get('title', None)
-    )
-    if not post:
-        return jsonify({
-            "error": "Post not found"
-        })
-    return jsonify(post=post.serialize)
-
-
 @app.route('/posts/<professor_id>/raw', methods=['GET'])
 def get_professor_posts_raw(professor_id):
-    return jsonify(
-        professor_id=professor_id,
-        posts=Post.get_posts_by_professor_id(professor_id)
-    )
+    if current_user.net_id == professor_id and \
+            not current_user.is_student:
+        return jsonify(
+            professor_id=professor_id,
+            posts=Post.get_posts(professor_id=professor_id)
+        )
+    else:
+        return jsonify({})
 
 
 @app.route('/raw/post-tags.json', methods=['GET'])

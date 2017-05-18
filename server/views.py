@@ -160,7 +160,6 @@ def profile(net_id):
             favorited_projects=favorited_projects,
             active_collection=active_collection,
             inactive_collection=inactive_collection
-
         )
 
 
@@ -270,7 +269,7 @@ def createpost():
 @login_required
 def showpost(post_id):
     post = Post.get_post_by_id(post_id)
-    if not post:
+    if not post or not post.is_active:
         return redirect('/')
 
     post = post.serialize
