@@ -1,4 +1,3 @@
-import datetime
 from server import db
 from config import PAGINATION_PER_PAGE
 from sqlalchemy import desc, or_, not_
@@ -21,16 +20,6 @@ class Post(db.Model):
     date_created = db.Column(db.DateTime, default=db.func.now())
     date_modified = db.Column(db.DateTime, default=db.func.now(),
                               onupdate=db.func.now())
-
-    def is_stale(self):
-        return self.stale_date is not None and \
-            self.stale_date < datetime.datetime.now()
-
-    @classmethod
-    def refresh(cls, post_id, days_added):
-        post = Post.get_post_by_id(post_id)
-        if post.stale_date:
-            post.stale_date += datetime.timedelta(days=days_added)
 
     @classmethod
     def get_posts(cls, page=None, compressed=False, descend=True,
@@ -184,17 +173,6 @@ class Post(db.Model):
             return True
         else:
             return False
-
-    @classmethod
-    def get_posts_by_courses(cls, courses):
-        posts = []
-        post_ids = set()
-        for p in Post.query.filter_by(is_active=True).all():
-            if set(p.required_courses.lower()).issubset(set(courses.lower())):
-                if p.id not in post_ids:
-                    post_ids.add(p.id)
-                    posts.append(p.serialize_compressed_post)
-        return posts
 
     @property
     def serialize(self):
