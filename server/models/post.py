@@ -1,6 +1,6 @@
 import datetime
 from server import db
-from config import PAGINATION_PER_PAGE, TAGS, COURSES
+from config import PAGINATION_PER_PAGE
 from sqlalchemy import desc, or_, not_
 # from server.models.professor import Professor
 
@@ -14,19 +14,13 @@ class Post(db.Model):
     tags = db.Column(db.String(10000))
     required_courses = db.Column(db.String(10000))
     is_active = db.Column(db.Boolean, default=True, nullable=False)
-    date_created = db.Column(db.DateTime,
-                             default=db.func.now())
-    date_modified = db.Column(db.DateTime,
-                              default=db.func.now(),
-                              onupdate=db.func.now())
     stale_date = db.Column(db.DateTime)
     contact_email = db.Column(db.String(10000))
     project_link = db.Column(db.String(10000))
-    grad_only = db.Column(db.Boolean, default = False, nullable = False)
-
-    # unimplemented
-    qualifications = db.Column(db.String(10000))
-    desired_skills = db.Column(db.String(10000))
+    grad_only = db.Column(db.Boolean, default=False, nullable=False)
+    date_created = db.Column(db.DateTime, default=db.func.now())
+    date_modified = db.Column(db.DateTime, default=db.func.now(),
+                              onupdate=db.func.now())
 
     def is_stale(self):
         return self.stale_date is not None and \
@@ -111,10 +105,13 @@ class Post(db.Model):
             return ([p.serialize for p in posts], has_next, number_pages)
 
     @classmethod
-    def create_post(cls, title, description, professor_id, tags,
-                    qualifications, desired_skills, stale_date,
-                    contact_email, project_link, required_courses, 
-                    grad_only):
+    def create_post(cls, title=None, description=None, professor_id=None,
+                    tags=None, stale_date=None, contact_email=None,
+                    project_link=None, required_courses=None, grad_only=None):
+        if None in (title, description, professor_id, tags, stale_date,
+                    contact_email, project_link, required_courses, grad_only):
+            return None
+
         # if not (Professor.get_professor_by_netid(professor_id)):
         #    return None
 
@@ -123,8 +120,6 @@ class Post(db.Model):
             description=description.replace('<br>', '\n'),
             tags=",".join(tags),
             professor_id=professor_id,
-            qualifications=qualifications,
-            desired_skills=desired_skills,
             stale_date=stale_date,
             contact_email=contact_email,
             project_link=project_link,
@@ -138,8 +133,8 @@ class Post(db.Model):
     # Keep arguments in alphabetical order!
     @classmethod
     def update_post(cls, post_id,
-                    description=None, desired_skills=None, is_active=None,
-                    professor_id=None, qualifications=None, tags=None,
+                    description=None, is_active=None,
+                    professor_id=None, tags=None,
                     required_courses=None, title=None, project_link=None,
                     contact_email=None, stale_date=None, grad_only=None):
         post = Post.get_post_by_id(post_id)
@@ -151,12 +146,8 @@ class Post(db.Model):
             post.description = description.replace('<br>', '\n')
         if tags:
             post.tags = ",".join(tags)
-        if qualifications:
-            post.qualifications = qualifications
         if professor_id:
             post.professor_id = professor_id
-        if desired_skills:
-            post.desired_skills = desired_skills
         if is_active is not None:
             post.is_active = is_active
         if project_link is not None:
@@ -167,7 +158,7 @@ class Post(db.Model):
             post.required_courses = required_courses
         if stale_date:
             post.stale_date = stale_date
-        if grad_only: 
+        if grad_only:
             post.grad_only = grad_only
 
         db.session.commit()
@@ -212,9 +203,7 @@ class Post(db.Model):
             'title': self.title,
             'description': self.description,
             'tags': self.tags.split(','),
-            'qualifications': self.qualifications,
             'professor_id': self.professor_id,
-            'desired_skills': self.desired_skills,
             'is_active': self.is_active,
             'date_created': self.date_created,
             'date_modified': self.date_modified,
@@ -259,4 +248,15 @@ class Post(db.Model):
             'required_courses': '',
         }
 
-    
+    @staticmethod
+    def disable_stale_posts():
+        """ Triggered by a scheduler that is initialized in server/__init__.py
+        Trigger interval can be set in the configuration file.
+        """
+        print 'Running stale post scheduler.'
+        stale_posts = Post.get_posts(active_only=True, stale=True)
+        print stale_posts
+        for post in stale_posts:
+            print 'Setting post %s to inactive.' % post['id']
+            Post.update_post(post['id'], is_active=False)
+            print 'We should notify %s' % post['contact_email']

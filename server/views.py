@@ -244,16 +244,14 @@ def createpost():
                 day = 20
 
         Post.create_post(
-            result["post_title"].strip(),
-            result["post_description"].strip(),
-            current_user.net_id,
-            result['tags'].lower().strip().split(','),
-            '',  # qualifications
-            '',  # desired skills
-            datetime.date(year=year, day=day, month=month),
-            result['post_professor_email'].strip(),
-            result['project-link'].strip(),
-            result['courses'],  # required courses
+            title=result["post_title"].strip(),
+            description=result["post_description"].strip(),
+            professor_id=current_user.net_id,
+            tags=result['tags'].lower().strip().split(','),
+            stale_date=datetime.date(year=year, day=day, month=month),
+            contact_email=result['post_professor_email'].strip(),
+            project_link=result['project-link'].strip(),
+            required_courses=result['courses'],  # required courses
         )
         return redirect("/posts", code=301)
     else:

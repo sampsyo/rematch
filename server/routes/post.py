@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from server import app
 from server.models.post import Post
+from datetime import datetime
 
 
 @app.route('/api/posts', methods=['GET'])
@@ -48,16 +49,13 @@ def get_post_by_id(post_id):
 
 @app.route('/api/posts', methods=['POST'])
 def create_post():
-    #import ipdb; ipdb.set_trace()
     r = request.get_json(force=True)
     post = Post.create_post(
         title=r.get('title'),
         professor_id=r.get('professor_id'),
         description=r.get('description'),
         tags=r.get('tags'),
-        qualifications='',
-        desired_skills="",
-        stale_date=r.get('stale_date'),
+        stale_date=r.get('stale_date') or datetime.now(),
         grad_only=False,
         required_courses="",
         project_link="",
