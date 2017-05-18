@@ -1,6 +1,6 @@
 import datetime
 from server import db
-from config import PAGINATION_PER_PAGE
+from config import PAGINATION_PER_PAGE, TAGS, COURSES
 from sqlalchemy import desc, or_, not_
 # from server.models.professor import Professor
 
@@ -248,55 +248,3 @@ class Post(db.Model):
             'contact_email': '',
             'required_courses': '',
         }
-
-    TAGS = [
-        'artificial intelligence',
-        'computer architecture',
-        'computational biology',
-        'databases',
-        'education',
-        'graphics',
-        'human computer interaction',
-        'operating systems',
-        'networking',
-        'programming languages',
-        'scientific computing',
-        'security',
-        'theory',
-        'natural language processing',
-        'algorithms',
-        'distributed systems',
-        'robotics',
-        'information processing',
-        'computer vision',
-        'ethics',
-        'design',
-        'compilers',
-        'machine learning',
-        'other',
-        'java',
-        'c',
-        'c#',
-        'c++',
-        'python',
-        'ocaml',
-        'javascript',
-        'mongodb',
-        'sql'
-    ]
-
-    COURSES = [
-        'CS 2110',
-        'CS 3110',
-        'CS 4410',
-        'CS 4411',
-        'CS 4670',
-        'CS 4700',
-        'CS 4710',
-        'CS 4780',
-        'CS 5150',
-        'CS 5152',
-        'CS 5414',
-        'INFO 3450',
-        'INFO 4300'
-    ]
