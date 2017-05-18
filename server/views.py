@@ -357,3 +357,15 @@ def get_styleguide():
 def page_not_found(e):
     flash('Resume File Size Exceeds Limit')
     return redirect("/profile/" + current_user.net_id, code=302)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('errorpages/404.html'), 404
+
+@app.errorhandler(403)
+def page_not_found(e):
+    return render_template('errorpages/403.html'), 403
+
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template('errorpages/500.html'), 500
