@@ -24,7 +24,7 @@ def initialize():
     apsched = BackgroundScheduler()
     apsched.start()
 
-    apsched.add_interval_job(check_stale_posts, seconds=5)
+    #apsched.add_interval_job(check_stale_posts, seconds=5)
 
 
 @app.route('/', methods=['GET'])
