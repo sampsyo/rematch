@@ -24,7 +24,10 @@ def check_stale_posts():
 def posts():
     phrase = request.args.get('phrase', None)
     search_tags = request.args.get('search_tags', None)
-    page = int(request.args.get('page', 1))
+    try:
+        page = int(request.args.get('page', 1))
+    except ValueError:
+        page = 1
     courses = current_user.is_student and request.args.get('courses', False)
 
     url_params = []
@@ -112,7 +115,6 @@ def profile(net_id):
 
     Professor.annotate_posts(active_collection)
     Professor.annotate_posts(inactive_collection)
-
     if request.method == 'POST':
         result = request.form
         if current_user.is_student:
