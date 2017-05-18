@@ -2,7 +2,7 @@ from flask import jsonify, request
 from server import app
 from server.models.post import Post
 from datetime import datetime
-from flask_login import current_user
+from flask_login import current_user, login_required
 
 
 @app.route('/api/posts', methods=['POST'])
@@ -28,6 +28,7 @@ def create_post():
 
 
 @app.route('/posts/<professor_id>/raw', methods=['GET'])
+@login_required
 def get_professor_posts_raw(professor_id):
     """ Returns a raw JSON of all posts for a given professor_id, only if the
     user is logged in and the professor whose posts were requestd.
