@@ -11,6 +11,10 @@ SECRET_KEY = 'Pr0f3ss0r-ArmS-Is-Br1T1sH'
 BASE_URL = 'http://localhost:5000'
 PAGINATION_PER_PAGE = 5
 
+# the address from which the server sends email
+FROM_EMAIL = ''
+
+# topic tags for research listings
 TAGS = [
         'artificial intelligence',
         'computer architecture',
@@ -18,6 +22,7 @@ TAGS = [
         'databases',
         'education',
         'graphics',
+        'mathematics',
         'human computer interaction',
         'operating systems',
         'networking',
@@ -41,6 +46,7 @@ TAGS = [
         'software engineering',
         'cognitive science',
         'data science',
+        'data mining'
         'neural networks',
         'deep learning',
         'other',
@@ -62,6 +68,7 @@ TAGS = [
         'objective-c',
         'matlab',
         'ruby',
+        'rust',
         'unix',
         'linux',
         'windows',

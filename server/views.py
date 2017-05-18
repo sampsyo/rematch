@@ -15,8 +15,8 @@ import datetime
 @app.route('/posts', methods=['GET'])
 @login_required
 def posts():
-    phrase = request.args.get('phrase', None)
-    search_tags = request.args.get('search_tags', None)
+    phrase = request.args.get('phrase', '')
+    search_tags = request.args.get('search_tags', '')
     page = int(request.args.get('page', 1))
     courses = current_user.is_student and request.args.get('courses', False)
 
@@ -43,13 +43,12 @@ def posts():
         base_url=BASE_URL,
         posts=posts,
         search=True,
-        isInIndex=True,
         tags=TAGS,
         total_number_of_pages=total_number_of_pages,
-        search_tags=search_tags or '',
         checked='checked' if bool(courses) else '',
+        phrase=phrase,
+        search_tags=search_tags,
         page=page,
-        phrase=phrase or '',
         has_next_page=has_next,
         search_url=search_url
     )
@@ -116,7 +115,6 @@ def profile(net_id):
         title=current_user.name + "'s Profile",
         base_url=BASE_URL,
         profile=current_user,
-        isInIndex=True,
         all_courses=COURSES,
         favorited_projects=favorited_projects,
         active_collection=active_collection,
