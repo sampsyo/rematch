@@ -135,24 +135,28 @@ def profile_update(net_id):
         new_year = result["user_year"] or "Freshman"
         new_description = result["user_description"] or " "
         courses = result["profile_courses"] or " "
-        availability = ','.join(result.getlist("weekday"))
-        f = request.files['resume']
-        if f:
-            if allowed_file(f.filename):
-                extension = f.filename.rsplit('.', 1)[1]
-                f.filename = net_id + "_resume." + extension
-                filename = secure_filename(f.filename)
-                f.save(os.path.join('uploads/', filename))
-            else:
-                flash('Resume File Type Not Accepted')
-                filename = None
-        else:
-            filename = None
+
+        filename = None
+        # Resume uploads disabled until we decide what to do with them
+
+#        f = request.files['resume']
+#        if f:
+#            if allowed_file(f.filename):
+#                extension = f.filename.rsplit('.', 1)[1]
+#                f.filename = net_id + "_resume." + extension
+#                filename = secure_filename(f.filename)
+#                f.save(os.path.join('uploads/', filename))
+#            else:
+#                flash('Resume File Type Not Accepted')
+#                filename = None
+#        else:
+#            filename = None
+
         Student.update_student(
             net_id, email=new_email, name=None, major=user.major,
             year=new_year, resume=filename, description=new_description,
             favorited_projects=None,
-            availability=availability, courses=courses
+            courses=courses
         )
     else:
         Professor.update_professor(
