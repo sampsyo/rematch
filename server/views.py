@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, request
-from server import app, db
+from server import app
 from .forms import LoginForm
 from flask_login import login_user, logout_user, login_required, current_user
 from models import Post, Student, Professor
@@ -7,15 +7,6 @@ from werkzeug import secure_filename
 from config import BASE_URL, TAGS, COURSES
 import os
 import datetime
-
-
-def check_stale_posts():
-    with app.app_context():
-        posts = Post.get_all_posts()
-        print "Hello"
-        for post in posts:
-            if post.stale_date < db.func.current_timestamp():
-                post.is_active = False
 
 
 @app.route('/', methods=['GET'])
@@ -101,67 +92,78 @@ def allowed_file(filename):
 def profile(net_id):
     if not current_user.net_id == net_id:
         return redirect("/", code=301)
+
     favorited_projects = None
+    active_collection = None
+    inactive_collection = None
+
     if current_user.is_student:
         favorited_projects = Student.get_student_favorited_projects(net_id)
         Professor.annotate_posts(favorited_projects)
-    active_collection, _, _ = Post.get_posts(
-        professor_id=net_id, active_only=True, compressed=True)
-    inactive_collection, _, _ = Post.get_posts(
-        professor_id=net_id, inactive_only=True, compressed=True)
 
-    Professor.annotate_posts(active_collection)
-    Professor.annotate_posts(inactive_collection)
+    if current_user.is_professor:
+        active_collection, _, _ = Post.get_posts(
+            professor_id=net_id, active_only=True, compressed=True)
+        inactive_collection, _, _ = Post.get_posts(
+            professor_id=net_id, inactive_only=True, compressed=True)
 
-    if request.method == 'POST':
-        result = request.form
-        if current_user.is_student:
-            user = Student.get_student_by_netid(net_id)
-            new_email = result["user_email"] or (net_id + "@cornell.edu")
-            new_year = result["user_year"] or "Freshman"
-            new_description = result["user_description"] or " "
-            courses = result["profile_courses"] or " "
-            availability = ','.join(result.getlist("weekday"))
-            f = request.files['resume']
-            if f:
-                if allowed_file(f.filename):
-                    extension = f.filename.rsplit('.', 1)[1]
-                    f.filename = net_id + "_resume." + extension
-                    filename = secure_filename(f.filename)
-                    f.save(os.path.join('uploads/', filename))
-                else:
-                    flash('Resume File Type Not Accepted')
-                    filename = None
+        Professor.annotate_posts(active_collection)
+        Professor.annotate_posts(inactive_collection)
+
+    return render_template(
+        'profile.html',
+        title=current_user.name + "'s Profile",
+        base_url=BASE_URL,
+        profile=current_user,
+        isInIndex=True,
+        all_courses=COURSES,
+        favorited_projects=favorited_projects,
+        active_collection=active_collection,
+        inactive_collection=inactive_collection
+    )
+
+
+@app.route('/profile/<net_id>', methods=['POST'])
+@login_required
+def profile_update(net_id):
+    if not current_user.net_id == net_id:
+        return redirect("/", code=301)
+
+    result = request.form
+    if current_user.is_student:
+        user = Student.get_student_by_netid(net_id)
+        new_email = result["user_email"] or (net_id + "@cornell.edu")
+        new_year = result["user_year"] or "Freshman"
+        new_description = result["user_description"] or " "
+        courses = result["profile_courses"] or " "
+        availability = ','.join(result.getlist("weekday"))
+        f = request.files['resume']
+        if f:
+            if allowed_file(f.filename):
+                extension = f.filename.rsplit('.', 1)[1]
+                f.filename = net_id + "_resume." + extension
+                filename = secure_filename(f.filename)
+                f.save(os.path.join('uploads/', filename))
             else:
+                flash('Resume File Type Not Accepted')
                 filename = None
-            Student.update_student(
-                net_id, email=new_email, name=None, major=user.major,
-                year=new_year, resume=filename, description=new_description,
-                favorited_projects=None,
-                availability=availability, courses=courses
-            )
         else:
-            Professor.update_professor(
-                net_id,
-                name=result.get('name', None),
-                email=result.get('user_email', None),
-                website=result.get('website', None),
-                office=result.get('office_loc', None)
-            )
-        return redirect("/profile/" + net_id, code=302)
-    else:
-        return render_template(
-            'profile.html',
-            title=current_user.name + "'s Profile",
-            base_url=BASE_URL,
-            profile=current_user,
-            isInIndex=True,
-            all_courses=COURSES,
-            favorited_projects=favorited_projects,
-            active_collection=active_collection,
-            inactive_collection=inactive_collection
-
+            filename = None
+        Student.update_student(
+            net_id, email=new_email, name=None, major=user.major,
+            year=new_year, resume=filename, description=new_description,
+            favorited_projects=None,
+            availability=availability, courses=courses
         )
+    else:
+        Professor.update_professor(
+            net_id,
+            name=result.get('name', None),
+            email=result.get('user_email', None),
+            website=result.get('website', None),
+            office=result.get('office_loc', None)
+        )
+    return redirect("/profile/" + net_id, code=302)
 
 
 def current_semester(date):
@@ -251,7 +253,7 @@ def createpost():
             stale_date=datetime.date(year=year, day=day, month=month),
             contact_email=result['post_professor_email'].strip(),
             project_link=result['project-link'].strip(),
-            required_courses=result['courses'],  # required courses
+            required_courses=result['courses'].lower().strip().split(','),
         )
         return redirect("/posts", code=301)
     else:
@@ -270,7 +272,7 @@ def createpost():
 @login_required
 def showpost(post_id):
     post = Post.get_post_by_id(post_id)
-    if not post:
+    if not post or not post.is_active:
         return redirect('/')
 
     post = post.serialize
@@ -353,26 +355,22 @@ def editpost(post_id):
         )
 
 
-@app.route('/styleguide', methods=['GET'])
-def get_styleguide():
-    return render_template(
-        'styleguide.html'
-    )
-
-
 @app.errorhandler(413)
-def page_not_found(e):
+def file_too_large(e):
     flash('Resume File Size Exceeds Limit')
     return redirect("/profile/" + current_user.net_id, code=302)
+
 
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('errorpages/404.html'), 404
 
+
 @app.errorhandler(403)
-def page_not_found(e):
+def forbidden(e):
     return render_template('errorpages/403.html'), 403
 
+
 @app.errorhandler(500)
-def page_not_found(e):
+def internal_error(e):
     return render_template('errorpages/500.html'), 500

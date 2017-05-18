@@ -19,6 +19,7 @@ class Student(db.Model):
     courses = db.Column(db.String(10000))
     #is_grad = db.Column(db.Boolean, default = False)
     is_student = True
+
     # This is for Login Stuff
     is_authenticated = True
     is_active = True
