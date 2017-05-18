@@ -15,6 +15,7 @@
                     <div class="header card">
                          <span id="edit-profile-icon"> <i class="fa fa-pencil-square-o" aria-hidden="true"
                                 style="margin-left: 5px" height="50%" width="50%"></i> </span> 
+
                         <div class="form-group">
                             <label> Name </label>
                             <div id="name-editable" class="name">
@@ -34,7 +35,7 @@
                         <div class="form-group">
                             <label>Website</label>
                             <div id="website-editable">
-                                {{current_user.desc}}
+                                {{current_user.website}}
                              
                             </div>
                         </div>
@@ -42,7 +43,7 @@
                         <div class="form-group">
                             <label>Office Location</label>
                             <div id="office-editable">
-                                {{current_user.interests}}
+                                {{current_user.office}}
                              
                             </div>
                         </div>
@@ -122,7 +123,7 @@ $('#edit-profile-icon').click(function(event){
     {% if current_user.desc == 'None': %}
     var innertext = 'http://'
     {% else: %}
-    var innertext = '{{current_user.desc}}'
+    var innertext = '{{current_user.website}}'
     {% endif %}
     $('#website-editable').html('<input class="form-control" type="text" name="website" value="' + innertext + '">');
     $('#website-editable').attr('id', 'website-editing');
@@ -131,7 +132,7 @@ $('#edit-profile-icon').click(function(event){
     {% if current_user.interests == 'None': %}
     var innertext = ''
     {% else: %}
-    var innertext = '{{current_user.interests}}'
+    var innertext = '{{current_user.office}}'
     {% endif %}
     $('#office-editable').html('<input class="form-control" type="text" name="office_loc" value="' + innertext + '">')
     $('#office-editable').attr('id', 'office-editing');
