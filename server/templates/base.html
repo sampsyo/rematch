@@ -29,6 +29,9 @@
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <!-- Toggle JS -->
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    
   </head>
   <body>
     {% include "partials/header.html" %}
@@ -57,6 +60,6 @@
         {% block content %}{% endblock %}
       </div>
     </div>
-    <script src="{{BASE_URL}}/js/posts.js"></script>
+    <script src="{{BASE_URL}}/js/posts.js?net_id={{current_user.net_id}}"></script>
   </body>
 </html>
