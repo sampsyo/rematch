@@ -10,16 +10,13 @@
 				<input value="{{search_tags}}" autofocus="autofocus" autocomplete="off" class="input_tags form-control" type="text" data-role="tagsinput" name="search_tags"/>
 			</div>
             {% if current_user.is_student: %}
-			<div class="checkbox">
-			  <label><input class="checkbox desired_courses" type="checkbox"
-                                                    value="true" name="courses" {{checked}}>Only
-                                                                 show listings
-                                                                 where I meet
-                                                                 course
-                                                                 requirements.</label>
+            <div class="form-group">
+                <div class="checkbox">
+                <label><input class="checkbox desired_courses" type="checkbox" value="true" name="courses" {{checked}}>Only show listings where I meet course requirements.</label>
+                </div>
 			</div>
-              {% endif %}
-			<input type="submit" class="btn btn-primary" value="Search">
+            {% endif %}
+            <input type="submit" class="btn btn-primary" value="Search">
 		</div>
     </form>
 </div>
