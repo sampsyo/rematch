@@ -18,8 +18,11 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 300;
   color: #000000; }
 
-p, a {
+p {
   color: #444444; }
+
+a {
+  color: #337ab7; }
 
 .nav-tabs {
   font-weight: 300;
@@ -33,6 +36,7 @@ p, a {
     border: none;
     border-bottom: 2px solid #ad1b1b; }
   .nav-tabs > li > a {
+    color: #444444;
     border: none;
     padding: 12px 17px; }
   .nav-tabs > li > a:hover {
@@ -100,7 +104,10 @@ p, a {
     font-size: 18px;
     margin-top: 0px;
     font-weight: 400;
-    margin-bottom: 5px; }
+    margin-bottom: 5px;
+    color: #444444; }
+  .card .title a {
+    color: #444444; }
   .card .professor {
     margin-top: 10px;
     margin-bottom: 5px;
@@ -252,6 +259,14 @@ p, a {
   font-family: 'Open Sans';
   font-weight: 300;
   padding: 6px 14px; }
+.profile #edit-profile {
+  float: right;
+  font-size: 14px;
+  cursor: pointer;
+  color: #337ab7; }
+.profile #edit-profile:hover {
+  color: #337ab7;
+  text-decoration: underline; }
 
 code {
   display: block;

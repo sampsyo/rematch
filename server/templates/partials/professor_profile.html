@@ -13,8 +13,8 @@
             <form method="POST">    
                 <div class="profile">
                     <div class="header card">
-                         <span id="edit-profile-icon"> <i class="fa fa-pencil-square-o" aria-hidden="true"
-                                style="margin-left: 5px" height="50%" width="50%"></i> </span> 
+                        <span id="edit-profile"> <i class="fa fa-pencil-square-o" aria-hidden="true"
+                                style="margin-left: 5px" height="50%" width="50%"></i> Edit profile </span> 
 
                         <div class="form-group">
                             <label> Name </label>
@@ -98,9 +98,9 @@
 </div>
 <script type="text/javascript">
 
-$('#edit-profile-icon').click(function(event){
+$('#edit-profile').click(function(event){
     // remove the icon
-    $('#edit-profile-icon').html(''); 
+    $('#edit-profile').html(''); 
     // name
     {% if current_user.name == 'None': %}
     var innertext = ''

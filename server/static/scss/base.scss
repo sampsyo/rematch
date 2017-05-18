@@ -22,8 +22,12 @@ h1, h2, h3, h4, h5, h6 {
 	font-weight: 300;
 	color: $title-color;
 }
-p, a {
+p {
 	color: $text-color;
+}
+
+a{
+	color: $link-color;
 }
 
 .nav-tabs {
@@ -41,6 +45,7 @@ p, a {
     	border-bottom: 2px solid $primary-color;
     }
     &>li>a {
+		color: $text-color;
     	border: none;
     	padding: 12px 17px;
     }
@@ -138,6 +143,10 @@ p, a {
 	    margin-top: 0px;
 	    font-weight: 400;
 	    margin-bottom: 5px;
+		color: $text-color;
+	}
+	.title a{ 
+		color: $text-color; 
 	}
 	.professor {
 		margin-top: 10px;
@@ -158,7 +167,7 @@ p, a {
 		padding-top: 5px;
 	}
 	.more {
-		color: #337ab7;
+		color: $link-color;
 		display: block;
 		font-size: 14px; 
 		&:hover {
@@ -337,8 +346,18 @@ p, a {
 	    font-weight: 300;
 	    padding: 6px 14px;
 	}
+	
+	#edit-profile{ 
+		float: right; 
+		font-size: 14px;
+		cursor: pointer;
+		color: $link-color;  
+	}
+	#edit-profile:hover{
+		color: $link-color; 
+		text-decoration: underline; 
+	}
 }
-
 
 
 
