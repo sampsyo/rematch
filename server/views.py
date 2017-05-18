@@ -7,6 +7,24 @@ from werkzeug import secure_filename
 from config import BASE_URL, TAGS, COURSES
 import os
 import datetime
+from apscheduler.schedulers.background import BackgroundScheduler
+
+
+def check_stale_posts():
+    with app.app_context():
+        posts = Post.get_all_posts()
+        print "Hello"
+        for post in posts:
+            if post.stale_date < db.func.current_timestamp():
+                post.is_active = False
+
+
+@app.before_first_request
+def initialize():
+    apsched = BackgroundScheduler()
+    apsched.start()
+
+    apsched.add_interval_job(check_stale_posts, seconds=5)
 
 
 @app.route('/', methods=['GET'])
@@ -137,7 +155,7 @@ def profile(net_id):
                 name=result.get('name', None),
                 email=result.get('user_email', None),
                 website=result.get('website', None),
-                office=result.get('office_loc', None)   
+                office=result.get('office_loc', None)
             )
         return redirect("/profile/" + net_id, code=302)
     else:

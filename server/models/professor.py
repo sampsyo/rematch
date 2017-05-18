@@ -4,7 +4,7 @@ from server import db
 class Professor(db.Model):
     __tablename__ = 'professors'
     net_id = db.Column(db.String(64), primary_key=True)
-    name = db.Column(db.String(64), index=True, unique=True)
+    name = db.Column(db.String(64), index=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password = db.Column(db.String(128))
     desc = db.Column(db.String(10000))
