@@ -53,6 +53,33 @@ def posts():
     )
 
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'GET':
+        return render_template('register.html')
+    result = request.form
+    is_student = result['is_student']
+    net_id = result['net_id']
+    password = result['password']
+    if not (net_id and password and is_student):
+        flash('Net_id,password and is_student fields required!')
+        return redirect('/register')
+    new_user = None
+    if is_student:
+        new_user = Student.create_student(
+            net_id=net_id, name=result['name'], email=result['email'],
+            password=password)
+    else:
+        new_user = Professor.create_professor(
+            net_id=net_id, name=result['name'], email=result['email'],
+            password=password)
+    if not new_user:
+        flash('User with that net_id already exists!')
+        return redirect('/register')
+    flash('User successfully registered')
+    return redirect('/login')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
