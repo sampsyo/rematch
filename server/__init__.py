@@ -2,6 +2,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import os
+from apscheduler.schedulers.background import BackgroundScheduler
+import utils
 
 # NOTE: Need to do this once we enable searching with the db using whoosh
 # from config import basedir
@@ -22,6 +24,10 @@ if not os.path.isdir('uploads/'):
 from server.views import *
 from routes import *
 from models import Professor, Student
+
+scheduler = BackgroundScheduler()
+scheduler.start()
+scheduler.add_job(utils.disable_stale_posts, 'interval', days=1)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
