@@ -58,7 +58,7 @@ def create_post():
         qualifications='',
         desired_skills="",
         stale_date=r.get('stale_date'),
-        #grad_only=False,
+        grad_only=False,
         required_courses="",
         project_link="",
         contact_email=""

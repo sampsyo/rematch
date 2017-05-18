@@ -9,44 +9,53 @@
       <!-- Tab panes -->
       <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="myprofile">
+
             <form method="POST">    
                 <div class="profile">
+
                     <div class="header card">
-                          <div id="name-editable" class="name">
+                        <div id="name-editable" class="name">
                             {{current_user.name}}
                             <i class="fa fa-pencil-square-o" aria-hidden="true"
-                            style="margin-left: 5px" height="50%" width="50%"></i> 
-                          </div>
-                          <br>
+                            style="margin-left: 5px" height="50%" width="50%"></i>
+                            <hr>
+                        </div>
 
                         <div class="form-group">
                             <label>Contact Email</label>
-                         <div id="email-editable">
-                            {{current_user.email}}
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"
-                            style="margin-left: 5px"></i> 
-                         </div>
+                            <div id="email-editable">
+                                {{current_user.email}}
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"
+                                style="margin-left: 5px"></i>
+                            </div>
                         </div>
+
                         <div class="form-group">
-                            <label>Website</label><br>
-                     <div id="website-editable">
-                            {{current_user.desc}}
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"
-                            style="margin-left: 5px"></i> 
-                     </div>
+                            <label>Website</label>
+                            <div id="website-editable">
+                                {{current_user.desc}}
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"
+                                style="margin-left: 5px"></i> 
+                            </div>
                         </div>
+
                         <div class="form-group">
-                            <label>Office Location</label><br>
-                     <div id="office-editable">
-                            {{current_user.interests}}
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"
-                            style="margin-left: 5px"></i> 
-                     </div>
+                            <label>Office Location</label>
+                            <div id="office-editable">
+                                {{current_user.interests}}
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"
+                                style="margin-left: 5px"></i> 
+                            </div>
                         </div>
-                        <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary">
+
+                        <div class="form-group">
+                            <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary">
+                        </div>
                     </div>
+
                 </div>
             </form>
+
         </div>
         <div role="tabpanel" class="tab-pane" id="starred">
             {% if active_collection: %}

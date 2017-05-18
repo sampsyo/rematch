@@ -4,7 +4,7 @@ from .forms import LoginForm
 from flask_login import login_user, logout_user, login_required, current_user
 from models import Post, Student, Professor
 from werkzeug import secure_filename
-from config import BASE_URL
+from config import BASE_URL, TAGS, COURSES
 import os
 import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -60,7 +60,7 @@ def posts():
         posts=posts,
         search=True,
         isInIndex=True,
-        tags=Post.TAGS,
+        tags=TAGS,
         total_number_of_pages=total_number_of_pages,
         search_tags=search_tags or '',
         checked='checked' if bool(courses) else '',
@@ -165,7 +165,7 @@ def profile(net_id):
             base_url=BASE_URL,
             profile=current_user,
             isInIndex=True,
-            all_courses=Post.COURSES,
+            all_courses=COURSES,
             favorited_projects=favorited_projects,
             active_collection=active_collection,
             inactive_collection=inactive_collection
@@ -270,8 +270,8 @@ def createpost():
             'createpost.html',
             base_url=BASE_URL,
             title='Submit Research Listing',
-            all_tags=Post.TAGS,
-            all_courses=Post.COURSES,
+            all_tags=TAGS,
+            all_courses=COURSES,
             post=Post.empty,
             options=options
         )
@@ -357,8 +357,8 @@ def editpost(post_id):
             'createpost.html',
             base_url=BASE_URL,
             id='Sign In',
-            all_tags=Post.TAGS,
-            all_courses=Post.COURSES,
+            all_tags=TAGS,
+            all_courses=COURSES,
             post=post,
             options=options
         )
