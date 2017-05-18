@@ -90,7 +90,6 @@ def allowed_file(filename):
 @app.route('/profile/<net_id>', methods=['GET'])
 @login_required
 def profile(net_id):
-    import ipdb; ipdb.set_trace()
     if not current_user.net_id == net_id:
         return redirect("/", code=301)
 
