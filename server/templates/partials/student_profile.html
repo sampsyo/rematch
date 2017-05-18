@@ -20,8 +20,6 @@
                             <div id="name-editable" class="name">{{profile.name}}</div>
                             <hr> 
                         </div> 
-                        <br>
-
                         <div class="form-group">
                             <label>Major</label>
                             <p>{{profile.major}}</p>
@@ -54,7 +52,7 @@
                         <div class="form-group typeahead">
                             <label>Courses</label>
                             <div id="courses-editable">
-                              <ul class="tags fullpost">
+                              <ul class="tags profile-tags">
                                 {% for course in profile.courses.split(',') %}
                                     <span class="tag course-tag">{{course}}</span>
                                 {% endfor %}
@@ -144,6 +142,8 @@ $('#edit-profile').click(function(event){
                             '</select>'
     $('#year-editable').html(yearform); 
     $('#year-editable').attr('id', 'year-editing');
+    
+    
     // bio and experience
     {% if current_user.description == 'None': %}
     var innertext = ""
@@ -152,7 +152,15 @@ $('#edit-profile').click(function(event){
     {% endif %}
     $('#bio-editable').html(' <textarea name="user_description" rows="5" class="form-control">'+innertext+'</textarea>')
     $('#bio-editable').attr('id', 'bio-editing');
-    $('#courses-editable').html('<input autocomplete="on" class="tags-input" type="text" value="'+'{{ profile.courses if profile.courses else '' }}'+'" data-role="tagsinput" name="profile_courses"/>')
+    
+    
+    //courses
+    {% if profile.courses == 'None': %}
+    var innertext = ""
+    {% else: %}
+    var innertext = '{{profile.courses}}'
+    {% endif %}
+    $('#courses-editable').html('<input autocomplete="on" class="tags-input" type="text" value="'+innertext+'" data-role="tagsinput" name="profile_courses"/>')
 });
 
 </script>
