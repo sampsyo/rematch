@@ -16,7 +16,7 @@
                         <span id="edit-profile"> <i class="fa fa-pencil-square-o" aria-hidden="true"
                                 style="margin-left: 5px" height="50%" width="50%"></i> Edit profile </span> 
 
-                        <div class="form-group">
+                        <div class="form-group validate-input">
                             <label>Name</label>
                             <div id="name-editable" class="name">
                                 {{current_user.name}}
@@ -141,42 +141,13 @@ function validate() {
     var isValid = true;
     // title
     $(".validate-input").each(function() {
-        if ($(this) + " .input") {
-            console.log($(this));
+        var child = $(this).find("input");
+        if (child.val().length <= 0) {
+            //console.log( child.val().length );
             $(this).addClass("invalidInput");
+            isValid = false;
         }
     });
-
-
-    if (!$(".validate-input input").val()) {
-        console.log("aaa");
-        $(this).addClass("invalidInput");
-        isValid = false;
-    } else {
-        $("#post_title").removeClass("invalidInput");
-    }
-    // description
-    if (!$("#post_description_group textarea").val()) {
-        $("#post_description_group").addClass("invalidInput");
-        isValid = false;
-    } else {
-        $("#post_description_group").removeClass("invalidInput");
-    }
-    // tags
-    var tags = $("#post_topics_group .bootstrap-tagsinput .tag");
-    if (tags.length <= 0) {
-        $("#post_topics_group").addClass("invalidInput");
-        isValid = false;
-    } else {
-        $("#post_topics_group").removeClass("invalidInput");
-    }
-    // email
-    if (!$("#post_email_group input").val()) {
-        $("#post_email_group").addClass("invalidInput");
-        isValid = false;
-    } else {
-        $("#post_email_group").removeClass("invalidInput");
-    }
     return isValid;
 }
 
