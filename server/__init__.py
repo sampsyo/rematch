@@ -26,7 +26,7 @@ from models import Professor, Student, Post
 
 scheduler = BackgroundScheduler()
 scheduler.start()
-#scheduler.add_job(Post.disable_stale_posts, 'interval', seconds=5)
+scheduler.add_job(Post.disable_stale_posts, 'interval', days=1)
 
 login_manager = LoginManager()
 login_manager.init_app(app)

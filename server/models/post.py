@@ -1,6 +1,7 @@
 from server import db
 from config import PAGINATION_PER_PAGE
 from sqlalchemy import desc, or_, not_
+from server.utils import send_email
 # from server.models.professor import Professor
 
 
@@ -16,7 +17,6 @@ class Post(db.Model):
     stale_date = db.Column(db.DateTime)
     contact_email = db.Column(db.String(10000))
     project_link = db.Column(db.String(10000))
-    grad_only = db.Column(db.Boolean, default=False, nullable=False)
     date_created = db.Column(db.DateTime, default=db.func.now())
     date_modified = db.Column(db.DateTime, default=db.func.now(),
                               onupdate=db.func.now())
@@ -25,14 +25,13 @@ class Post(db.Model):
     def get_posts(cls, page=None, compressed=False, descend=True,
                   active_only=False, inactive_only=False,
                   professor_id=None, keywords=None, tags=None,
-                  required_courses=None, grad_only=False, stale=None):
+                  required_courses=None, stale=None):
         """
             page: current page of pagination, else None to get all posts
             compressed: True to get the compressed serialization
             descend: True to order descending by post id (creation)
             active_only: Only show active posts
             inactive_only: Only show inactive posts
-            grad_only: True to only show listings for graduate listings
             professor_id: string, usually netid
             keywords: a string of keywords, exact match searched in the
                 title and description of a post
@@ -49,8 +48,6 @@ class Post(db.Model):
             query = query.filter_by(is_active=False)
         if professor_id:
             query = query.filter_by(professor_id=professor_id)
-        if grad_only:
-            query = query.filter_by(grad_only=grad_only)
         if stale:
             query = query.filter(Post.stale_date < db.func.now())
 
@@ -94,11 +91,22 @@ class Post(db.Model):
             return ([p.serialize for p in posts], has_next, number_pages)
 
     @classmethod
+    def get_post_by_id(cls, post_id):
+        if not post_id:
+            return None
+
+        post = Post.query.filter(Post.id == int(post_id)).first()
+        if post:
+            return post
+        else:
+            return None
+
+    @classmethod
     def create_post(cls, title=None, description=None, professor_id=None,
                     tags=None, stale_date=None, contact_email=None,
-                    project_link=None, required_courses=None, grad_only=None):
+                    project_link=None, required_courses=None):
         if None in (title, description, professor_id, tags, stale_date,
-                    contact_email, project_link, required_courses, grad_only):
+                    contact_email, project_link, required_courses):
             return None
 
         # if not (Professor.get_professor_by_netid(professor_id)):
@@ -112,8 +120,7 @@ class Post(db.Model):
             stale_date=stale_date,
             contact_email=contact_email,
             project_link=project_link,
-            required_courses=required_courses,
-            grad_only=grad_only
+            required_courses=''.join(required_courses),
         )
         db.session.add(post)
         db.session.commit()
@@ -125,7 +132,7 @@ class Post(db.Model):
                     description=None, is_active=None,
                     professor_id=None, tags=None,
                     required_courses=None, title=None, project_link=None,
-                    contact_email=None, stale_date=None, grad_only=None):
+                    contact_email=None, stale_date=None):
         post = Post.get_post_by_id(post_id)
         if not post:
             return None
@@ -147,8 +154,6 @@ class Post(db.Model):
             post.required_courses = required_courses
         if stale_date:
             post.stale_date = stale_date
-        if grad_only:
-            post.grad_only = grad_only
 
         db.session.commit()
         return post
@@ -166,6 +171,7 @@ class Post(db.Model):
 
     @classmethod
     def delete_post(cls, post_id):
+        """ This method is currently not in use. """
         post = Post.get_post_by_id(post_id)
         if post:
             db.session.delete(post)
@@ -214,9 +220,7 @@ class Post(db.Model):
             'title': '',
             'description': '',
             'tags': '',
-            'qualifications': '',
             'professor_id': '',
-            'desired_skills': '',
             'is_active': '',
             'date_created': '',
             'date_modified': '',
@@ -229,12 +233,14 @@ class Post(db.Model):
     @staticmethod
     def disable_stale_posts():
         """ Triggered by a scheduler that is initialized in server/__init__.py
-        Trigger interval can be set in the configuration file.
+        Trigger interval is once per day.
         """
         print 'Running stale post scheduler.'
-        stale_posts = Post.get_posts(active_only=True, stale=True)
+        stale_posts, _, _ = Post.get_posts(active_only=True, stale=True)
         print stale_posts
         for post in stale_posts:
             print 'Setting post %s to inactive.' % post['id']
             Post.update_post(post['id'], is_active=False)
-            print 'We should notify %s' % post['contact_email']
+            send_email(post['contact_email'],
+                       'Your research listing has expired',
+                       'Just to let you know!')
