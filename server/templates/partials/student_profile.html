@@ -52,11 +52,20 @@
                             {% set skills = profile.courses %}
                         {% endif %}
                         <div class="form-group typeahead">
-                            <label>Courses</label><br>
-                            <input autocomplete="on" class="tags-input" type="text" value="{{ profile.courses if profile.courses else '' }}" data-role="tagsinput" name="profile_courses"/>
+                            <label>Courses</label>
+                            <div id="courses-editable">
+                              <ul class="tags fullpost">
+                                {% for course in profile.courses.split(',') %}
+                                    <span class="tag course-tag">{{course}}</span>
+                                {% endfor %}
+                            </ul>
+                            </div> 
                         </div>
-{% if False: %}
-RESUMES DISABLED
+
+                          
+        
+        {% if False: %}
+        RESUMES DISABLED
                         <div class="form-group">
                             <label class="resume">
                                 <input id="resume-upload" type="file" name="resume"/>
@@ -66,8 +75,9 @@ RESUMES DISABLED
                         {% if profile.resume %}
                             <span class="file-selected">{{profile.resume}}</span>
                         {% endif %}
-{% endif %}
-                        <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary">
+        {% endif %}
+
+                     <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary">
                     </div>
                 </div>
             </form>
@@ -97,6 +107,7 @@ RESUMES DISABLED
 <script type="text/javascript">
 
 $('#edit-profile').click(function(event){
+     $('#save-profile-updates').css('display', 'block');
     // remove the icon
     $('#edit-profile').html(''); 
     // name
@@ -141,7 +152,7 @@ $('#edit-profile').click(function(event){
     {% endif %}
     $('#bio-editable').html(' <textarea name="user_description" rows="5" class="form-control">'+innertext+'</textarea>')
     $('#bio-editable').attr('id', 'bio-editing');
-
+    $('#courses-editable').html('<input autocomplete="on" class="tags-input" type="text" value="'+'{{ profile.courses if profile.courses else '' }}'+'" data-role="tagsinput" name="profile_courses"/>')
 });
 
 </script>
