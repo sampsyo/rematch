@@ -17,7 +17,6 @@ class Post(db.Model):
     stale_date = db.Column(db.DateTime)
     contact_email = db.Column(db.String(10000))
     project_link = db.Column(db.String(10000))
-    grad_only = db.Column(db.Boolean, default=False, nullable=False)
     date_created = db.Column(db.DateTime, default=db.func.now())
     date_modified = db.Column(db.DateTime, default=db.func.now(),
                               onupdate=db.func.now())
@@ -26,7 +25,7 @@ class Post(db.Model):
     def get_posts(cls, page=None, compressed=False, descend=True,
                   active_only=False, inactive_only=False,
                   professor_id=None, keywords=None, tags=None,
-                  required_courses=None, grad_only=False, stale=None):
+                  required_courses=None, stale=None):
         """
             page: current page of pagination, else None to get all posts
             compressed: True to get the compressed serialization
@@ -50,8 +49,6 @@ class Post(db.Model):
             query = query.filter_by(is_active=False)
         if professor_id:
             query = query.filter_by(professor_id=professor_id)
-        if grad_only:
-            query = query.filter_by(grad_only=grad_only)
         if stale:
             query = query.filter(Post.stale_date < db.func.now())
 
@@ -97,9 +94,9 @@ class Post(db.Model):
     @classmethod
     def create_post(cls, title=None, description=None, professor_id=None,
                     tags=None, stale_date=None, contact_email=None,
-                    project_link=None, required_courses=None, grad_only=None):
+                    project_link=None, required_courses=None):
         if None in (title, description, professor_id, tags, stale_date,
-                    contact_email, project_link, required_courses, grad_only):
+                    contact_email, project_link, required_courses):
             return None
 
         # if not (Professor.get_professor_by_netid(professor_id)):
@@ -114,7 +111,6 @@ class Post(db.Model):
             contact_email=contact_email,
             project_link=project_link,
             required_courses=required_courses,
-            grad_only=grad_only
         )
         db.session.add(post)
         db.session.commit()
@@ -126,7 +122,7 @@ class Post(db.Model):
                     description=None, is_active=None,
                     professor_id=None, tags=None,
                     required_courses=None, title=None, project_link=None,
-                    contact_email=None, stale_date=None, grad_only=None):
+                    contact_email=None, stale_date=None):
         post = Post.get_post_by_id(post_id)
         if not post:
             return None
@@ -148,8 +144,6 @@ class Post(db.Model):
             post.required_courses = required_courses
         if stale_date:
             post.stale_date = stale_date
-        if grad_only:
-            post.grad_only = grad_only
 
         db.session.commit()
         return post
