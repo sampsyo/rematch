@@ -12,8 +12,16 @@
             <form method="POST" enctype = "multipart/form-data">    
                 <div class="profile">
                     <div class="header card">
-                        <div class="name">{{profile.name}}</div>
+                         <span id="edit-profile"> <i class="fa fa-pencil-square-o" aria-hidden="true"
+                                style="margin-left: 5px" height="50%" width="50%"></i> Edit profile </span> 
+
+                         <div class="form-group">
+                            <label> Name </label>
+                            <div id="name-editable" class="name">{{profile.name}}</div>
+                            <hr> 
+                        </div> 
                         <br>
+
                         <div class="form-group">
                             <label>Major</label>
                             <p>{{profile.major}}</p>
@@ -21,24 +29,24 @@
 
                         <div class="form-group">
                             <label>Email</label>
-                            <input class="form-control" type="text" name="user_email" value="{{profile.email}}">
+                             <div id="email-editable">
+                                {{profile.email}}
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label>Year</label><br>
-                            <select id="user_year_select" name="user_year" class="form-control">
-                              <option value="Freshman">Freshman</option>
-                              <option value="Sophomore">Sophomore</option>
-                              <option value="Junior">Junior</option>
-                              <option value="Senior">Senior</option>
-                              <option value="Graduate">Graduate</option>
-                              <option value="Post-graduate">Post-graduate</option>
-                            </select>
+                            <div id="year-editable">
+                                {{profile.year}}
+                            </div>
+                            
                         </div>
 
                         <div class="form-group">
                             <label>Bio &amp; Experience</label><br>
-                            <textarea name="user_description" rows="5" class="form-control">{{profile.description}}</textarea>
+                            <div id="bio-editable">
+                                {{profile.description}}
+                            </div>
                         </div>
                         {% if profile.courses %}
                             {% set skills = profile.courses %}
@@ -80,3 +88,57 @@
         </div>
     </div>
 </div>
+
+
+
+<script type="text/javascript">
+
+$('#edit-profile').click(function(event){
+    // remove the icon
+    $('#edit-profile').html(''); 
+    // name
+    {% if current_user.name == 'None': %}
+    var innertext = ''
+    {% else: %}
+    var innertext = '{{current_user.name}}'
+    {% endif %}
+    $('#name-editable').html('<input class="form-control professor-name-input" type="text" name="name" value="'+innertext+'">');
+    $('#name-editable').attr('id', 'name-editing');
+
+    // email
+    {% if current_user.email == 'None': %}
+    var innertext = ''
+    {% else: %}
+    var innertext = '{{current_user.email}}'
+    {% endif %}
+    $('#email-editable').html('<input class="form-control" type="text" name="email" value="'+innertext+'">');
+    $('#email-editable').attr('id', 'email-editing');
+
+    // year
+    {% if current_user.year == 'None': %}
+    var currentyear = ''
+    {% else: %}
+    var currentyear = '{{current_user.year}}'
+    {% endif %}
+    var yearform= '<select id="user_year_select" name="user_year" class="form-control">'+
+                              '<option value="Freshman">Freshman</option>' +
+                              '<option value="Sophomore">Sophomore</option>' +
+                              '<option value="Junior">Junior</option>' +
+                              '<option value="Senior">Senior</option>' +
+                              '<option value="Graduate">Graduate</option>' +
+                              '<option value="Post-graduate">Post-graduate</option>' +
+                            '</select>'
+    $('#year-editable').html(yearform); 
+    $('#year-editable').attr('id', 'year-editing');
+    // bio and experience
+    {% if current_user.description == 'None': %}
+    var innertext = ""
+    {% else: %}
+    var innertext = '{{profile.description}}'
+    {% endif %}
+    $('#bio-editable').html(' <textarea name="user_description" rows="5" class="form-control">'+innertext+'</textarea>')
+    $('#bio-editable').attr('id', 'bio-editing');
+
+});
+
+</script>
