@@ -2,13 +2,8 @@ from flask import jsonify, request
 from server import app
 from server.models.professor import Professor
 
-# Returns a Response object of all professors from the database
-@app.route('/api/professors', methods=['GET'])
-def get_all_professors():
-    return jsonify(professors=Professor.get_all_professors())
 
-
-# Add a new user to the database 
+# Add a new user to the database
 # Return a Response object if valid professor
 @app.route('/api/professors', methods=['POST'])
 def create_professor():
