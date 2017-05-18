@@ -619,7 +619,7 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         assert len(Professor.get_all_professors()) == 1 
-        s3 = Professor.update_professor("abc", desc = "new description") 
+        s3 = Professor.update_professor("abc", website = "new description") 
         s3 = Professor.get_professor_by_netid("abc") 
         assert s3.net_id == "abc"
         assert s3.name == "hello"
@@ -636,7 +636,7 @@ class TestCase(unittest.TestCase):
         Professor.create_professor(net_id = "abc",  name = "hello", 
             email = "abc@cornell.edu", password = "123") 
         assert len(Professor.get_all_professors()) == 1 
-        s3 = Professor.update_professor("abc", interests = "new interests") 
+        s3 = Professor.update_professor("abc", office = "new interests") 
         s3 = Professor.get_professor_by_netid("abc") 
         assert s3.net_id == "abc"
         assert s3.name == "hello"
