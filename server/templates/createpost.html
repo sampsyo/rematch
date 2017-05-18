@@ -1,197 +1,69 @@
 <!-- extend base layout -->
 {% extends "base.html" %}
 {% block content %}
-
     <div class="spacer"></div>
     <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 center">
         <div class="card">
             <form method="POST" onsubmit="return validate(this)">
-
-                <div id="post_title" class="form-group" >
+                <div id="post_title" class="form-group">
                     <label>Project Title*:</label>
                     <input type="text" name="post_title" class="form-control" value="{{post['title']}}">
                 </div>
-
                 <div class="form-group">
                     <label>Project Link:</label>
-                     <p class="helper-text"> Please include http:// at the start of your url. </p> 
-                    <input type="text" name="project-link" class="form-control"
-                                   {% if not post['project_link']: %}
-                                   value="http://"
-                                   {% else %}
-                                   value={{post['project_link']}}
-                                   {% endif %}>
+                    <p class="helper-text">Please include http:// at the start of your url.</p>
+                    <input type="text" name="project-link" class="form-control" 
+                    {% if not post['project_link']: %}
+                        value="http://"
+                    {% else %}
+                        value={{post['project_link']}}
+                   {% endif %}>
                 </div>
-
                 <div id="post_description_group" class="form-group">
                     <label>Project Description*:</label>
-                     <p class="helper-text"> Provide information about research topic, qualifications, time committment, and number of students you are seeking.  </p> 
-                    <textarea name="post_description" class="form-control"
-                              id="post_description" rows="5">{{post['description']}}</textarea>
+                    <p class="helper-text">Provide information about research topic, qualifications, time committment, and number of students you are seeking.</p> 
+                    <textarea name="post_description" class="form-control" id="post_description" rows="5">{{post['description']}}</textarea>
                 </div>
-
                 <div id="post_topics_group" class="form-group">
                     <label>Topics*:</label><br>
-                    <p class="helper-text"> Search and select research topics relevant to this listing. </p> 
-                    <input id="post_topics" autocomplete="off" class="tags-input" type="text"
-                                                                 data-role="tagsinput"
-                                                                 name="tags"
-                                                                 value="{{post['tags']}}"/>
+                    <p class="helper-text">Search and select research topics relevant to this listing.</p>
+                    <input id="post_topics" autocomplete="off" class="tags-input" type="text" data-role="tagsinput" name="tags" value="{{post['tags']}}"/>
                 </div>
-
                 <div class="form-group">
                     <label>Desired Courses:</label><br>
-                    <p class="helper-text"> List the courses that you desire
-                    the applicants to have taken, if any.</p>
-                    <input autocomplete="off" class="courses-input" type="text"
-                                                                 data-role="coursesinput"
-                                                                 name="courses"
-                                                                 value="{{post['courses']}}"/>
+                    <p class="helper-text">List the courses that you desire the applicants to have taken, if any.</p>
+                    <input autocomplete="off" class="courses-input" type="text" data-role="coursesinput" name="courses" value="{{post['courses']}}"/>
                 </div>
-
                 {#
                 <div class="form-group">
                     <label>Required Skills:</label>
                     <textarea name="required-skills" class="form-control" rows="5"></textarea>
                 </div>
                 #}
-
-                <div class="form-group">    
-                    <label>Through which semester would you like to keep this listing live? </label> <br>
-                     <p class="helper-text"> Postings can be reactivated under your Profile page. </p> 
+                <div class="form-group">
+                    <label>Through which semester would you like to keep this listing live?</label>
+                    <p class="helper-text">Postings can be reactivated under your Profile page.</p> 
                     <select class="form-control" name="stale-days">
-                         {% for i in range(options|length) %}
-                             <option value={{i}}> {{ options[i] }}</option>
-                          {% endfor %}
-                            <option value="-1"> Continously </option> 
+                        {% for i in range(options|length) %}
+                            <option value={{i}}> {{ options[i] }}</option>
+                        {% endfor %}
+                        <option value="-1">Continously</option> 
                     </select>
                 </div>
-
                 <div id="post_email_group" class="form-group">
                     <label>Contact Email*:</label>
                     <input id="post_email" type="email" name="post_professor_email" class="form-control" value='{{current_user.email}}'>
                 </div>
-
                 <div class="form-group">
                     <input name="post-activate" class="activate-post-toggle" type="checkbox" {% if post['is_active'] %} checked {% endif %}>
                     <label>Activate Post</label>
                 </div>
-
                 <div class="form-group">
                     <input type="submit" class="btn btn-primary" value="Submit Listing">
                 </div>
             </form>
         </div>
     </div>
-    <script type="text/javascript">
-        var TAGS = {{ all_tags | safe }};
-        $('.tags-input').tagsinput({
-            typeahead: {
-                source: TAGS
-            },
-            freeInput: false,
-            // Typeahead fix
-            onTagExists: function() {
-                setTimeout(function() {
-                    $(">input[type=text]",".bootstrap-tagsinput").val("");
-                }, 1);
-            }
-        });
-        $('.tags-input').on('itemAdded', function(event) {
-            setTimeout(function(){
-                $(">input[type=text]",".bootstrap-tagsinput").val("");
-            }, 1);
-        });
-        // No Enter button
-        $('.bootstrap-tagsinput').keydown(function(event){
-            if(event.keyCode == 13) {
-                event.preventDefault();
-                return false;
-            }
-        });
-
-        $('.courses-input').tagsinput({
-            typeahead: {
-                source: {{ all_courses | safe }}
-            },
-            freeInput: false,
-            // Typeahead fix
-            onTagExists: function() {
-                setTimeout(function() {
-                    $(">input[type=text]",".bootstrap-tagsinput").val("");
-                }, 1);
-            }
-        });
-        $('.courses-input').on('itemAdded', function(event) {
-            setTimeout(function(){
-                $(">input[type=text]",".bootstrap-tagsinput").val("");
-            }, 1);
-        });
-        // No Enter button
-        $('.bootstrap-tagsinput').keydown(function(event){
-            if(event.keyCode == 13) {
-                event.preventDefault();
-                return false;
-            }
-        });
-
-        var typingTimer;                //timer identifier
-        var doneTypingInterval = 500;  //time in ms (5 seconds)
-
-        //on keyup, start the countdown
-        $('#post_description').keyup(function(){
-            clearTimeout(typingTimer);
-            if ($('#post_description').val()) {
-                typingTimer = setTimeout(doneTyping, doneTypingInterval);
-            }
-        });
-
-        //user is "finished typing," do something
-        function doneTyping () {
-            var description = $('#post_description').val().toLowerCase();
-            $.each(TAGS, function(i, value) {
-                if (description.includes(value) && value.length > 1 &&
-                        value != 'other') {
-                    $('.tags-input').tagsinput('add', value);
-                }
-            });
-        }
-
-
-        // validations
-        function validate() {
-            var isValid = true;
-            // title
-            if (!$("#post_title input").val()) {
-                $("#post_title").addClass("invalidInput");
-                isValid = false;
-            } else {
-                $("#post_title").removeClass("invalidInput");
-            }
-            // description
-            if (!$("#post_description_group textarea").val()) {
-                $("#post_description_group").addClass("invalidInput");
-                isValid = false;
-            } else {
-                $("#post_description_group").removeClass("invalidInput");
-            }
-            // tags
-            var tags = $("#post_topics_group .bootstrap-tagsinput .tag");
-            if (tags.length <= 0) {
-                $("#post_topics_group").addClass("invalidInput");
-                isValid = false;
-            } else {
-                $("#post_topics_group").removeClass("invalidInput");
-            }
-            // email
-            if (!$("#post_email_group input").val()) {
-                $("#post_email_group").addClass("invalidInput");
-                isValid = false;
-            } else {
-                $("#post_email_group").removeClass("invalidInput");
-            }
-            return isValid;
-        }
-    </script>
-
+    <script type="text/javascript" src="{{BASE_URL}}/js/create_post.js"></script>
+    <script type="text/javascript" src="{{BASE_URL}}/js/validate.js"></script>
 {% endblock %}

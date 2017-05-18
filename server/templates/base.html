@@ -60,6 +60,6 @@
         {% block content %}{% endblock %}
       </div>
     </div>
-    <script src="{{ url_for('static', filename='js/posts.js') }}"></script>
+    <script src="{{BASE_URL}}/js/posts.js?net_id={{current_user.net_id}}"></script>
   </body>
 </html>
