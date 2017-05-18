@@ -1,8 +1,8 @@
 var TAGS = {{all_tags | safe}}
 var COURSES = {{all_courses | safe}};
 
-console.log(TAGS);
-console.log(COURSES);
+//console.log(TAGS);
+//console.log(COURSES);
 
 $('.tags-input').tagsinput({
     typeahead: {
