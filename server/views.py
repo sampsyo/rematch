@@ -215,8 +215,8 @@ def profile_update(net_id):
             net_id,
             name=result.get('name', None),
             email=result.get('user_email', None),
-            website=result.get('website', None),
-            office=result.get('office_loc', None)
+            website=result.get('website', ''),
+            office=result.get('office_loc', '')
         )
     return redirect("/profile/" + net_id, code=302)
 
@@ -327,7 +327,8 @@ def createpost():
 @login_required
 def showpost(post_id):
     post = Post.get_post_by_id(post_id)
-    if not post or not post.is_active:
+    if not post or (not post.is_active and
+                    not current_user.net_id == post.professor_id):
         return redirect('/')
 
     post = post.serialize

@@ -16,8 +16,8 @@
                     <label>Project Link:</label>
                     <p class="helper-text">Please include http:// at the start of your url.</p>
                     <input type="text" name="project-link" class="form-control" 
-                    {% if not post['project_link']: %}
-                        value="http://"
+                    {% if not post['project_link'] and not post['title']: %}
+                        value={{ current_user.website or "http://" }}
                     {% else %}
                         value={{post['project_link']}}
                    {% endif %}>

@@ -56,9 +56,9 @@ class Professor(db.Model):
             professor.name = name
         if email:
             professor.email = email
-        if website:
+        if website is not None:
             professor.website = website
-        if office:
+        if office is not None:
             professor.office = office
         db.session.commit()
         return professor
