@@ -22,15 +22,9 @@ class Post(db.Model):
     date_modified = db.Column(db.DateTime, default=db.func.now(),
                               onupdate=db.func.now())
 
-    
-    @classmethod
-    def get_posts(cls, page=None, compressed=False, descend=True,
-                  active_only=False, inactive_only=False,
-                  professor_id=None, keywords=None, tags=None,
-                  required_courses=None, stale=None):
-        """
-        Describe get_post functionality.
 
+    """Summary: Searches and returns posts by keywords, tags, and required courses.
+       Parameters:
             page:current page of pagination, else None to get all posts.
             compressed: True to get the compressed serialization
             descend: True to order descending by post id (creation)
@@ -42,7 +36,12 @@ class Post(db.Model):
             tags: a string of tags, separated by a comma; posts must have at
                 least one tag
             stale: True to only show stale listings
-        """
+    """
+    @classmethod
+    def get_posts(cls, page=None, compressed=False, descend=True,
+                  active_only=False, inactive_only=False,
+                  professor_id=None, keywords=None, tags=None,
+                  required_courses=None, stale=None):
         # Build a query object
         query = Post.query
         if active_only:
@@ -94,6 +93,12 @@ class Post(db.Model):
         else:
             return ([p.serialize for p in posts], has_next, number_pages)
 
+
+    """Summary: Returns the post identified by post_id if it exists.
+                Otherwise return None.
+       Parameters: 
+            post_id: the unique integer identifier for a post
+    """
     @classmethod
     def get_post_by_id(cls, post_id):
         if not post_id:
@@ -105,6 +110,20 @@ class Post(db.Model):
         else:
             return None
 
+
+    """Summary: Creates and stores a professor's new projects. Returns
+                the project object if successfully created.
+       Parameters:
+            title: the project title
+            description: the project description
+            professor_id: the project professor's net id
+            tags: the tags associated with the project
+            stale_date: the project's expiration date
+            contact_email: the professor's preferred contact email
+            project_link: the link to the project's website
+            required_courses: the courses required to have taken for the
+                              project
+    """
     @classmethod
     def create_post(cls, title=None, description=None, professor_id=None,
                     tags=None, stale_date=None, contact_email=None,
@@ -112,10 +131,6 @@ class Post(db.Model):
         if None in (title, description, professor_id, tags, stale_date,
                     contact_email, project_link, required_courses):
             return None
-
-        # if not (Professor.get_professor_by_netid(professor_id)):
-        #    return None
-
         post = Post(
             title=title,
             description=description.replace('<br>', '\n'),
@@ -130,7 +145,11 @@ class Post(db.Model):
         db.session.commit()
         return post
 
-    # Keep arguments in alphabetical order!
+
+    """Summary: Updates a post based on post_id. Only updates those
+                fields that have changed.
+       Parameters: See create_post
+    """
     @classmethod
     def update_post(cls, post_id,
                     description=None, is_active=None,
@@ -162,6 +181,11 @@ class Post(db.Model):
         db.session.commit()
         return post
 
+
+    """Summary: Deletes the post identified from the database
+       Parameters:
+            post_id: the id of the post to be deleted
+    """
     @classmethod
     def delete_post(cls, post_id):
         # This method is currently not in use.
@@ -173,6 +197,8 @@ class Post(db.Model):
         else:
             return False
 
+
+    """Summary: returns a post as a dictionary that can be turned into a json"""
     @property
     def serialize(self):
         return {
@@ -191,6 +217,13 @@ class Post(db.Model):
             else []
         }
 
+
+    """Summary: returns a subsection of a post's information which convey's the 
+                post's most important information including id, title, 
+                description, tags, professor id, whether the post is active, 
+                the date the post was created, and the post's most recent 
+                modification date
+    """
     @property
     def serialize_compressed_post(self):
         return {
@@ -206,6 +239,8 @@ class Post(db.Model):
             'date_modified': self.date_modified
         }
 
+
+    """Summary: A dictionary representation of an empty post object"""
     @classmethod
     def empty(cls):
         return {
@@ -223,14 +258,14 @@ class Post(db.Model):
             'required_courses': '',
         }
 
-    @staticmethod
-    def disable_stale_posts():
-        """
-        Automatic disabling of stale posts.
+
+    """Summary: Automatic disabling of stale posts.
 
             Triggered by a scheduler that is initialized in server/__init__.py
             Triggeredrigger interval is once per day.
-        """
+    """
+    @staticmethod
+    def disable_stale_posts():
         print 'Running stale post scheduler.'
         stale_posts, _, _ = Post.get_posts(active_only=True, stale=True)
         print stale_posts
