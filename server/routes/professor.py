@@ -3,8 +3,6 @@ from server import app
 from server.models.professor import Professor
 
 
-# Add a new user to the database
-# Return a Response object if valid professor
 @app.route('/api/professors', methods=['POST'])
 def create_professor():
     """ An endpoint for creating a professor to be used programmatically.

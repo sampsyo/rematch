@@ -38,7 +38,7 @@
                         <div class="form-group">
                             <label>Website</label>
                             <div id="website-editable">
-                                {{current_user.website}}
+                                {{current_user.website or 'No website specified'}}
                             </div>
                         </div>
 
@@ -46,7 +46,7 @@
                         <div class="form-group">
                             <label>Office Location</label>
                             <div id="office-editable">
-                                {{current_user.office}}
+                                {{current_user.office or 'No office specified'}}
                              
                             </div>
                         </div>
@@ -102,6 +102,10 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript" src="{{BASE_URL}}/js/validate.js"></script>
+
+
 <script type="text/javascript">
 
 $('#edit-profile').click(function(event){
@@ -146,28 +150,5 @@ $('#edit-profile').click(function(event){
 
 });
 
-//Function to validate professor information 
-function validate() {
-    var isValid = true;
-    // title
-    $(".validate-input").each(function() {
-        var child = $(this).find("input");
-        if (child.val().length <= 0) {
-            $(this).addClass("invalidInput");
-            isValid = false;
-        }
-    });
-
-    $(".validate-input-email").each(function() {
-        console.log("aaaa");
-        var child = $(this).find("input");
-        var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if (!(child.val().match(regex))) {
-            isValid = false;
-            $(this).addClass("invalidInput");
-        }
-    });
-    return isValid;
-}
 
 </script>

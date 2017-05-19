@@ -80,7 +80,7 @@ COURSES = [
     'INFO 3300',
     'INFO 3450',
     'INFO 4300',
-    'INFO 5300'
+    'INFO 5300',
     'CS 1109',
     'CS 1110',
     'CS 1112',

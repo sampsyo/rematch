@@ -27,7 +27,6 @@ def create_student():
         })
 
 
-# Add starred post to student profile
 @app.route('/api/students/<string:net_id>/<int:post_id>', methods=['POST'])
 @login_required
 def add_favorited_project(net_id, post_id):
