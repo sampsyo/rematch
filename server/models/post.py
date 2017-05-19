@@ -22,6 +22,7 @@ class Post(db.Model):
     date_modified = db.Column(db.DateTime, default=db.func.now(),
                               onupdate=db.func.now())
 
+    
     @classmethod
     def get_posts(cls, page=None, compressed=False, descend=True,
                   active_only=False, inactive_only=False,
