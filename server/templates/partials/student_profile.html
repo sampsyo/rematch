@@ -210,7 +210,10 @@ function validate() {
         if (!(child.val().match(regex))) {
             isValid = false;
             $(this).addClass("invalidInput");
+        } else {
+            $(this).removeClass("invalidInput");
         }
+
     });
 
 
