@@ -1,19 +1,20 @@
 <!-- extend base layout -->
+<!-- LOGIN PAGE -->
 {% extends "base.html" %}
 
 {% block content %}
-
 <div class="card narrow">
 <h1>Sign In</h1>
 <br>
 <form action="" method="post" name="login">
   {{ form.hidden_tag() }}
-
+  <!-- email field for login -->
   <div class="form-group">
   	<label>Email:</label>
   	{{ form.email(class_="form-control") }}
 	</div>
   
+  <!-- password field for login -->
   <div class="form-group">
   	<label>Password:</label>
   	{{ form.password(class_="form-control") }}

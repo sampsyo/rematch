@@ -1,14 +1,17 @@
 <!-- extend base layout -->
+<!-- PAGE FOR CREATING THE POST --> 
 {% extends "base.html" %}
 {% block content %}
     <div class="spacer"></div>
     <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 center">
         <div class="card">
             <form method="POST" onsubmit="return validate(this)">
+                <!-- Project Title -->
                 <div id="post_title" class="form-group">
                     <label>Project Title*:</label>
                     <input type="text" name="post_title" class="form-control" value="{{post['title']}}">
                 </div>
+                <!-- Project Link -->
                 <div class="form-group">
                     <label>Project Link:</label>
                     <p class="helper-text">Please include http:// at the start of your url.</p>
@@ -19,27 +22,32 @@
                         value={{post['project_link']}}
                    {% endif %}>
                 </div>
+                <!-- Project Description -->
                 <div id="post_description_group" class="form-group">
                     <label>Project Description*:</label>
                     <p class="helper-text">Provide information about research topic, qualifications, time commitment, and number of students you are seeking.</p> 
                     <textarea name="post_description" class="form-control" id="post_description" rows="5">{{post['description']}}</textarea>
                 </div>
+                <!-- Project Topics -->
                 <div id="post_topics_group" class="form-group">
                     <label>Topics*:</label><br>
                     <p class="helper-text">Search and select research topics relevant to this listing.</p>
                     <input id="post_topics" autocomplete="off" class="tags-input" type="text" data-role="tagsinput" name="tags" value="{{post['tags']}}"/>
                 </div>
+                <!-- Desired Courses -->
                 <div class="form-group">
                     <label>Desired Courses:</label><br>
                     <p class="helper-text">List the courses that you desire the applicants to have taken, if any.</p>
                     <input autocomplete="off" class="courses-input" type="text" data-role="coursesinput" name="courses" value="{{post['courses']}}"/>
                 </div>
                 {#
+                <!-- Desired Skills -->
                 <div class="form-group">
                     <label>Required Skills:</label>
                     <textarea name="required-skills" class="form-control" rows="5"></textarea>
                 </div>
                 #}
+                <!-- Post Expiration -->
                 <div class="form-group">
                     <label>Through which semester would you like to keep this listing live?</label>
                     <p class="helper-text">Postings can be reactivated under your Profile page.</p> 
@@ -50,10 +58,12 @@
                         <option value="-1">Continuously</option> 
                     </select>
                 </div>
+                <!-- Contact Email -->
                 <div id="post_email_group" class="form-group">
                     <label>Contact Email*:</label>
                     <input id="post_email" type="email" name="post_professor_email" class="form-control" value='{{current_user.email}}'>
                 </div>
+                <!-- Activate Post Checkbox -->
                 <div class="form-group">
                     <input name="post-activate" class="activate-post-toggle"
                     type="checkbox" {% if post['is_active'] or not post['title'] %} checked {% endif %}>

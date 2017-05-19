@@ -1,4 +1,5 @@
 from server import db
+from werkzeug import generate_password_hash, check_password_hash
 
 
 class Professor(db.Model):
@@ -16,11 +17,18 @@ class Professor(db.Model):
     is_active = True
     is_anonymous = True
 
+    def __init__(self, password, **kwargs):
+        super(Professor, self).__init__(**kwargs)
+        self.set_password(password)
+
     def get_id(self):
         return self.net_id
 
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
     def is_correct_password(self, password):
-        return self.password == password
+        return check_password_hash(self.password, password)
 
     @classmethod
     def create_professor(cls, net_id=net_id, name=name,
@@ -32,7 +40,7 @@ class Professor(db.Model):
             net_id=net_id,
             name=name,
             email=email,
-            password=password  # Just for demonstration!!!
+            password=password
         )
         db.session.add(professor)
         db.session.commit()
@@ -85,8 +93,11 @@ class Professor(db.Model):
 
     @classmethod
     def annotate_posts(cls, posts):
-        """ Post objects do not included the professor name by default.  This
-        function takes a list of posts, and adds a professor_name field to each.
+        """
+        Correctly annotates posts.
+
+        Post objects do not included the professor name by default. This
+        function takes a list of posts, and adds a professor_name field to each
         """
         for post in posts:
             post['professor_name'] = Professor.get_professor_by_netid(

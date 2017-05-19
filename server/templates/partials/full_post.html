@@ -1,5 +1,7 @@
+<!-- DISPLAY FULL POST INFORMATION -->
 <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 center full-post">
     <div class="card">
+        <!-- display whether it is starred post via star -->
         {% if current_user.is_student %}
             {% if current_user.favorited_projects and post['id']|string in current_user.favorited_projects.split(",") %}
                 <div class="post_star ion-ios-star star" data-id="{{post['id']}}"></div>
@@ -8,15 +10,18 @@
             {% endif %}
         {% endif %}
 
+        <!-- if current user is the poster, provide edit functionality -->
         {% if current_user.net_id == post['professor_id']: %}
             <p class="edit more"><a href="/posts/{{post['id']}}/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a><p>
         {% endif %}
 
+        <!-- post title -->
         <div class="form-group">
             <h1 class="title">{{ post["title"] }}</h1>
             <h2 class="professor">{{ post['professor_name'] }}, {{ "{:%b %d, %Y}".format(post['date_created']) }} </h2> 
         </div>
 
+        <!-- post description -->
         <div class="form-group">
             <label>Description</label> 
             <p class="description">
@@ -26,6 +31,7 @@
             </p>
         </div>
 
+        <!-- post project link -->
         <div class="form-group">
             {% if post['project_link']: %}
             </br>
@@ -34,6 +40,7 @@
             {% endif %} 
         </div>
 
+        <!-- post topics/subject tags -->
         <div class="form-group">
             <label>Topics</label> 
             <ul class="tags">
@@ -43,6 +50,7 @@
             </ul>
         </div>
 
+        <!-- post course requirements -->
         <div class="form-group">
         {% if post['courses'] %}
             <label>Recommended Course Prerequisites</label>
@@ -54,6 +62,7 @@
         {% endif %}
         </div>
 
+        <!-- poster contact information -->
         <div class="form-group">
          {% if post['contact_email']: %} 
             <label>Contact Information</label> 

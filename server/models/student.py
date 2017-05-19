@@ -43,10 +43,10 @@ class Student(db.Model):
             net_id=net_id,
             name=name,
             email=email,
-            password=password,  # Just for NOW!!
+            password=password,
             major="Computer Science",
-            description = "",
-            courses = ""
+            description="",
+            courses=""
         )
         db.session.add(student)
         db.session.commit()
@@ -147,7 +147,8 @@ class Student(db.Model):
                     pid for pid in student.favorited_projects.split(',')
                     if not pid == str(post_id)
                 )
-                Student.update_student(net_id, favorited_projects=new_favorites)
+                Student.update_student(net_id,
+                                       favorited_projects=new_favorites)
                 return True
             else:
                 return False

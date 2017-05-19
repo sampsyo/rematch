@@ -1,4 +1,5 @@
 <!-- extend base layout -->
+<!-- LAYOUT FOR PROFILE -->
 {% extends "base.html" %}
 {% block content %}
 
@@ -11,7 +12,7 @@
     {% endif %}
 
     <script type="text/javascript">
-        
+            //Fields for student year, resume upload, courses taken
             $('#user_year_select option').each(function() {
               if ($(this).val() == "{{ profile.year }}") {
                 $(this).prop('selected','selected');
@@ -42,4 +43,4 @@
         
     </script>
 
-{% endblock %}
+{% endblock %} 
