@@ -81,7 +81,6 @@ class Professor(db.Model):
         else:
             return False
 
-
     @property
     def serialize(self):
         return {

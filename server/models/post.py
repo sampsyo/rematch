@@ -2,7 +2,7 @@ from server import db
 from config import PAGINATION_PER_PAGE
 from sqlalchemy import desc, or_, not_
 from server.utils import send_email
-from config import COURSES
+from config import COURSES, TAGS
 # from server.models.professor import Professor
 
 
@@ -158,17 +158,6 @@ class Post(db.Model):
 
         db.session.commit()
         return post
-
-    @classmethod
-    def get_post_by_id(cls, post_id):
-        print(post_id)
-        if not post_id:
-            return None
-        post = Post.query.filter(Post.id == int(post_id)).first()
-        if post:
-            return post
-        else:
-            return None
 
     @classmethod
     def delete_post(cls, post_id):

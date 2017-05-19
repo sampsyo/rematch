@@ -1,4 +1,5 @@
 from flask import render_template, flash, redirect, request
+from email.utils import parseaddr
 from server import app
 from .forms import LoginForm, RegistrationForm
 from flask_login import login_user, logout_user, login_required, current_user
@@ -22,6 +23,7 @@ def posts():
 
     url_params = []
     if search_tags:
+        search_tags = ','.join(t for t in search_tags.split(',') if t in TAGS)
         url_params.append('search_tags=%s' % search_tags)
     if phrase:
         url_params.append('phrase=%s' % phrase)
@@ -156,8 +158,8 @@ def profile_update(net_id):
         user = Student.get_student_by_netid(net_id)
         new_email = result["email"] or (net_id + "@cornell.edu")
         new_year = result["user_year"] or "Freshman"
-        new_description = result["user_description"] or " "
-        courses = result["profile_courses"] or " "
+        new_description = result["user_description"] or ""
+        courses = result["profile_courses"] or ""
 
         filename = None
         # Resume uploads disabled until we decide what to do with them
@@ -174,27 +176,41 @@ def profile_update(net_id):
 #                filename = None
 #        else:
 #            filename = None
-        if '@' not in new_email:
+
+        error = False
+        _, email = parseaddr(new_email)
+        if not email or '@' not in email:
             flash('A valid email is required.')
-            return redirect("/profile/"+str(net_id))
-        if not (new_year in ["Freshman","Sophomore","Junior","Senior","Graduate",
-                            "Post-graduate"]):
+            error = True
+
+        if new_year not in ("Freshman", "Sophomore", "Junior", "Senior",
+                            "Graduate", "Post-graduate"):
             flash('A valid year is required')
+            error = True
+
+        if error:
             return redirect("/profile/"+str(net_id))
 
         Student.update_student(
-            net_id, email=new_email, name=None, major=user.major,
+            net_id, email=email, major=user.major,
             year=new_year, resume=filename, description=new_description,
             favorited_projects=None,
             courses=courses
         )
     else:
+        error = False
         if " " not in result.get('name', None).strip():
-            flash('A valid name is required')
+            flash('Please give a first and last name.')
+            error = True
+
+        _, email = parseaddr(result.get('email', ''))
+        if not email or '@' not in email:
+            flash('A valid email is required.')
+            error = True
+
+        if error:
             return redirect("/profile/"+str(net_id))
-        if '@' not in result.get('email', None):
-            flash('A valid email is required')
-            return redirect("/profile/"+str(net_id))
+
         Professor.update_professor(
             net_id,
             name=result.get('name', None),
