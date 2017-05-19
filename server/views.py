@@ -182,6 +182,12 @@ def profile_update(net_id):
             courses=courses
         )
     else:
+        if " " not in result.get('name', None).strip():
+            flash('A valid name is required')
+            return redirect("/profile/"+str(net_id))
+        if '@' not in result.get('email', None):
+            flash('A valid email is required')
+            return redirect("/profile/"+str(net_id))
         Professor.update_professor(
             net_id,
             name=result.get('name', None),
