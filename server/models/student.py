@@ -43,7 +43,7 @@ class Student(db.Model):
             net_id=net_id,
             name=name,
             email=email,
-            password=password,  # Just for NOW!!
+            password=password,  
             major="Computer Science",
             description = "",
             courses = ""
