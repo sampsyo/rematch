@@ -1,4 +1,5 @@
 from server import db
+from werkzeug import generate_password_hash, check_password_hash
 
 
 class Professor(db.Model):
@@ -19,8 +20,11 @@ class Professor(db.Model):
     def get_id(self):
         return self.net_id
 
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
     def is_correct_password(self, password):
-        return self.password == password
+        return check_password_hash(self.password, password)
 
     @classmethod
     def create_professor(cls, net_id=net_id, name=name,
@@ -72,6 +76,10 @@ class Professor(db.Model):
             return True
         else:
             return False
+
+    def __init__(self, password, **kwargs):
+        super(Professor, self).__init__(**kwargs)
+        self.set_password(password)
 
     @property
     def serialize(self):
