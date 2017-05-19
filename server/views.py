@@ -1,24 +1,23 @@
 from flask import render_template, flash, redirect, request
 from server import app
-from .forms import LoginForm
+from .forms import LoginForm, RegistrationForm
 from flask_login import login_user, logout_user, login_required, current_user
 from models import Post, Student, Professor
-from werkzeug import secure_filename
 from config import BASE_URL, TAGS, COURSES
-import os
 import datetime
+
+# Used for file uploads
+# from werkzeug import secure_filename
+# import os
 
 
 @app.route('/', methods=['GET'])
 @app.route('/posts', methods=['GET'])
 @login_required
 def posts():
-    phrase = request.args.get('phrase', None)
-    search_tags = request.args.get('search_tags', None)
-    try:
-        page = int(request.args.get('page', 1))
-    except ValueError:
-        page = 1
+    phrase = request.args.get('phrase', '')
+    search_tags = request.args.get('search_tags', '')
+    page = int(request.args.get('page', 1))
     courses = current_user.is_student and request.args.get('courses', False)
 
     url_params = []
@@ -44,17 +43,15 @@ def posts():
         base_url=BASE_URL,
         posts=posts,
         search=True,
-        isInIndex=True,
         tags=TAGS,
         total_number_of_pages=total_number_of_pages,
-        search_tags=search_tags or '',
         checked='checked' if bool(courses) else '',
+        phrase=phrase,
+        search_tags=search_tags,
         page=page,
-        phrase=phrase or '',
         has_next_page=has_next,
         search_url=search_url
     )
-
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -78,6 +75,7 @@ def register():
         flash('Thanks for registering!')
         return redirect('/login')
     return render_template('register.html', form=form)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -140,7 +138,6 @@ def profile(net_id):
         title=current_user.name + "'s Profile",
         base_url=BASE_URL,
         profile=current_user,
-        isInIndex=True,
         all_courses=COURSES,
         favorited_projects=favorited_projects,
         active_collection=active_collection,
@@ -157,24 +154,26 @@ def profile_update(net_id):
     result = request.form
     if current_user.is_student:
         user = Student.get_student_by_netid(net_id)
-        new_email = result["user_email"] or (net_id + "@cornell.edu")
+        new_email = result["email"] or (net_id + "@cornell.edu")
         new_year = result["user_year"] or "Freshman"
         new_description = result["user_description"] or " "
         courses = result["profile_courses"] or " "
-        availability = ','.join(result.getlist("weekday"))
-        f = request.files['resume']
-        
-        if f:
-            if allowed_file(f.filename):
-                extension = f.filename.rsplit('.', 1)[1]
-                f.filename = net_id + "_resume." + extension
-                filename = secure_filename(f.filename)
-                f.save(os.path.join('uploads/', filename))
-            else:
-                flash('Resume File Type Not Accepted')
-                filename = None
-        else:
-            filename = None
+
+        filename = None
+        # Resume uploads disabled until we decide what to do with them
+
+#        f = request.files['resume']
+#        if f:
+#            if allowed_file(f.filename):
+#                extension = f.filename.rsplit('.', 1)[1]
+#                f.filename = net_id + "_resume." + extension
+#                filename = secure_filename(f.filename)
+#                f.save(os.path.join('uploads/', filename))
+#            else:
+#                flash('Resume File Type Not Accepted')
+#                filename = None
+#        else:
+#            filename = None
         if '@' not in new_email:
             flash('A valid email is required.')
             return redirect("/profile/"+str(net_id))
@@ -182,11 +181,12 @@ def profile_update(net_id):
                             "Post-graduate"]):
             flash('A valid year is required')
             return redirect("/profile/"+str(net_id))
+
         Student.update_student(
             net_id, email=new_email, name=None, major=user.major,
             year=new_year, resume=filename, description=new_description,
             favorited_projects=None,
-            availability=availability, courses=courses
+            courses=courses
         )
     else:
         if " " not in result.get('name', None).strip():
@@ -317,7 +317,6 @@ def showpost(post_id):
     post = post.serialize
     post['professor_name'] = Professor.get_professor_by_netid(
         post['professor_id']).name
-    print(post['courses'])
 
     return render_template(
         'full_post.html',
@@ -366,15 +365,6 @@ def editpost(post_id):
             elif semester == "Summer":
                 month = 8
                 day = 20
-        if (result.get("post_title") == ""):
-            flash('Title Field is required.')
-            return redirect("/posts/"+str(post_id)+"/edit")
-        if result.get("post_description") == "":
-            flash('Project Description is required')
-            return redirect("/posts/"+str(post_id)+"/edit")
-        if result.get('tags') == "":
-            flash('Project Topics/Tags are required')
-            return redirect("/posts/"+str(post_id)+"/edit")
 
         Post.update_post(
             post_id,
