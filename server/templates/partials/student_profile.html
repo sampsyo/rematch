@@ -53,9 +53,12 @@
                             <label>Courses</label>
                             <div id="courses-editable">
                               <ul class="tags profile-tags">
-                                {% for course in profile.courses.split(',') %}
-                                    <span class="tag course-tag">{{course}}</span>
-                                {% endfor %}
+                                {% if profile.courses %}
+                                {% else %}
+                                    {% for course in profile.courses.split(',') %}
+                                        <span class="tag course-tag">{{course}}</span>
+                                    {% endfor %}
+                                {% endif %}
                             </ul>
                             </div> 
                         </div>
