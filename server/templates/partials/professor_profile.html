@@ -24,7 +24,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group validate-input">
+                        <div class="form-group validate-input validate-input-email">
                             <label>Contact Email</label>
                             <div id="email-editable">
                                 {{current_user.email}}
@@ -144,9 +144,18 @@ function validate() {
     $(".validate-input").each(function() {
         var child = $(this).find("input");
         if (child.val().length <= 0) {
-            //console.log( child.val().length );
             $(this).addClass("invalidInput");
             isValid = false;
+        }
+    });
+
+    $(".validate-input-email").each(function() {
+        console.log("aaaa");
+        var child = $(this).find("input");
+        var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!(child.val().match(regex))) {
+            isValid = false;
+            $(this).addClass("invalidInput");
         }
     });
     return isValid;
