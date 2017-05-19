@@ -1,5 +1,6 @@
 from server import db
 from post import Post
+from werkzeug import generate_password_hash, check_password_hash
 
 
 class Student(db.Model):
@@ -26,8 +27,11 @@ class Student(db.Model):
     def get_id(self):
         return self.net_id
 
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
     def is_correct_password(self, password):
-        return self.password == password
+        return check_password_hash(self.password, password)
 
     @classmethod
     def create_student(cls, net_id=net_id, name=name, email=email,
@@ -145,6 +149,10 @@ class Student(db.Model):
                 return True
             else:
                 return False
+
+    def __init__(self, password, **kwargs):
+        super(Student, self).__init__(**kwargs)
+        self.set_password(password)
 
     @property
     def serialize(self):
