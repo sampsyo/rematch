@@ -1,3 +1,4 @@
+<!-- STUDENT PROFILE --> 
 <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 center">
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
@@ -15,16 +16,20 @@
                          <span id="edit-profile"> <i class="fa fa-pencil-square-o" aria-hidden="true"
                                 style="margin-left: 5px" height="50%" width="50%"></i> Edit profile </span> 
 
+                        <!-- student name -->
                          <div class="form-group">
                             <label> Name </label>
                             <div id="name-editable" class="name">{{profile.name}}</div>
                             <hr> 
                         </div> 
+
+                        <!-- student major -->
                         <div class="form-group">
                             <label>Major</label>
                             <p>{{profile.major}}</p>
                         </div>
 
+                        <!-- student email -->
                         <div class="form-group">
                             <label>Email</label>
                              <div id="email-editable">
@@ -32,6 +37,7 @@
                             </div>
                         </div>
 
+                        <!-- student year -->
                         <div class="form-group">
                             <label>Year</label><br>
                             <div id="year-editable">
@@ -40,6 +46,7 @@
                             
                         </div>
 
+                        <!-- student bio and experiences -->
                         <div class="form-group">
                             <label>Bio &amp; Experience</label><br>
                             <div id="bio-editable">
@@ -49,6 +56,8 @@
                         {% if profile.courses %}
                             {% set skills = profile.courses %}
                         {% endif %}
+
+                        <!-- student courses taken -->
                         <div class="form-group typeahead">
                             <label>Courses</label>
                             <div id="courses-editable">
@@ -67,6 +76,7 @@
         
         {% if False: %}
         RESUMES DISABLED
+                        <!-- student resume -->
                         <div class="form-group">
                             <label class="resume">
                                 <input id="resume-upload" type="file" name="resume"/>
@@ -78,12 +88,17 @@
                         {% endif %}
         {% endif %}
 
+                     <!-- save updates -->
                      <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary">
                     </div>
                 </div>
             </form>
         </div>
+
+        <!-- starred posts tab -->
         <div role="tabpanel" class="tab-pane" id="starred">
+
+            <!-- show starred posts if available -->
             {% if favorited_projects %}
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -92,6 +107,8 @@
                         {% endfor %}
                     </div>
                 </div>
+                
+            <!-- display message if no starred posts -->
             {% else %}
                 <div class="profile">
                     <div class="card">
