@@ -2,6 +2,7 @@
 
 ## Local installation
 0. Install python
+
     This application uses version 2.7.X. You can get it [here](https://www.python.org/downloads/) for your operating system
 
 1. Install pip
@@ -55,13 +56,17 @@
 8. Start the local server
 
     ```python ./run.py``` 
+
     or 
-    ```python ./run.py debug``` 
+
+    ```python ./run.py debug```
+
     to enter debug mode. Debug mode restarts the server upon file changes associated with the server
 
 9. Populate the local database
 
     ```bash populate_data.sh``` 
+
     will create sample student and professor profiles and populate the database with sample posts
 
 10. Stoping the enviornment
@@ -71,5 +76,6 @@
 *Optional*
 
 ```sass --watch server/static/scss:server/static/css``` 
-if updating SASS, must also have SASS installed
+
+if updating SASS, must also have SASS installed. You can install that [here](http://sass-lang.com/install)
 
