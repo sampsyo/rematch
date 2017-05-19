@@ -38,7 +38,7 @@
                         <div class="form-group">
                             <label>Website</label>
                             <div id="website-editable">
-                                {{current_user.website}}
+                                {{current_user.website or 'No website specified'}}
                             </div>
                         </div>
 
@@ -46,7 +46,7 @@
                         <div class="form-group">
                             <label>Office Location</label>
                             <div id="office-editable">
-                                {{current_user.office}}
+                                {{current_user.office or 'No office specified'}}
                              
                             </div>
                         </div>
