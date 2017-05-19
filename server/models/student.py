@@ -160,5 +160,5 @@ class Student(db.Model):
             'description': self.description,
             'interests': self.interests,
             'favorited_projects': self.favorited_projects,
-            'courses': self.courses
+            'courses': self.courses or ''
         }
