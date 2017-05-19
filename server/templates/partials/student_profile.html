@@ -19,7 +19,7 @@
                         <!-- student name -->
                          <div class="form-group">
                             <label> Name </label>
-                            <div id="name-editable" class="name">{{profile.name}}</div>
+                            <div class="name">{{profile.name}}</div>
                             <hr> 
                         </div> 
 
@@ -60,9 +60,9 @@
                         <!-- student courses taken -->
                         <div class="form-group typeahead">
                             <label>Courses</label>
-                            <div id-"courses-editable">
+                            <div id="courses-editable">
                               <ul class="tags profile-tags">
-                                {% if profile.courses is not none %}
+                                {% if profile.courses: %}
                                     {% for course in profile.courses.split(',') %}
                                         <span class="tag course-tag">{{course}}</span>
                                     {% endfor %}
@@ -71,8 +71,9 @@
                                 {% endif %}
                             </ul>
                         </div> 
-                        <div id="courses-input"> <input autocomplete="on" class="tags-input" type="text" value="" data-role="tagsinput" name="profile_courses"/> </div> 
-
+						<div id="courses-type-hidden" style="display:none">
+							<input autocomplete="on" class="tags-input" type="text" value="{{profile.courses if profile.courses else ''}}" data-role="tagsinput" name="courses" />
+						</div>
                         </div>
 
                           
@@ -128,10 +129,11 @@
 <script type="text/javascript">
 
 $('#edit-profile').click(function(event){
-     $('#courses_input').css("display", "block");
      $('#save-profile-updates').css('display', 'block');
     // remove the icon
     $('#edit-profile').html(''); 
+
+{#
     // name
     {% if current_user.name == 'None': %}
     var innertext = ''
@@ -140,7 +142,7 @@ $('#edit-profile').click(function(event){
     {% endif %}
     $('#name-editable').html('<input class="form-control professor-name-input" type="text" name="name" value="'+innertext+'">');
     $('#name-editable').attr('id', 'name-editing');
-
+#}
     // email
     {% if current_user.email == 'None': %}
     var innertext = ''
@@ -179,12 +181,13 @@ $('#edit-profile').click(function(event){
     
     
     //courses
-    // {% if profile.courses == 'None': %}
-    // var innertext = ""
-    // {% else: %}
-    // var innertext = '{{profile.courses}}'
-    // {% endif %}
-    $('#courses-editable').html(" ");
+    {% if profile.courses == 'None': %}
+    var innertext = ""
+    {% else: %}
+    var innertext = '{{profile.courses}}'
+    {% endif %}
+    $('#courses-type-hidden').css('display', 'block');
+    $('#courses-editable').css('display', 'none');
 
 });
 

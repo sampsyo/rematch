@@ -159,7 +159,7 @@ def profile_update(net_id):
         new_email = result["email"] or (net_id + "@cornell.edu")
         new_year = result["user_year"] or "Freshman"
         new_description = result["user_description"] or ""
-        courses = result["profile_courses"] or ""
+        courses = result["courses"] or ""
 
         filename = None
         # Resume uploads disabled until we decide what to do with them
