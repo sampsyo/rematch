@@ -1,10 +1,12 @@
 <!-- extend base layout -->
+<!-- MAIN PAGE - HOME/INDEX -->
 {% extends "base.html" %}
 {% block search %}
 	{% include "partials/search.html" %}
 {% endblock %}
 {% block content %}
 	<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+		<!-- create the rows of posts -->
 		<div class="row posts">
 			<div class="row-xs-12 col-sm-12 col-md-12 col-lg-12">
 				{% for i in range((posts|length)) %}
@@ -15,6 +17,7 @@
 			</div>
 		</div>
 
+		<!-- use pagination to have 2 posts per page -->
 		<div class="pagination">
 	        <a href="{% if page > 1 %}
 	        			{{base_url}}/?page={{ page - 1 }}{{ search_url }}
