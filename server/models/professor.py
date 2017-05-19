@@ -121,6 +121,7 @@ class Professor(db.Model):
         else:
             return False
 
+
     """Summary: returns a professor object as a dictionary that can be turned 
     into a json"""
     @property
@@ -132,6 +133,7 @@ class Professor(db.Model):
             'website': self.website,
             'office': self.office
         }
+
 
     """Summary: Correctly annotates posts.
 
