@@ -8,7 +8,10 @@ from config import TAGS
 
 @app.route('/api/posts', methods=['POST'])
 def create_post():
-    """ An endpoint for creating a post to be used programmatically.
+    """
+    Create a new post.
+
+    An endpoint for creating a post to be used programmatically.
     This route is disabled except when the app is run with the debug flag.
     """
     if not app.debug:
@@ -31,7 +34,10 @@ def create_post():
 @app.route('/posts/<professor_id>/raw', methods=['GET'])
 @login_required
 def get_professor_posts_raw(professor_id):
-    """ Returns a raw JSON of all posts for a given professor_id, only if the
+    """
+    Get a raw dump of professor posts.
+
+    Returns a raw JSON of all posts for a given professor_id, only if the
     user is logged in and the professor whose posts were requestd.
     """
     if current_user.net_id == professor_id and \

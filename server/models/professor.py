@@ -93,8 +93,11 @@ class Professor(db.Model):
 
     @classmethod
     def annotate_posts(cls, posts):
-        """ Post objects do not included the professor name by default.  This
-        function takes a list of posts, and adds a professor_name field to each.
+        """
+        Correctly annotates posts.
+
+        Post objects do not included the professor name by default. This
+        function takes a list of posts, and adds a professor_name field to each
         """
         for post in posts:
             post['professor_name'] = Professor.get_professor_by_netid(

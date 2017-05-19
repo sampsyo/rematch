@@ -189,7 +189,7 @@ def profile_update(net_id):
             error = True
 
         if error:
-            return redirect("/profile/"+str(net_id))
+            return redirect("/profile/" + str(net_id))
 
         Student.update_student(
             net_id, email=email, major=user.major,
@@ -209,7 +209,7 @@ def profile_update(net_id):
             error = True
 
         if error:
-            return redirect("/profile/"+str(net_id))
+            return redirect("/profile/" + str(net_id))
 
         Professor.update_professor(
             net_id,
