@@ -17,6 +17,10 @@ class Professor(db.Model):
     is_active = True
     is_anonymous = True
 
+    def __init__(self, password, **kwargs):
+        super(Professor, self).__init__(**kwargs)
+        self.set_password(password)
+
     def get_id(self):
         return self.net_id
 
@@ -36,7 +40,7 @@ class Professor(db.Model):
             net_id=net_id,
             name=name,
             email=email,
-            password=password  # Just for demonstration!!!
+            password=password
         )
         db.session.add(professor)
         db.session.commit()
@@ -77,9 +81,6 @@ class Professor(db.Model):
         else:
             return False
 
-    def __init__(self, password, **kwargs):
-        super(Professor, self).__init__(**kwargs)
-        self.set_password(password)
 
     @property
     def serialize(self):
