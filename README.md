@@ -1,6 +1,8 @@
 # Cornell Research System 
 
 ## Local installation
+0. Install python
+    This application uses version 2.7.X. You can get it [here](https://www.python.org/downloads/) for your operating system
 
 1. Install pip
     * download [get-pip.py](https://bootstrap.pypa.io/get-pip.py)
@@ -21,10 +23,9 @@
 5. Install packages from the requirements.txt file
 
     ```pip install -r requirements.txt```
-
-
-6. install flask and extensions
-
+    
+    It includes the following libraries / commands
+    
     ```
     pip install flask
     pip install flask-login
@@ -40,18 +41,35 @@
     pip install coverage
     pip install argparse
     pip install rauth
+    pip install apscheduler
     ```
 
-7. Create the db locally - not connected to a server!
-	* If you must give the permission to the file-
+7. Create the db locally if not connected to a server
     
-    ```chmod a+x db_create.py``` then excecute it ```python ./db_create.py```
+    ```chmod a+x db_create.py``` 
 
-8. ```python ./run.py``` (```python ./run.py debug``` is needed for templates to update without restarting the server)
+    then excecute it 
+    
+    ```python ./db_create.py```
 
-9. ```sass --watch server/static/scss:server/static/css``` (if updating SASS, must also have SASS installed)
+8. Start the local server
+
+    ```python ./run.py``` 
+    or 
+    ```python ./run.py debug``` 
+    to enter debug mode. Debug mode restarts the server upon file changes associated with the server
+
+9. Populate the local database
+
+    ```bash populate_data.sh``` 
+    will create sample student and professor profiles and populate the database with sample posts
 
 10. Stoping the enviornment
 
     ```deactivate```
+    
+*Optional*
+
+```sass --watch server/static/scss:server/static/css``` 
+if updating SASS, must also have SASS installed
 

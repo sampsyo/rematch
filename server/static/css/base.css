@@ -76,7 +76,7 @@ a {
     color: #3076AB; }
 .full-post .card .edit {
   position: absolute;
-  right: 40;
+  right: 40px;
   top: 20; }
   .full-post .card .edit a {
     color: #3076AB; }
@@ -163,7 +163,7 @@ a {
     margin-right: auto; }
   .card .edit {
     position: absolute;
-    right: 40; }
+    right: 40px; }
     .card .edit a {
       color: #3076AB; }
       .card .edit a:hover {
