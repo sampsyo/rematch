@@ -44,7 +44,9 @@ class Student(db.Model):
             name=name,
             email=email,
             password=password,  # Just for NOW!!
-            major="Computer Science"
+            major="Computer Science",
+            description = "",
+            courses = ""
         )
         db.session.add(student)
         db.session.commit()
