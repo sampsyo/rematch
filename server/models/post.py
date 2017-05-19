@@ -2,7 +2,7 @@ from server import db
 from config import PAGINATION_PER_PAGE
 from sqlalchemy import desc, or_, not_
 from server.utils import send_email
-from config import COURSES, TAGS
+from config import COURSES
 # from server.models.professor import Professor
 
 
@@ -28,7 +28,9 @@ class Post(db.Model):
                   professor_id=None, keywords=None, tags=None,
                   required_courses=None, stale=None):
         """
-            page: current page of pagination, else None to get all posts
+        Describe get_post functionality.
+
+            page:current page of pagination, else None to get all posts.
             compressed: True to get the compressed serialization
             descend: True to order descending by post id (creation)
             active_only: Only show active posts
@@ -40,7 +42,6 @@ class Post(db.Model):
                 least one tag
             stale: True to only show stale listings
         """
-
         # Build a query object
         query = Post.query
         if active_only:
@@ -80,7 +81,8 @@ class Post(db.Model):
             posts = query.all()
             has_next = None
         else:
-            pagination = query.paginate(page=page, per_page=PAGINATION_PER_PAGE)
+            pagination = query.paginate(page=page,
+                                        per_page=PAGINATION_PER_PAGE)
             has_next = pagination.has_next
             posts = pagination.items
             number_pages = pagination.pages
@@ -161,7 +163,7 @@ class Post(db.Model):
 
     @classmethod
     def delete_post(cls, post_id):
-        """ This method is currently not in use. """
+        # This method is currently not in use.
         post = Post.get_post_by_id(post_id)
         if post:
             db.session.delete(post)
@@ -184,7 +186,7 @@ class Post(db.Model):
             'stale_date': self.stale_date,
             'project_link': self.project_link,
             'contact_email': self.contact_email,
-            'courses': self.required_courses.split(',') if self.required_courses
+            'courses': self.required_courses.split(',')if self.required_courses
             else []
         }
 
@@ -222,8 +224,11 @@ class Post(db.Model):
 
     @staticmethod
     def disable_stale_posts():
-        """ Triggered by a scheduler that is initialized in server/__init__.py
-        Trigger interval is once per day.
+        """
+        Automatic disabling of stale posts.
+
+            Triggered by a scheduler that is initialized in server/__init__.py
+            Triggeredrigger interval is once per day.
         """
         print 'Running stale post scheduler.'
         stale_posts, _, _ = Post.get_posts(active_only=True, stale=True)

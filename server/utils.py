@@ -1,4 +1,4 @@
-""" Random functions that didn't quite fit anywhere else. """
+"""Random functions that didn't quite fit anywhere else."""
 from config import FROM_EMAIL
 
 
