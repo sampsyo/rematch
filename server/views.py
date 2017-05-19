@@ -174,6 +174,13 @@ def profile_update(net_id):
 #                filename = None
 #        else:
 #            filename = None
+        if '@' not in new_email:
+            flash('A valid email is required.')
+            return redirect("/profile/"+str(net_id))
+        if not (new_year in ["Freshman","Sophomore","Junior","Senior","Graduate",
+                            "Post-graduate"]):
+            flash('A valid year is required')
+            return redirect("/profile/"+str(net_id))
 
         Student.update_student(
             net_id, email=new_email, name=None, major=user.major,
@@ -182,6 +189,12 @@ def profile_update(net_id):
             courses=courses
         )
     else:
+        if " " not in result.get('name', None).strip():
+            flash('A valid name is required')
+            return redirect("/profile/"+str(net_id))
+        if '@' not in result.get('email', None):
+            flash('A valid email is required')
+            return redirect("/profile/"+str(net_id))
         Professor.update_professor(
             net_id,
             name=result.get('name', None),

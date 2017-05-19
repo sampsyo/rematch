@@ -1,3 +1,4 @@
+<!-- PROFESSOR PROFILE PAGE --> 
 <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 center">
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
@@ -16,6 +17,7 @@
                         <span id="edit-profile"> <i class="fa fa-pencil-square-o" aria-hidden="true"
                                 style="margin-left: 5px" height="50%" width="50%"></i> Edit profile </span> 
 
+                        <!-- professor name -->
                         <div class="form-group validate-input">
                             <label>Name</label>
                             <div id="name-editable" class="name">
@@ -24,6 +26,7 @@
                             </div>
                         </div>
 
+                        <!-- professor email -->
                         <div class="form-group validate-input validate-input-email">
                             <label>Contact Email</label>
                             <div id="email-editable">
@@ -31,6 +34,7 @@
                             </div>
                         </div>
 
+                        <!-- professor website -->
                         <div class="form-group">
                             <label>Website</label>
                             <div id="website-editable">
@@ -38,6 +42,7 @@
                             </div>
                         </div>
 
+                        <!-- professor office -->
                         <div class="form-group">
                             <label>Office Location</label>
                             <div id="office-editable">
@@ -46,6 +51,7 @@
                             </div>
                         </div>
 
+                        <!-- save updates -->
                         <div class="form-group">
                             <input id="save-profile-updates" type="submit" value="Save Updates" class="btn btn-primary">
                         </div>
@@ -59,6 +65,7 @@
 
         </div>
         <div role="tabpanel" class="tab-pane" id="starred">
+            <!-- professor active posts tab  -->
             {% if active_collection: %}
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -76,6 +83,7 @@
             {% endif %}
         </div>
         <div role="tabpanel" class="tab-pane" id="inactive-posts">
+            <!-- professor inactive posts tab -->
             {% if inactive_collection: %}
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -138,6 +146,7 @@ $('#edit-profile').click(function(event){
 
 });
 
+//Function to validate professor information 
 function validate() {
     var isValid = true;
     // title

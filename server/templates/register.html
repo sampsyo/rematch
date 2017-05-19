@@ -1,4 +1,5 @@
 <!-- extend base layout -->
+<!-- REGISTER USER -->
 {% extends "base.html" %}
 
 {% block content %}
@@ -8,38 +9,38 @@
 <br>
 <form action="" method="post" name="register">
   {{ form.hidden_tag() }}
-
+  <!-- user email -->
   <div class="form-group">
   	<label>Email:</label>
   	{{ form.email(class_="form-control", placeholder="Enter Email") }}
 	</div>
-  
+  <!-- user password  -->
   <div class="form-group">
   	<label>Password:</label>
   	{{ form.password(class_="form-control", placeholder="Enter Password") }}
   </div>
-
+  <!-- user confirm password -->
   <div class="form-group">
     <label>Confirm Password:</label>
     {{ form.confirm(class_="form-control", placeholder="Enter Password") }}
   </div>
-
+  <!-- user name -->
   <div class="form-group">
     <label>Name:</label>
     {{ form.name(class_="form-control", placeholder="Enter Name") }}
   </div>
-
+  <!-- user netid -->
   <div class="form-group">
     <label>Net ID:</label>
     {{ form.net_id(class_="form-control", placeholder="Enter Net ID") }}
   </div>
-
+  <!-- is the user a student -->
   <div class="form-group">
     <input name="is_student" id="is_student" class="is-student-toggle" type="checkbox">
     <label for="is_student">Are you a student?</label>
     <!-- {{ form.is_student(class_="form-control") }} -->
   </div>
-  
+  <!-- submit entry --> 
   <div class="form-group">
   	<input type="submit" value="Register" class="btn btn-primary btn-block">
   </div>

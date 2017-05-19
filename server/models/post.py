@@ -160,6 +160,17 @@ class Post(db.Model):
         return post
 
     @classmethod
+    def get_post_by_id(cls, post_id):
+        print(post_id)
+        if not post_id:
+            return None
+        post = Post.query.filter(Post.id == int(post_id)).first()
+        if post:
+            return post
+        else:
+            return None
+
+    @classmethod
     def delete_post(cls, post_id):
         """ This method is currently not in use. """
         post = Post.get_post_by_id(post_id)

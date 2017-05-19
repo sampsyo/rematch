@@ -1,4 +1,4 @@
-<!-- Fixed navbar -->
+<!-- HEADER/NAVIGATION BAR -->
 <nav class="navbar navbar-fixed-top shadowed">
   <div class="container">
     <div class="navbar-header">
@@ -12,14 +12,17 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
+        <!-- if user not logged in, display login or register options -->
         {% if not current_user.is_authenticated %}
         <li><a href="{{base_url}}/login"><i class="fa fa-globe" aria-hidden="true"></i> Login</a></li>
         <li><a href="{{base_url}}/register"><i class="fa fa-id-card-o" aria-hidden="true"></i> Register</a></li>
         {% endif %}
+        <!-- if user logged in and professor, also display submit listing option -->
         {% if current_user.is_authenticated and not current_user.is_student: %}
         <li><a href="{{base_url}}/posts/create"><i class="fa fa-pencil-square-o"
                                          aria-hidden="true"></i> Submit Listing</a></li>
         {% endif %}
+        <!-- if user is logged in, then display all posts, my profile, and sign out options -->
         {% if current_user.is_authenticated: %}
         <li><a href="{{base_url}}"><i class="fa fa-globe" aria-hidden="true"></i> All Posts</a></li>
         <li><a href="{{base_url}}/profile/{{current_user.net_id}}"><i class="fa fa-user-circle-o" aria-hidden="true"></i> My Profile</a></li>
