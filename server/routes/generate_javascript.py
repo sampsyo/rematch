@@ -5,7 +5,6 @@ from config import TAGS, COURSES
 
 # generate JS partials dynamically
 
-
 @app.route('/js/<string:file_name>.js', methods=['GET'])
 def js_create_post(file_name):
     if file_name == "create_post":
