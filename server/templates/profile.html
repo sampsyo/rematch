@@ -17,9 +17,6 @@
                 $(this).prop('selected','selected');
               }
             });
-            $(document).on("change keyup", "input, select, textarea", function () {
-                $('#save-profile-updates').css('display', 'block');
-            });
             $('#resume-upload').bind('change', function() {
                 fileName = $(this).val().substring($(this).val().lastIndexOf("\\")+1);
                 $('.file-selected').html(fileName); 
