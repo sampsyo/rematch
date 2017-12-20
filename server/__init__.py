@@ -9,9 +9,6 @@ app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 
-if not os.path.isdir('uploads/'):
-    os.mkdir('uploads/')
-
 from server.views import *
 from routes import *
 from models import Professor, Student, Post

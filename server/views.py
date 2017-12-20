@@ -7,10 +7,6 @@ from models import Post, Student, Professor
 from config import BASE_URL, TAGS, COURSES
 import datetime
 
-# Used for file uploads
-# from werkzeug import secure_filename
-# import os
-
 
 @app.route('/', methods=['GET'])
 @app.route('/posts', methods=['GET'])
