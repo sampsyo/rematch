@@ -3,10 +3,10 @@
 from flask import render_template, flash, redirect, request
 from server import app
 from flask_login import login_user, logout_user, login_required
+
 from .forms import LoginForm, RegistrationForm
 from .utils import get_redirect_target
-
-from models import Student, Professor
+from .models import Student, Professor
 
 
 @app.route('/register', methods=['GET', 'POST'])

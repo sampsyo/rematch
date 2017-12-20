@@ -2,6 +2,8 @@
 from server import app
 from urlparse import urlparse, urljoin
 from flask import request
+import random
+import string
 
 
 def send_email(recipient, subject, content):
@@ -38,3 +40,7 @@ def get_redirect_target():
             continue
         if is_safe_url(target):
             return target
+
+
+def random_string(length=20, chars=(string.ascii_letters + string.digits)):
+    return ''.join(random.choice(chars) for i in range(length))

@@ -1,13 +1,16 @@
 """Adds SAML single sign-on (SSO) support to the application.
 """
 import flask
-from flask import g
+from flask import g, flash, redirect
 import requests
 import saml2
 import saml2.config
 import saml2.client
 from server import app
-from .utils import get_redirect_target
+from flask_login import login_user
+
+from .utils import get_redirect_target, is_safe_url, random_string
+from .models import Student, Professor
 
 
 def load_saml_metadata():
@@ -83,7 +86,46 @@ def saml_acs():
         flask.request.form['SAMLResponse'],
         saml2.entity.BINDING_HTTP_POST,
     )
-    print(response)
+
+    # Get the URL to redirect to when don.
+    next_url = flask.request.form.get('RelayState')
+    if not next_url or not is_safe_url(next_url):
+        next_url = app.config['BASE_URL']
+
+    # Get details about the user.
+    identity = response.get_identity()
+    uid = identity['uid'][0]
+    email = identity['mail'][0]
+    app.logger.debug('authenticated %s', email)
+
+    # Try to log in an existing user.
+    user = Student.get_student_by_netid(uid) or \
+        Professor.get_professor_by_netid(uid)
+    if user:
+        login_user(user)
+        flash('Welcome back, %s!' % user.name)
+        return redirect(next_url)
+
+    # Otherwise, register a new user.
+    is_faculty = 'faculty' in identity['eduPersonAffiliation']
+    name = identity['cn'][0]
+    if is_faculty:
+        user = Professor.create_professor(
+            net_id=uid,
+            name=name,
+            email=email,
+            password=random_string(),
+        )
+    else:
+        user = Student.create_student(
+            net_id=uid,
+            name=name,
+            email=email,
+            password=random_string(),
+        )
+    login_user(user)
+    flash('Welcome, %s!' % user.name)
+    return redirect(next_url)
 
 
 @app.route('/saml/metadata')
