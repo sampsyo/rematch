@@ -7,7 +7,7 @@ import saml2
 import saml2.config
 import saml2.client
 from server import app
-from flask_login import login_user
+from flask_login import login_user, logout_user
 
 from .utils import get_redirect_target, is_safe_url, random_string
 from .models import Student, Professor
@@ -61,10 +61,9 @@ def set_up_saml_client():
         g.saml_client = saml_client(metadata)
 
 
-@app.route('/saml/login')
+@app.route('/login')
 def login():
     next_url = get_redirect_target()
-
     reqid, info = g.saml_client.prepare_for_authenticate(relay_state=next_url)
 
     headers = dict(info['headers'])
@@ -73,6 +72,12 @@ def login():
     response.headers['Cache-Control'] = 'no-cache, no-store'
     response.headers['Pragma'] = 'no-cache'
     return response
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(app.config['BASE_URL'])
 
 
 @app.route('/saml/acs', methods=['GET', 'POST'])
