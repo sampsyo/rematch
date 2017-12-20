@@ -1,7 +1,6 @@
 from flask import render_template, redirect
 from flask import jsonify, request
 from server import app
-from config import TAGS, COURSES
 
 # generate JS partials dynamically
 
@@ -10,8 +9,8 @@ def js_create_post(file_name):
     if file_name == "create_post":
         return render_template(
             "js/createpost.js",
-            all_tags=TAGS,
-            all_courses=COURSES,
+            all_tags=app.config['TAGS'],
+            all_courses=app.config['COURSES'],
         )
     if file_name == "posts":
         net_id = request.args.get("net_id", "")

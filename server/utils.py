@@ -1,5 +1,5 @@
 """Random functions that didn't quite fit anywhere else."""
-from config import FROM_EMAIL
+from server import app
 
 
 def send_email(recipient, subject, content):
@@ -13,9 +13,9 @@ def send_email(recipient, subject, content):
 
     message = MIMEText(content)
     message['Subject'] = subject
-    message['From'] = FROM_EMAIL
+    message['From'] = app.config['FROM_EMAIL']
     message['To'] = recipient
 
     s = smtplib.SMTP('localhost')
-    s.sendmail(FROM_EMAIL, [recipient], message.as_string())
+    s.sendmail(app.config['FROM_EMAIL'], [recipient], message.as_string())
     s.quit()

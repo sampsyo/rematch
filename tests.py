@@ -3,10 +3,10 @@ import os
 import unittest
 
 import datetime
-from config import basedir
 from server import *
 from server.models.professor import Professor
-from config import PAGINATION_PER_PAGE
+
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 class TestCase(unittest.TestCase):
     def setUp(self):
@@ -805,7 +805,7 @@ class TestCase(unittest.TestCase):
             "desired_skills", None, "contact_email", "project_link", 
             "courses")
         l1 = Post.get_posts(page = 1)[0]
-        assert len(l1) == PAGINATION_PER_PAGE
+        assert len(l1) == app.config['PAGINATION_PER_PAGE']
 
     def test_get_posts_with_pagination_two_pages(self): 
         Professor.create_professor(net_id = "abc",  name = "hello", 

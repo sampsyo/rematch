@@ -4,7 +4,6 @@ from server import app
 from .forms import LoginForm, RegistrationForm
 from flask_login import login_user, logout_user, login_required, current_user
 from models import Post, Student, Professor
-from config import BASE_URL, TAGS, COURSES
 import datetime
 
 
@@ -19,7 +18,8 @@ def posts():
 
     url_params = []
     if search_tags:
-        search_tags = ','.join(t for t in search_tags.split(',') if t in TAGS)
+        search_tags = ','.join(t for t in search_tags.split(',') if t in
+                               app.config['TAGS'])
         url_params.append('search_tags=%s' % search_tags)
     if phrase:
         url_params.append('phrase=%s' % phrase)
@@ -38,10 +38,10 @@ def posts():
         "index.html",
         title='Home',
         user=current_user,
-        base_url=BASE_URL,
+        base_url=app.config['BASE_URL'],
         posts=posts,
         search=True,
-        tags=TAGS,
+        tags=app.config['TAGS'],
         total_number_of_pages=total_number_of_pages,
         checked='checked' if bool(courses) else '',
         phrase=phrase,
@@ -86,13 +86,13 @@ def login():
                 login_user(user)
                 flash('Welcome back %s!' % user.name)
                 next = request.args.get('next')
-                return redirect(next or BASE_URL)
+                return redirect(next or app.config['BASE_URL'])
             else:
                 flash('Username or Password Incorrect!')
                 return redirect('/login')
     return render_template(
         'login.html',
-        base_url=BASE_URL,
+        base_url=app.config['BASE_URL'],
         form=form
     )
 
@@ -101,7 +101,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(BASE_URL)
+    return redirect(app.config['BASE_URL'])
 
 
 @app.route('/profile/<net_id>', methods=['GET'])
@@ -129,9 +129,9 @@ def profile(net_id):
     return render_template(
         'profile.html',
         title=current_user.name + "'s Profile",
-        base_url=BASE_URL,
+        base_url=app.config['BASE_URL'],
         profile=current_user,
-        all_courses=COURSES,
+        all_courses=app.config['COURSES'],
         favorited_projects=favorited_projects,
         active_collection=active_collection,
         inactive_collection=inactive_collection
@@ -289,10 +289,10 @@ def createpost():
     else:
         return render_template(
             'createpost.html',
-            base_url=BASE_URL,
+            base_url=app.config['BASE_URL'],
             title='Submit Research Listing',
-            all_tags=TAGS,
-            all_courses=COURSES,
+            all_tags=app.config['TAGS'],
+            all_courses=app.config['COURSES'],
             post=Post.empty,
             options=options
         )
@@ -312,7 +312,7 @@ def showpost(post_id):
 
     return render_template(
         'full_post.html',
-        base_url=BASE_URL,
+        base_url=app.config['BASE_URL'],
         post=post
     )
 
@@ -376,10 +376,10 @@ def editpost(post_id):
         post['courses'] = ",".join(post['courses'])
         return render_template(
             'createpost.html',
-            base_url=BASE_URL,
+            base_url=app.config['BASE_URL'],
             id='Sign In',
-            all_tags=TAGS,
-            all_courses=COURSES,
+            all_tags=app.config['TAGS'],
+            all_courses=app.config['COURSES'],
             post=post,
             options=options
         )

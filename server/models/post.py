@@ -1,9 +1,6 @@
-from server import db
-from config import PAGINATION_PER_PAGE
+from server import db, app
 from sqlalchemy import desc, or_, not_
 from server.utils import send_email
-from config import COURSES
-# from server.models.professor import Professor
 
 
 class Post(db.Model):
@@ -66,7 +63,7 @@ class Post(db.Model):
         if required_courses:
             required_courses = required_courses.strip().lower().split(',')
             unsat_courses = set(
-                [x.lower() for x in COURSES]
+                [x.lower() for x in app.config['COURSES']]
             ).difference(set(required_courses))
 
             query = query.filter(not_(
@@ -81,8 +78,10 @@ class Post(db.Model):
             posts = query.all()
             has_next = None
         else:
-            pagination = query.paginate(page=page,
-                                        per_page=PAGINATION_PER_PAGE)
+            pagination = query.paginate(
+                page=page,
+                per_page=app.config['PAGINATION_PER_PAGE']
+            )
             has_next = pagination.has_next
             posts = pagination.items
             number_pages = pagination.pages
@@ -96,7 +95,7 @@ class Post(db.Model):
 
     """Summary: Returns the post identified by post_id if it exists.
                 Otherwise return None.
-       Parameters: 
+       Parameters:
             post_id: the unique integer identifier for a post
     """
     @classmethod
@@ -218,10 +217,10 @@ class Post(db.Model):
         }
 
 
-    """Summary: returns a subsection of a post's information which convey's the 
-                post's most important information including id, title, 
-                description, tags, professor id, whether the post is active, 
-                the date the post was created, and the post's most recent 
+    """Summary: returns a subsection of a post's information which convey's the
+                post's most important information including id, title,
+                description, tags, professor id, whether the post is active,
+                the date the post was created, and the post's most recent
                 modification date
     """
     @property

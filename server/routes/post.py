@@ -3,7 +3,6 @@ from server import app
 from server.models.post import Post
 from datetime import datetime
 from flask_login import current_user, login_required
-from config import TAGS
 
 
 @app.route('/api/posts', methods=['POST'])
@@ -52,4 +51,4 @@ def get_professor_posts_raw(professor_id):
 
 @app.route('/raw/post-tags.json', methods=['GET'])
 def get_post_tags_raw():
-    return jsonify(tags=list(TAGS))
+    return jsonify(tags=list(app.config['TAGS']))
