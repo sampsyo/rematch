@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-import os
 from apscheduler.schedulers.background import BackgroundScheduler
 
 # Create the Flask app and its database.
@@ -9,9 +8,10 @@ app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 
-from server.views import *
-from routes import *
-from models import Professor, Student, Post
+# Import the application components, which register themselves.
+from server.models import Professor, Student, Post  # noqa
+from server import views  # noqa
+from server import routes  # noqa
 
 scheduler = BackgroundScheduler()
 scheduler.start()
