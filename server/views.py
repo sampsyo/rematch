@@ -1,8 +1,7 @@
 from flask import render_template, flash, redirect, request
 from email.utils import parseaddr
 from server import app
-from .forms import LoginForm, RegistrationForm
-from flask_login import login_user, logout_user, login_required, current_user
+from flask_login import login_required, current_user
 from models import Post, Student, Professor
 import datetime
 
@@ -50,58 +49,6 @@ def posts():
         has_next_page=has_next,
         search_url=search_url
     )
-
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    form = RegistrationForm()
-    if request.method == 'POST' and form.validate_on_submit():
-        app.logger.info('Registering: %s', form.is_student.data)
-        if Student.get_student_by_netid(form.net_id.data) or \
-           Professor.get_professor_by_netid(form.net_id.data):
-                flash('A Profile has already been created with that Net ID')
-                return redirect('/register')
-        if form.is_student.data:
-            Student.create_student(
-                net_id=form.net_id.data, name=form.name.data,
-                email=form.email.data, password=form.password.data)
-        else:
-            Professor.create_professor(
-                net_id=form.net_id.data, name=form.name.data,
-                email=form.email.data, password=form.password.data
-            )
-        flash('Thanks for registering!')
-        return redirect('/login')
-    return render_template('register.html', form=form)
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = (Professor.query.filter_by(email=form.email.data).first() or
-                Student.query.filter_by(email=form.email.data).first())
-        if user:
-            if user.is_correct_password(form.password.data):
-                login_user(user)
-                flash('Welcome back %s!' % user.name)
-                next = request.args.get('next')
-                return redirect(next or app.config['BASE_URL'])
-            else:
-                flash('Username or Password Incorrect!')
-                return redirect('/login')
-    return render_template(
-        'login.html',
-        base_url=app.config['BASE_URL'],
-        form=form
-    )
-
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect(app.config['BASE_URL'])
 
 
 @app.route('/profile/<net_id>', methods=['GET'])
