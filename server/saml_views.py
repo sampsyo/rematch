@@ -1,6 +1,7 @@
 """Adds SAML single sign-on (SSO) support to the application.
 """
 import flask
+from flask import g
 import requests
 import saml2
 import saml2.config
@@ -16,9 +17,7 @@ def load_saml_metadata():
     return response.text
 
 
-def saml_client():
-    metadata = load_saml_metadata()  # TODO cache
-
+def saml_client(metadata):
     metadata_url = flask.url_for('saml_metadata', _external=True)
     acs_url = flask.url_for('saml_acs', _external=True)
 
@@ -33,25 +32,37 @@ def saml_client():
                         (acs_url, saml2.BINDING_HTTP_POST),
                     ],
                 },
+
+                # Without this, the saml2 library "helpfully" keeps track of
+                # the requests we've issued and rejects ones it doesn't know
+                # about. The client object is not persistent here, though.
+                'allow_unsolicited': True,
             },
-            'allow_unsolicited': True,
-            'authn_requests_signed': False,
-            'logout_requests_signed': True,
-            'want_assertions_signed': True,
-            'want_response_signed': False,
         },
-        'allow_unknown_attributes': True,
     })
     client = saml2.client.Saml2Client(config=config)
     return client
+
+
+@app.before_request
+def set_up_saml_client():
+    if not hasattr(g, 'saml_client'):
+        # Load the metadata from the endpoint, but only once.
+        if 'SAML_METADATA' in app.config:
+            metadata = app.config['SAML_METADATA']
+        else:
+            metadata = load_saml_metadata()
+            app.config['SAML_METADATA'] = metadata
+
+        # Create the client object.
+        g.saml_client = saml_client(metadata)
 
 
 @app.route('/saml/login')
 def login():
     next_url = get_redirect_target()
 
-    client = saml_client()
-    reqid, info = client.prepare_for_authenticate(relay_state=next_url)
+    reqid, info = g.saml_client.prepare_for_authenticate(relay_state=next_url)
 
     headers = dict(info['headers'])
     response = flask.redirect(headers.pop('Location'), code=302)
@@ -66,9 +77,9 @@ def saml_acs():
     if 'SAMLResponse' not in flask.request.form:
         return 'missing SAMLResponse', 500
 
+    # Parse the SAML response.
     app.logger.debug('got SAML response')
-    client = saml_client()
-    response = client.parse_authn_request_response(
+    response = g.saml_client.parse_authn_request_response(
         flask.request.form['SAMLResponse'],
         saml2.entity.BINDING_HTTP_POST,
     )
@@ -77,10 +88,8 @@ def saml_acs():
 
 @app.route('/saml/metadata')
 def saml_metadata():
-    client = saml_client()
-
     metadata_str = saml2.metadata.create_metadata_string(
         configfile=None,
-        config=client.config,
+        config=g.saml_client.config,
     )
     return metadata_str, {'Content-Type': 'text/xml'}
