@@ -8,7 +8,8 @@ LAST_CLEANUP = None
 
 # Create the Flask app and its database.
 app = Flask(__name__)
-app.config.from_object('config')
+app.config.from_object('config_default')
+app.config.from_envvar('REMATCH_CONFIG', silent=True)
 db = SQLAlchemy(app)
 
 # Import the application components, which register themselves.

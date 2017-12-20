@@ -5,7 +5,7 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 WTF_CSRF_ENABLED = True
-SECRET_KEY = 'Pr0f3ss0r-ArmS-Is-Br1T1sH'
+SECRET_KEY = 'not-a-secret'
 
 BASE_URL = 'http://localhost:5000'
 PAGINATION_PER_PAGE = 5

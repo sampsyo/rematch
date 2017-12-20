@@ -6,6 +6,7 @@ You will need [Python 2.7][python].
 
 [python]: https://www.python.org/downloads/
 
+
 ## Development Setup
 
 Here's how to get a copy of the server running on your machine.
@@ -42,3 +43,8 @@ If you update the [Sass][] source files, use this to update the CSS:
     sass --watch server/static/scss:server/static/css
 
 [sass]: http://sass-lang.com/install
+
+
+## Deployment
+
+You will want to configure the production version of the server. Create a Python file with *at least* a value for `SECRET_KEY`. When starting the application, point the `REMATCH_CONFIG` environment variable at this file.
