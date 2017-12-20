@@ -47,4 +47,16 @@ If you update the [Sass][] source files, use this to update the CSS:
 
 ## Deployment
 
-You will want to configure the production version of the server. Create a Python file with *at least* a value for `SECRET_KEY`. When starting the application, point the `REMATCH_CONFIG` environment variable at this file.
+You will want to configure the production version of the server. Create a Python file with *at least* values for `SECRET_KEY` and `BASE_URL`. When starting the application, point the `REMATCH_CONFIG` environment variable at this file.
+
+Here's a straightforward way to deploy using [Gunicorn][]. Install the dependencies into a virtualenv, as above, and then also install Gunicorn into the same virtualenv:
+
+    ./venv/bin/pip install gunicorn
+
+Then, start Gunicorn like so:
+
+    REMATCH_CONFIG=config.py ./venv/bin/gunicorn server:app
+
+Then you can put the Gunicorn server behind a proper public web server.
+
+[gunicorn]: http://gunicorn.org
