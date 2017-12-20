@@ -1,6 +1,5 @@
 flask
 flask-login
 flask-sqlalchemy
-sqlalchemy-migrate
 flask-wtf
 apscheduler
