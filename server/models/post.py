@@ -265,11 +265,11 @@ class Post(db.Model):
     """
     @staticmethod
     def disable_stale_posts():
-        print 'Running stale post scheduler.'
+        app.logger.info('Running stale post scheduler.')
         stale_posts, _, _ = Post.get_posts(active_only=True, stale=True)
-        print stale_posts
+        app.logger.info('Found stale posts: %s', stale_posts)
         for post in stale_posts:
-            print 'Setting post %s to inactive.' % post['id']
+            app.logger.info('Setting post %s to inactive.', post['id'])
             Post.update_post(post['id'], is_active=False)
             send_email(post['contact_email'],
                        'Your research listing has expired',

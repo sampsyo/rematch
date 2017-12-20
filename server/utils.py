@@ -4,8 +4,8 @@ from server import app
 
 def send_email(recipient, subject, content):
 
-    print 'WARNING: Email is currently disabled.  Please configure the ' \
-          'SMTPlib appropriately in server/utils.py'
+    app.logger.warn('Email is currently disabled.  Please configure the '
+                    'SMTPlib appropriately in server/utils.py')
     return
 
     import smtplib
