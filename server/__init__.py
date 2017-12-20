@@ -4,18 +4,10 @@ from flask_login import LoginManager
 import os
 from apscheduler.schedulers.background import BackgroundScheduler
 
-# NOTE: Need to do this once we enable searching with the db using whoosh
-# from config import basedir
-
-
+# Create the Flask app and its database.
 app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
-
-app.config['UPLOAD_FOLDER'] = 'uploads/'
-app.config['ALLOWED_EXTENSIONS'] = set(
-    ['txt', 'pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx'])
-app.config['MAX_CONTENT_LENGTH'] = 1000000
 
 if not os.path.isdir('uploads/'):
     os.mkdir('uploads/')

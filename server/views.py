@@ -108,11 +108,6 @@ def logout():
     return redirect(BASE_URL)
 
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
-
-
 @app.route('/profile/<net_id>', methods=['GET'])
 @login_required
 def profile(net_id):
@@ -161,22 +156,6 @@ def profile_update(net_id):
         new_description = result["user_description"] or ""
         courses = result["courses"] or ""
 
-        filename = None
-        # Resume uploads disabled until we decide what to do with them
-
-#        f = request.files['resume']
-#        if f:
-#            if allowed_file(f.filename):
-#                extension = f.filename.rsplit('.', 1)[1]
-#                f.filename = net_id + "_resume." + extension
-#                filename = secure_filename(f.filename)
-#                f.save(os.path.join('uploads/', filename))
-#            else:
-#                flash('Resume File Type Not Accepted')
-#                filename = None
-#        else:
-#            filename = None
-
         error = False
         _, email = parseaddr(new_email)
         if not email or '@' not in email:
@@ -193,7 +172,7 @@ def profile_update(net_id):
 
         Student.update_student(
             net_id, email=email, major=user.major,
-            year=new_year, resume=filename, description=new_description,
+            year=new_year, resume=None, description=new_description,
             favorited_projects=None,
             courses=courses
         )
