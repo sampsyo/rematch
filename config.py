@@ -10,6 +10,9 @@ SECRET_KEY = 'Pr0f3ss0r-ArmS-Is-Br1T1sH'
 BASE_URL = 'http://localhost:5000'
 PAGINATION_PER_PAGE = 5
 
+# How often, in seconds, to look for and clean up stale posts.
+CLEANUP_INTERVAL = 24 * 60 * 60
+
 # the address from which the server sends email
 FROM_EMAIL = ''
 

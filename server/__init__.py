@@ -1,7 +1,10 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from apscheduler.schedulers.background import BackgroundScheduler
+import time
+
+LAST_CLEANUP = None
+
 
 # Create the Flask app and its database.
 app = Flask(__name__)
@@ -13,9 +16,17 @@ from server.models import Professor, Student, Post  # noqa
 from server import views  # noqa
 from server import routes  # noqa
 
-scheduler = BackgroundScheduler()
-scheduler.start()
-scheduler.add_job(Post.disable_stale_posts, 'interval', days=1)
+
+# Periodically look for stale posts and disable them.
+@app.before_request
+def cleanup():
+    global LAST_CLEANUP
+    now = time.time()
+    if not LAST_CLEANUP or (now - LAST_CLEANUP >
+                            app.config['CLEANUP_INTERVAL']):
+        Post.disable_stale_posts()
+        LAST_CLEANUP = now
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)
