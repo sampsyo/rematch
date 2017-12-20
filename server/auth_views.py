@@ -1,7 +1,10 @@
+"""The views for standard username/password login to the application.
+"""
 from flask import render_template, flash, redirect, request
 from server import app
 from flask_login import login_user, logout_user, login_required
 from .forms import LoginForm, RegistrationForm
+from .utils import get_redirect_target
 
 from models import Student, Professor
 
@@ -39,8 +42,8 @@ def login():
             if user.is_correct_password(form.password.data):
                 login_user(user)
                 flash('Welcome back %s!' % user.name)
-                next = request.args.get('next')
-                return redirect(next or app.config['BASE_URL'])
+                next_url = get_redirect_target()
+                return redirect(next_url or app.config['BASE_URL'])
             else:
                 flash('Username or Password Incorrect!')
                 return redirect('/login')

@@ -32,8 +32,7 @@ def cleanup():
 # Initialize SAML SSO, if enabled.
 if 'SAML_METADATA_URL' in app.config:
     # SAML mode.
-    import flask_saml
-    flask_saml.FlaskSAML(app)
+    from server import saml_views  # noqa
 else:
     # Otherwise, use our standard login/registration forms.
     from server import auth_views  # noqa

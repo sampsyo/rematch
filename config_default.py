@@ -16,6 +16,8 @@ CLEANUP_INTERVAL = 24 * 60 * 60
 # the address from which the server sends email
 FROM_EMAIL = ''
 
+SAML_USE_SESSIONS = False
+
 # topic tags for research listings
 TAGS = [
         'artificial intelligence',
