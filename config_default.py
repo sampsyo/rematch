@@ -18,6 +18,9 @@ FROM_EMAIL = ''
 
 SAML_USE_SESSIONS = False
 
+LONG_NAME = 'Cornell Research Matching System'
+SHORT_NAME = 'Rematch'
+
 # topic tags for research listings
 TAGS = [
         'artificial intelligence',

@@ -3,9 +3,9 @@
 <html>
   <head>
     {% if title %}
-    <title>{{ title }} - Cornell Research Portal</title>
+    <title>{{ title }} - {{ config.LONG_NAME }}</title>
     {% else %}
-    <title>Cornell Research Portal</title>
+    <title>{{ config.LONG_NAME }}</title>
     {% endif %}
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">

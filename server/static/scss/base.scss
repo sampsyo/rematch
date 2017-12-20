@@ -36,8 +36,8 @@ a{
     background: white;
     border: 1px solid #eaeaea;
     border-radius: 3px;
-    &>li.active>a, 
-    &>li.active>a:focus, 
+    &>li.active>a,
+    &>li.active>a:focus,
     &>li.active>a:hover {
 		color: #333;
     	font-weight: 400;
@@ -62,10 +62,15 @@ a{
 	border: 0;
 	margin-bottom: 0px;
 	.navbar-brand {
-		padding: 10px 15px 0;
+		padding: 18px 15px 0;
+
 		img {
 			height: 40px;
 		}
+
+        color: #fff;
+        font-weight: bold;
+        font-size: 28px;
 	}
 
 	.nav > li > a {
@@ -74,7 +79,7 @@ a{
 
 		&:focus,
 		&:hover {
-			background-color: rgba(255,255,255,.3);	
+			background-color: rgba(255,255,255,.3);
 		}
 	}
 }
@@ -145,8 +150,8 @@ a{
 	    margin-bottom: 5px;
 		color: $text-color;
 	}
-	.title a{ 
-		color: $text-color; 
+	.title a{
+		color: $text-color;
 	}
 	.professor {
 		margin-top: 10px;
@@ -169,7 +174,7 @@ a{
 	.more {
 		color: $link-color;
 		display: block;
-		font-size: 14px; 
+		font-size: 14px;
 		&:hover {
 			text-decoration: none;
 		}
@@ -191,7 +196,7 @@ a{
 		font-size: 12px;
 		opacity: 0;
 		&:hover {
-			text-decoration: none !important;			
+			text-decoration: none !important;
 		}
 	}
 
@@ -268,7 +273,7 @@ a{
 	text-transform: lowercase;
 	&:hover {
 		color: #AD1B1B;
-		// font-weight: bolder; 
+		// font-weight: bolder;
 	}
 
 }
@@ -339,7 +344,7 @@ a{
 			margin-right: 6px;
 		}
 	}
-	.profile-tags{ 
+	.profile-tags{
 		margin-top: 0px;
 	}
 	#save-profile-updates {
@@ -349,16 +354,16 @@ a{
 	    font-weight: 300;
 	    padding: 6px 14px;
 	}
-	
-	#edit-profile{ 
-		float: right; 
+
+	#edit-profile{
+		float: right;
 		font-size: 14px;
 		cursor: pointer;
-		color: $link-color;  
+		color: $link-color;
 	}
 	#edit-profile:hover{
-		color: $link-color; 
-		text-decoration: underline; 
+		color: $link-color;
+		text-decoration: underline;
 	}
 }
 
@@ -409,7 +414,7 @@ code {
     color: #888;
     font-size: 12px;
 }
-	
+
 
 label {
 	text-transform: uppercase;
@@ -422,9 +427,9 @@ label {
 	height: 50px;
 }
 p.helper-text{
-	font-size: 11px; 
-	letter-spacing: 1; 
-	color: #888; 
+	font-size: 11px;
+	letter-spacing: 1;
+	color: #888;
 }
 
 a.no-decoration {

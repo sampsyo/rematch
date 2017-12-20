@@ -30,7 +30,9 @@ a {
   background: white;
   border: 1px solid #eaeaea;
   border-radius: 3px; }
-  .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+  .nav-tabs > li.active > a,
+  .nav-tabs > li.active > a:focus,
+  .nav-tabs > li.active > a:hover {
     color: #333;
     font-weight: 400;
     border: none;
@@ -50,7 +52,10 @@ a {
   border: 0;
   margin-bottom: 0px; }
   .navbar .navbar-brand {
-    padding: 10px 15px 0; }
+    padding: 18px 15px 0;
+    color: #fff;
+    font-weight: bold;
+    font-size: 28px; }
     .navbar .navbar-brand img {
       height: 40px; }
   .navbar .nav > li > a {
@@ -61,11 +66,14 @@ a {
 
 .full-post .card .title {
   font-size: 26px; }
+
 .full-post .card .description {
   font-size: 15px; }
+
 .full-post .card .professor {
   font-size: 16px;
   margin-bottom: 10px; }
+
 .full-post .card .contact {
   font-weight: 400;
   padding-bottom: 5px;
@@ -74,6 +82,7 @@ a {
   font-size: 14px; }
   .full-post .card .contact a {
     color: #3076AB; }
+
 .full-post .card .edit {
   position: absolute;
   right: 40px;
@@ -84,6 +93,7 @@ a {
       text-decoration: none; }
   .full-post .card .edit .content {
     padding-left: 5px; }
+
 .full-post .card .tags {
   margin-top: 0px; }
 
@@ -209,9 +219,11 @@ a {
   margin-bottom: 30px;
   max-height: 200px;
   border: 1px solid black; }
+
 .profile .name {
   font-size: 32px;
   text-align: left; }
+
 .profile .description {
   padding-top: 20px;
   text-align: center;
@@ -221,25 +233,31 @@ a {
   margin: auto;
   font-family: 'Open Sans', sans-serif;
   padding-bottom: 20px; }
+
 .profile input[type="file"] {
   display: none; }
+
 .profile .file-selected {
   padding-left: 5px; }
+
 .profile .checkbox label {
   color: #444;
   text-transform: none;
   letter-spacing: 0px;
   font-size: 12px; }
+
 .profile .resume {
   border: 1px solid #ad1b1b;
   border-radius: 3px;
   display: inline-block;
   padding: 6px 12px;
   cursor: pointer; }
+
 .profile .title {
   color: #999;
   padding-top: 20px;
   font-size: 16px; }
+
 .profile .item {
   font-size: 16px;
   color: #444;
@@ -253,19 +271,23 @@ a {
     font-size: 14px;
     margin-left: 3px;
     margin-right: 6px; }
+
 .profile .profile-tags {
   margin-top: 0px; }
+
 .profile #save-profile-updates {
   margin-top: 15px;
   display: none;
   font-family: 'Open Sans';
   font-weight: 300;
   padding: 6px 14px; }
+
 .profile #edit-profile {
   float: right;
   font-size: 14px;
   cursor: pointer;
   color: #337ab7; }
+
 .profile #edit-profile:hover {
   color: #337ab7;
   text-decoration: underline; }
