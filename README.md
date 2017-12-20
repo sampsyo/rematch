@@ -60,3 +60,10 @@ Then, start Gunicorn like so:
 Then you can put the Gunicorn server behind a proper public web server.
 
 [gunicorn]: http://gunicorn.org
+
+
+## Configuration
+
+See `config_default.py` for some options you can override in the configuration.
+
+The application also supports SAML-based single sign-on as an alternative to username/password authentication. Set the `SAML_METADATA_URL` to the URL of the XML file describing the SAML endpoint.
