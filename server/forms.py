@@ -1,15 +1,15 @@
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import TextField, PasswordField, BooleanField, StringField
 from wtforms.validators import DataRequired, EqualTo
 
 
 # Login form class for Email/Password to sign in
-class LoginForm(Form):
+class LoginForm(FlaskForm):
     email = TextField('Email', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
 
 
-class RegistrationForm(Form):
+class RegistrationForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     email = StringField('Email Address', validators=[DataRequired()])
     net_id = StringField('Net ID', validators=[DataRequired()])
