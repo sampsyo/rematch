@@ -1,5 +1,10 @@
 # Cornell Research Matching System
 
+This is a simple web app for advertising research projects to students. People can post short descriptions of what they're working on, and potential researchers can filter the list to find opportunities and contact information. The idea is to deploy it at [Cornell CS][] as a way to broaden participation in undergraduate research.
+
+[cornell cs]: http://www.cs.cornell.edu
+
+
 ## Requirements
 
 You will need [Python 2.7][python].
@@ -67,3 +72,14 @@ Then you can put the Gunicorn server behind a proper public web server.
 See `config_default.py` for some options you can override in the configuration.
 
 The application also supports SAML-based single sign-on as an alternative to username/password authentication. Set the `SAML_METADATA_URL` to the URL of the XML file describing the SAML endpoint.
+
+
+## Credits
+
+The tool was originally developed as a [CS 5150][] project by a team consisting
+of Michael White, Tiffany Zheng, Aishwarya Rameshkumar, Yu (Nancy) Gu, Simeon
+Videnov, Kristian Langholm, Leon Zaruvinsky, and Brandon Giraldo. It is currently maintained by [Adrian Sampson][adrian]. The license is [MIT][].
+
+[MIT]: https://opensource.org/licenses/MIT
+[adrian]: https://www.cs.cornell.edu/~asampson/
+[CS 5150]: http://www.cs.cornell.edu/courses/cs5150/2017sp/
